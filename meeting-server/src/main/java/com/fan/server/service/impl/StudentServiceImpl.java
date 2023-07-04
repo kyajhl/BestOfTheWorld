@@ -17,4 +17,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements IStudentService {
 
+    @Override
+    public void addStudent(Student student) {
+        this.save(student);
+    }
+
 }

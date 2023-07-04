@@ -1,0 +1,156 @@
+Index: meeting-server/src/main/java/com/fan/server/service/impl/StudentServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.fan.server.service.impl;\r\n\r\nimport com.fan.server.pojo.Student;\r\nimport com.fan.server.mapper.StudentMapper;\r\nimport com.fan.server.service.IStudentService;\r\nimport com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;\r\nimport org.springframework.stereotype.Service;\r\n\r\n/**\r\n * <p>\r\n *  服务实现类\r\n * </p>\r\n *\r\n * @author BestOfTheWorld\r\n * @since 2023-07-04\r\n */\r\n@Service\r\npublic class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements IStudentService {\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/meeting-server/src/main/java/com/fan/server/service/impl/StudentServiceImpl.java b/meeting-server/src/main/java/com/fan/server/service/impl/StudentServiceImpl.java
+--- a/meeting-server/src/main/java/com/fan/server/service/impl/StudentServiceImpl.java	(revision 35e2cf44cf4e433841482318de002df510c8bc93)
++++ b/meeting-server/src/main/java/com/fan/server/service/impl/StudentServiceImpl.java	(date 1688467100729)
+@@ -4,6 +4,7 @@
+ import com.fan.server.mapper.StudentMapper;
+ import com.fan.server.service.IStudentService;
+ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
++import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.stereotype.Service;
+ 
+ /**
+@@ -17,4 +18,7 @@
+ @Service
+ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements IStudentService {
+ 
++    @Override
++    public void addStudent(Student student){this.save(student);}
++
+ }
+Index: meeting-server/src/main/java/com/fan/server/service/IStudentService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.fan.server.service;\r\n\r\nimport com.fan.server.pojo.Student;\r\nimport com.baomidou.mybatisplus.extension.service.IService;\r\n\r\n/**\r\n * <p>\r\n *  服务类\r\n * </p>\r\n *\r\n * @author BestOfTheWorld\r\n * @since 2023-07-04\r\n */\r\npublic interface IStudentService extends IService<Student> {\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/meeting-server/src/main/java/com/fan/server/service/IStudentService.java b/meeting-server/src/main/java/com/fan/server/service/IStudentService.java
+--- a/meeting-server/src/main/java/com/fan/server/service/IStudentService.java	(revision 35e2cf44cf4e433841482318de002df510c8bc93)
++++ b/meeting-server/src/main/java/com/fan/server/service/IStudentService.java	(date 1688467029867)
+@@ -13,4 +13,6 @@
+  */
+ public interface IStudentService extends IService<Student> {
+ 
++    void addStudent(Student student);
++
+ }
+Index: meeting-server/src/main/java/com/fan/server/controller/StudentController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.fan.server.controller;\r\n\r\n\r\nimport org.springframework.web.bind.annotation.RequestMapping;\r\n\r\nimport org.springframework.web.bind.annotation.RestController;\r\n\r\n/**\r\n * <p>\r\n *  前端控制器\r\n * </p>\r\n *\r\n * @author BestOfTheWorld\r\n * @since 2023-07-04\r\n */\r\n@RestController\r\n@RequestMapping(\"/student\")\r\npublic class StudentController {\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/meeting-server/src/main/java/com/fan/server/controller/StudentController.java b/meeting-server/src/main/java/com/fan/server/controller/StudentController.java
+--- a/meeting-server/src/main/java/com/fan/server/controller/StudentController.java	(revision 35e2cf44cf4e433841482318de002df510c8bc93)
++++ b/meeting-server/src/main/java/com/fan/server/controller/StudentController.java	(date 1688466855315)
+@@ -1,10 +1,18 @@
+ package com.fan.server.controller;
+ 
+ 
++import com.fan.server.pojo.Student;
++import com.fan.server.service.IStudentService;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.validation.annotation.Validated;
++import org.springframework.web.bind.annotation.PostMapping;
++import org.springframework.web.bind.annotation.RequestBody;
+ import org.springframework.web.bind.annotation.RequestMapping;
+ 
+ import org.springframework.web.bind.annotation.RestController;
+ 
++import javax.annotation.Resource;
++
+ /**
+  * <p>
+  *  前端控制器
+@@ -17,4 +25,13 @@
+ @RequestMapping("/student")
+ public class StudentController {
+ 
++    @Autowired
++    public IStudentService studentService;
++
++    @PostMapping("/addStudent")
++    public boolean addStudent(@RequestBody Student student) {
++        studentService.addStudent(student);
++        return true;
++    }
++
+ }
+Index: meeting-server/src/main/java/com/fan/server/MeetingSystemApplication.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.fan.server;\r\n\r\nimport org.springframework.boot.SpringApplication;\r\nimport org.springframework.boot.autoconfigure.SpringBootApplication;\r\n\r\n/**\r\n * @author KeFan\r\n * @date 2023/7/3\r\n * @time 13:49\r\n */\r\n\r\n@SpringBootApplication\r\npublic class MeetingSystemApplication {\r\n    public static void main(String[] args) {\r\n        SpringApplication.run(MeetingSystemApplication.class, args);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/meeting-server/src/main/java/com/fan/server/MeetingSystemApplication.java b/meeting-server/src/main/java/com/fan/server/MeetingSystemApplication.java
+--- a/meeting-server/src/main/java/com/fan/server/MeetingSystemApplication.java	(revision 35e2cf44cf4e433841482318de002df510c8bc93)
++++ b/meeting-server/src/main/java/com/fan/server/MeetingSystemApplication.java	(date 1688466072003)
+@@ -1,5 +1,6 @@
+ package com.fan.server;
+ 
++import org.mybatis.spring.annotation.MapperScan;
+ import org.springframework.boot.SpringApplication;
+ import org.springframework.boot.autoconfigure.SpringBootApplication;
+ 
+@@ -10,6 +11,7 @@
+  */
+ 
+ @SpringBootApplication
++@MapperScan("com.fan.server.mapper")
+ public class MeetingSystemApplication {
+     public static void main(String[] args) {
+         SpringApplication.run(MeetingSystemApplication.class, args);
+Index: meeting-server/src/main/java/com/fan/server/mapper/CommentMapper.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.fan.server.mapper;\r\n\r\nimport com.fan.server.pojo.Comment;\r\nimport com.baomidou.mybatisplus.core.mapper.BaseMapper;\r\n\r\n/**\r\n * <p>\r\n *  Mapper 接口\r\n * </p>\r\n *\r\n * @author BestOfTheWorld\r\n * @since 2023-07-04\r\n */\r\npublic interface CommentMapper extends BaseMapper<Comment> {\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/meeting-server/src/main/java/com/fan/server/mapper/CommentMapper.java b/meeting-server/src/main/java/com/fan/server/mapper/CommentMapper.java
+--- a/meeting-server/src/main/java/com/fan/server/mapper/CommentMapper.java	(revision 35e2cf44cf4e433841482318de002df510c8bc93)
++++ b/meeting-server/src/main/java/com/fan/server/mapper/CommentMapper.java	(date 1688466390659)
+@@ -2,6 +2,7 @@
+ 
+ import com.fan.server.pojo.Comment;
+ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
++import org.apache.ibatis.annotations.Mapper;
+ 
+ /**
+  * <p>
+Index: meeting-server/src/main/resources/application.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>server:\r\n  port: 9090\r\n\r\nspring:\r\n  datasource:\r\n    driver-class-name: com.mysql.cj.jdbc.Driver\r\n    username: root\r\n    password: 1234\r\n    url: jdbc:mysql:///internship_platform\r\n  redis:\r\n    port: 6379\r\n    host: localhost\r\n\r\nlogging:\r\n  level:\r\n    com.fan: debug\r\n\r\nmybatis-plus:\r\n  type-aliases-package: com.fan.*.pojo\r\n  mapper-locations: classpath:/mapper/*Mapper.xml
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/meeting-server/src/main/resources/application.yml b/meeting-server/src/main/resources/application.yml
+--- a/meeting-server/src/main/resources/application.yml	(revision 35e2cf44cf4e433841482318de002df510c8bc93)
++++ b/meeting-server/src/main/resources/application.yml	(date 1688466215675)
+@@ -10,6 +10,9 @@
+   redis:
+     port: 6379
+     host: localhost
++  mvc:
++    pathmatch:
++      matching-strategy: ant_path_matcher
+ 
+ logging:
+   level:
+@@ -17,4 +20,4 @@
+ 
+ mybatis-plus:
+   type-aliases-package: com.fan.*.pojo
+-  mapper-locations: classpath:/mapper/*Mapper.xml
+\ No newline at end of file
++  mapper-locations: classpath:/mapper/*Mapper.xml

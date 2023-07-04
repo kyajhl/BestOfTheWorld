@@ -1,0 +1,15 @@
+Index: meeting-server/src/main/resources/application.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>server:\r\n  port: 8080\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/meeting-server/src/main/resources/application.yml b/meeting-server/src/main/resources/application.yml
+--- a/meeting-server/src/main/resources/application.yml	(revision b799a897772c39c5ac4b11617d9252558725d956)
++++ b/meeting-server/src/main/resources/application.yml	(date 1688464035901)
+@@ -1,4 +1,3 @@
+ server:
+   port: 8080
+ 
+-

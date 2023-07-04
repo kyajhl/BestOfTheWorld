@@ -47,7 +47,7 @@
       <div class="radioCheck">
         <el-radio v-model="loginForm.radioCheck" label="1" border size="medium">学生</el-radio>
         <el-radio v-model="loginForm.radioCheck" label="2" border size="medium">教师</el-radio>
-        <el-radio v-model="loginForm.radioCheck" label="3" border size="medium">管理员</el-radio>
+        <el-radio v-model="loginForm.radioCheck" label="3" border size="medium">企业</el-radio>
       </div>
 
       <el-button :loading="loading"

@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '学生管理系统',
+  title: '高校实训实习管理平台',
 
   /**
    * @type {boolean} true | false

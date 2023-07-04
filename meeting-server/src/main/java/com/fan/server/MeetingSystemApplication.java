@@ -1,5 +1,6 @@
 package com.fan.server;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 
 @SpringBootApplication
+@MapperScan("com.fan.server.mapper")
 public class MeetingSystemApplication {
     public static void main(String[] args) {
         SpringApplication.run(MeetingSystemApplication.class, args);

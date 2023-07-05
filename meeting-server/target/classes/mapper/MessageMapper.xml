@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fan.server.mapper.CommentMapper">
+<mapper namespace="com.fan.server.mapper.MessageMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.fan.server.pojo.Comment">
+    <resultMap id="BaseResultMap" type="com.fan.server.pojo.Message">
         <id column="id" property="id" />
-        <result column="team_id" property="teamId" />
-        <result column="teacher_id" property="teacherId" />
+        <result column="message_date" property="messageDate" />
         <result column="content" property="content" />
-        <result column="grade" property="grade" />
+        <result column="student_id" property="studentId" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         <if test="true">
-            id, team_id, teacher_id, content, grade
+            id, message_date, content, student_id
         </if>
     </sql>
 

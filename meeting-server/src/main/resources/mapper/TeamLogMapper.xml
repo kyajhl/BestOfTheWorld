@@ -8,12 +8,14 @@
         <result column="content" property="content" />
         <result column="team_id" property="teamId" />
         <result column="log_date" property="logDate" />
+        <result column="comment" property="comment" />
+        <result column="grade" property="grade" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         <if test="true">
-            id, content, team_id, log_date
+            id, content, team_id, log_date, comment, grade
         </if>
     </sql>
 

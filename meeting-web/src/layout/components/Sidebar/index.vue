@@ -30,8 +30,8 @@
       ...mapGetters(['sidebar']),
       routes() {
         // console.log(this.$router.options.routes.concat(global.myRoutes));
-        return this.$router.options.routes.concat(global.myRoutes);
-        // return this.$router.options.routes;
+        // return this.$router.options.routes.concat(global.myRoutes);
+        return this.$router.options.routes;
       },
       activeMenu() {
         const route = this.$route;

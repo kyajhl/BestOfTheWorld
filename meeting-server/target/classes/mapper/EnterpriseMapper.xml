@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fan.server.mapper.EnterpriseNameMapper">
+<mapper namespace="com.fan.server.mapper.EnterpriseMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.fan.server.pojo.EnterpriseName">
+    <resultMap id="BaseResultMap" type="com.fan.server.pojo.Enterprise">
         <id column="id" property="id" />
         <result column="enterprise_name" property="enterpriseName" />
         <result column="password" property="password" />
@@ -13,7 +13,9 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, enterprise_name, password, mobilephone, email
+        <if test="true">
+            id, enterprise_name, password, mobilephone, email
+        </if>
     </sql>
 
 </mapper>

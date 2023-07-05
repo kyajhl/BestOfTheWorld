@@ -15,7 +15,9 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, project_id, project_name, begin_date, end_date, content, volume
+        <if test="true">
+            id, project_id, project_name, begin_date, end_date, content, volume
+        </if>
     </sql>
 
 </mapper>

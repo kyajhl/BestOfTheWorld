@@ -15,7 +15,6 @@
         <if test="true">
             id, student_id, content, team_id
         </if>
-        id, student_id, content, team_id
     </sql>
 
 </mapper>

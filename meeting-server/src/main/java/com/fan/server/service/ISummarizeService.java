@@ -1,6 +1,6 @@
 package com.fan.server.service;
 
-import com.fan.server.pojo.StudentTeam;
+import com.fan.server.pojo.Summarize;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author BestOfTheWorld
  * @since 2023-07-05
  */
-public interface IStudentTeamService extends IService<StudentTeam> {
+public interface ISummarizeService extends IService<Summarize> {
 
 }

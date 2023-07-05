@@ -1,7 +1,6 @@
 package com.fan.server.pojo;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -21,30 +20,24 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("team_log")
-@ApiModel(value="TeamLog对象", description="")
-public class TeamLog implements Serializable {
+@TableName("summarize")
+@ApiModel(value="Summarize对象", description="")
+public class Summarize implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private Integer id;
 
-    @ApiModelProperty(value = "日志内容")
+    @ApiModelProperty(value = "学号")
+    @TableField("student_id")
+    private String studentId;
+
+    @ApiModelProperty(value = "总结内容")
     private String content;
 
     @ApiModelProperty(value = "团队id")
     @TableField("team_id")
     private String teamId;
-
-    @ApiModelProperty(value = "发布时间")
-    @TableField("log_date")
-    private LocalDateTime logDate;
-
-    @ApiModelProperty(value = "教师评语")
-    private String comment;
-
-    @ApiModelProperty(value = "日志评分(教师)")
-    private Integer grade;
 
 
 }

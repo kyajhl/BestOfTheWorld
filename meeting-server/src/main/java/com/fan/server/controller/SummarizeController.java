@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
  * </p>
  *
  * @author BestOfTheWorld
- * @since 2023-07-04
+ * @since 2023-07-05
  */
 @RestController
-@RequestMapping("/comment")
-public class CommentController {
+@RequestMapping("/summarize")
+public class SummarizeController {
 
 }

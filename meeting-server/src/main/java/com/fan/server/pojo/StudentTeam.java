@@ -15,7 +15,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author BestOfTheWorld
- * @since 2023-07-04
+ * @since 2023-07-05
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -34,7 +34,7 @@ public class StudentTeam implements Serializable {
 
     @ApiModelProperty(value = "团队id")
     @TableField("team_id")
-    private Integer teamId;
+    private String teamId;
 
     @ApiModelProperty(value = "职位")
     private String position;

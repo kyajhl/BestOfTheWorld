@@ -1,6 +1,6 @@
 package com.fan.server.service;
 
-import com.fan.server.pojo.Comment;
+import com.fan.server.pojo.Message;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author BestOfTheWorld
- * @since 2023-07-04
+ * @since 2023-07-05
  */
-public interface ICommentService extends IService<Comment> {
+public interface IMessageService extends IService<Message> {
 
 }

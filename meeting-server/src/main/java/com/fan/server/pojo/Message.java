@@ -1,6 +1,7 @@
 package com.fan.server.pojo;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.time.LocalDate;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -15,32 +16,29 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author BestOfTheWorld
- * @since 2023-07-04
+ * @since 2023-07-05
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("comment")
-@ApiModel(value="Comment对象", description="")
-public class Comment implements Serializable {
+@TableName("message")
+@ApiModel(value="Message对象", description="")
+public class Message implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private Integer id;
 
-    @ApiModelProperty(value = "团队id，外键")
-    @TableField("team_id")
-    private Integer teamId;
+    @ApiModelProperty(value = "发布时间")
+    @TableField("message_date")
+    private LocalDate messageDate;
 
-    @ApiModelProperty(value = "教师id，外键")
-    @TableField("teacher_id")
-    private Integer teacherId;
-
-    @ApiModelProperty(value = "评价")
+    @ApiModelProperty(value = "留言内容")
     private String content;
 
-    @ApiModelProperty(value = "成绩")
-    private Integer grade;
+    @ApiModelProperty(value = "学号")
+    @TableField("student_id")
+    private String studentId;
 
 
 }

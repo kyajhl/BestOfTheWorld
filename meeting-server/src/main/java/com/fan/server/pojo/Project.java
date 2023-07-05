@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author BestOfTheWorld
- * @since 2023-07-04
+ * @since 2023-07-05
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -50,6 +50,10 @@ public class Project implements Serializable {
 
     @ApiModelProperty(value = "最大容量")
     private Integer volume;
+
+    @ApiModelProperty(value = "验收标准")
+    @TableField("acceptance_criteria")
+    private String acceptanceCriteria;
 
 
 }

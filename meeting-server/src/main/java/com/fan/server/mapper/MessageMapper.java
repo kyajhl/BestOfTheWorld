@@ -1,6 +1,6 @@
 package com.fan.server.mapper;
 
-import com.fan.server.pojo.Team;
+import com.fan.server.pojo.Message;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author BestOfTheWorld
  * @since 2023-07-05
  */
-public interface TeamMapper extends BaseMapper<Team> {
+public interface MessageMapper extends BaseMapper<Message> {
 
 }

@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author BestOfTheWorld
- * @since 2023-07-04
+ * @since 2023-07-05
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -39,6 +39,12 @@ public class StudentLog implements Serializable {
     @ApiModelProperty(value = "学生id，外键")
     @TableField("student_id")
     private Integer studentId;
+
+    @ApiModelProperty(value = "教师评语")
+    private String comment;
+
+    @ApiModelProperty(value = "日志评分(教师i)")
+    private Integer grade;
 
 
 }

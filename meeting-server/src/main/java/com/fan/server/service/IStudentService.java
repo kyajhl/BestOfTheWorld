@@ -9,9 +9,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author BestOfTheWorld
- * @since 2023-07-04
+ * @since 2023-07-05
  */
 public interface IStudentService extends IService<Student> {
 
-    void addStudent(Student student);
 }

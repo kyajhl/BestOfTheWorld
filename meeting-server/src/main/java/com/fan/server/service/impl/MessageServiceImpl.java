@@ -1,8 +1,8 @@
 package com.fan.server.service.impl;
 
-import com.fan.server.pojo.Student;
-import com.fan.server.mapper.StudentMapper;
-import com.fan.server.service.IStudentService;
+import com.fan.server.pojo.Message;
+import com.fan.server.mapper.MessageMapper;
+import com.fan.server.service.IMessageService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2023-07-05
  */
 @Service
-public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements IStudentService {
+public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> implements IMessageService {
 
 }

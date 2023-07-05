@@ -12,7 +12,9 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, team_name, team_number, project_id
+        <if test="true">
+            id, team_name, team_number, project_id
+        </if>
     </sql>
 
 </mapper>

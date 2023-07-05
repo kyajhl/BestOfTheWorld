@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="internship_platform@localhost" uuid="7241698b-73ce-428a-8c04-b71d5f6cf464">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/internship_platform?useUnicode=true&amp;serverTimezone=UTC</jdbc-url>
+    </data-source>
+  </component>
+</project>

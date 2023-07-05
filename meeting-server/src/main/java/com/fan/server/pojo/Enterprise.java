@@ -20,9 +20,9 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("enterprise_name")
-@ApiModel(value="EnterpriseName对象", description="")
-public class EnterpriseName implements Serializable {
+@TableName("enterprise")
+@ApiModel(value="Enterprise对象", description="")
+public class Enterprise implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

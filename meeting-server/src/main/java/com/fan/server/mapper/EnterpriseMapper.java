@@ -1,6 +1,6 @@
 package com.fan.server.mapper;
 
-import com.fan.server.pojo.EnterpriseName;
+import com.fan.server.pojo.Enterprise;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author BestOfTheWorld
  * @since 2023-07-04
  */
-public interface EnterpriseNameMapper extends BaseMapper<EnterpriseName> {
+public interface EnterpriseMapper extends BaseMapper<Enterprise> {
 
 }

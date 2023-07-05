@@ -196,7 +196,7 @@
     background-color: $bg;
     overflow: hidden;
 
-    background-image: url('src/assets/1.jpg');
+    background-image: url(~@/assets/1.jpg);
     background-size: 100% 100%;
     background-repeat: no-repeat;
     display: flex;

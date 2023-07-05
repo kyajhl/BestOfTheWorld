@@ -1,6 +1,6 @@
 package com.fan.server.service;
 
-import com.fan.server.pojo.EnterpriseName;
+import com.fan.server.pojo.Enterprise;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author BestOfTheWorld
  * @since 2023-07-04
  */
-public interface IEnterpriseNameService extends IService<EnterpriseName> {
+public interface IEnterpriseService extends IService<Enterprise> {
 
 }

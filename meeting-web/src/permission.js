@@ -63,18 +63,18 @@ router.beforeEach(async (to, from, next) => {
           await store.dispatch('user/getInfo');
 
           // 路由转换
-          let myRoutes = myFilterAsyncRoutes(store.getters.menuList);
-          // 404
-          myRoutes.push({
-            path: '*',
-            redirect: '/404',
-            hidden: true
-          });
-          // 动态添加路由
-          router.addRoutes(myRoutes);
-          // 存至全局变量
-          global.myRoutes = myRoutes;
-          next({...to, replace: true});  // 防止刷新后页面空白
+          // let myRoutes = myFilterAsyncRoutes(store.getters.menuList);
+          // // 404
+          // myRoutes.push({
+          //   path: '*',
+          //   redirect: '/404',
+          //   hidden: true
+          // });
+          // // 动态添加路由
+          // router.addRoutes(myRoutes);
+          // // 存至全局变量
+          // global.myRoutes = myRoutes;
+          // next({...to, replace: true});  // 防止刷新后页面空白
 
 
           next()

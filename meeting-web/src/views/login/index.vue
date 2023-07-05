@@ -117,7 +117,7 @@
                 localStorage.setItem("radioCheck", this.loginForm.radioCheck);
                 localStorage.setItem("checked", JSON.stringify(this.checked));
               }
-
+              // 登录成功跳转首页
               this.$message.success("登陆成功");
               this.$router.push({path: this.redirect || '/'});
               this.loading = false

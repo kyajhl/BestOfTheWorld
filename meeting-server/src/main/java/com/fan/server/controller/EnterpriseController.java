@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2023-07-04
  */
 @RestController
-@RequestMapping("/enterprise-name")
-public class EnterpriseNameController {
+@RequestMapping("/enterprise")
+public class EnterpriseController {
 
 }

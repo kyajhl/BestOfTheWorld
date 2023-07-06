@@ -4,6 +4,8 @@ import com.fan.server.pojo.Student;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fan.server.pojo.User;
 
+import java.util.Map;
+
 /**
  * <p>
  *  服务类
@@ -15,5 +17,13 @@ import com.fan.server.pojo.User;
 public interface IStudentService extends IService<Student> {
 
     void register(User user) throws Exception;
+
+    Map<String, Object> login(Student student);
+
+    Map<String, Object> getInfo(String token);
+
+    void addStudent(Student student);
+
+    Student getStudent(String studentId);
 
 }

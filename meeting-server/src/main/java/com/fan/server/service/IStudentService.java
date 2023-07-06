@@ -18,7 +18,7 @@ public interface IStudentService extends IService<Student> {
 
     void register(User user) throws Exception;
 
-    Map<String, Object> login(Student student);
+    Map<String, Object> login(User user);
 
     Map<String, Object> getInfo(String token);
 

@@ -46,18 +46,7 @@ public class JwtUtil {
     }
 
     // 根据实体类的类型，创建 token
-    public String createToken(Object obj, Class<?> clazz) throws Exception {
-        String roleId = null;
-        // 获取 roleId 的属性
-        Field field = clazz.getDeclaredField("roleId");
-        // 获取属性名
-        String roleIdName = field.getName();
-        // 获取属性值，通过get方法获取
-        String getMethodName = "get" + roleIdName.substring(0, 1).toUpperCase() + roleIdName.substring(1);
-        Method getMethod = obj.getClass().getMethod(getMethodName);
-        Object value = getMethod.invoke(obj);
-        // 给 roleId 赋值
-        roleId = (String) value;
+    public String createToken(Object obj, Class<?> clazz, String roleId) throws Exception {
 
         // 当前时间
         long currentTime = System.currentTimeMillis();

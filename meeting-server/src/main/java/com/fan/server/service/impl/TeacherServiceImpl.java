@@ -65,20 +65,20 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
     }
 
     @Override
-    public Map<String, Object> login(Teacher teacher) {
+    public Map<String, Object> login(User user) {
         // 查询学生是否存在
         LambdaQueryWrapper<Teacher> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Teacher::getMobilephone, teacher.getMobilephone());
+        wrapper.eq(Teacher::getMobilephone, user.getUsername());
         // 根据登录用户传入的用户名，查询数据库里的用户
         Teacher dbUser = this.getOne(wrapper);
         // 判断是否非空
-        if (!Objects.isNull(dbUser) && passwordEncoder.matches(teacher.getPassword(), dbUser.getPassword())) {
+        if (!Objects.isNull(dbUser) && passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
             // 设置 Jwt 中的密码为明文密码，因为要在个人信息中修改，必须要存密码
-            dbUser.setPassword(teacher.getPassword());
+            dbUser.setPassword(user.getPassword());
             // 生成 Jwt
             String token = null;
             try {
-                token = jwtUtil.createToken(dbUser, Teacher.class);
+                token = jwtUtil.createToken(dbUser, Teacher.class, "2");
                 // 返回数据
                 HashMap<String, Object> data = new HashMap<>();
                 data.put("token", token);

@@ -19,7 +19,7 @@ public interface ITeacherService extends IService<Teacher> {
 
     void register(User user) throws Exception;
 
-    Map<String, Object> login(Teacher teacher);
+    Map<String, Object> login(User user);
 
     Map<String, Object> getInfo(String token);
 

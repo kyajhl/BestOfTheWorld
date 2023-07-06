@@ -45,8 +45,8 @@ public class StudentController {
 
     @PostMapping("/login")
     @ApiOperation("用户登录接口")
-    public Result<Map<String, Object>> login(@RequestBody Student student) {
-        Map<String, Object> data = studentService.login(student);
+    public Result<Map<String, Object>> login(@RequestBody User user) {
+        Map<String, Object> data = studentService.login(user);
         if (!Objects.isNull(data)) {
             return Result.success(data);
         }

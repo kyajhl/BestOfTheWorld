@@ -9,6 +9,7 @@ import com.fan.server.service.IEnterpriseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fan.server.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -66,7 +67,7 @@ public class EnterpriseServiceImpl extends ServiceImpl<EnterpriseMapper, Enterpr
 
     @Override
     public Map<String, Object> login(User user) {
-        // 查询学生是否存在
+        // 查询公司是否存在
         LambdaQueryWrapper<Enterprise> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Enterprise::getMobilephone, user.getUsername());
         // 根据登录用户传入的用户名，查询数据库里的用户
@@ -78,7 +79,7 @@ public class EnterpriseServiceImpl extends ServiceImpl<EnterpriseMapper, Enterpr
             // 生成 Jwt
             String token = null;
             try {
-                token = jwtUtil.createToken(dbUser, Student.class);
+                token = jwtUtil.createToken(dbUser, Enterprise.class, "3");
                 // 返回数据
                 HashMap<String, Object> data = new HashMap<>();
                 data.put("token", token);

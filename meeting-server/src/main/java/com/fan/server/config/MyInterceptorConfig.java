@@ -24,8 +24,9 @@ public class MyInterceptorConfig implements WebMvcConfigurer {
         InterceptorRegistration registration = registry.addInterceptor(jwtValidateInterceptor);
         registration.addPathPatterns("/**")
                 .excludePathPatterns(
-                        "/user/login",
-                        "/user/logout",
+                        "/student/login",
+                        "/student/logout",
+                        "/student/register",
                         "/error",
                         "/swagger-ui/**",
                         "/swagger-resources/**",

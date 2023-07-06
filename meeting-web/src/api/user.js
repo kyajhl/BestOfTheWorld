@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import da from "element-ui/src/locale/lang/da";
 
 export function login(data) {
   return request({
@@ -6,6 +7,28 @@ export function login(data) {
     method: 'post',
     data
   })
+}
+
+export function register(user, roleId) {
+  if (roleId === '1') {
+    return request({
+      url: '/student/register',
+      method: 'post',
+      data: user
+    })
+  } else if (roleId === '2') {
+    return request({
+      url: '/teacher/register',
+      method: 'post',
+      data: user
+    })
+  } else {
+    return request({
+      url: '/enterprise/register',
+      method: 'post',
+      data: user
+    })
+  }
 }
 
 export function getInfo(token) {

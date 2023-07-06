@@ -88,7 +88,12 @@ router.beforeEach(async (to, from, next) => {
         }
       }
     }
-  } else {
+  }
+  else {
+    if (to.path === '/register') {
+      next();
+      return;
+    }
     // 如果没有 token ，那么直接跳转到 login 页面登录
     if (whiteList.indexOf(to.path) !== -1) {
       // in the free login whitelist, go directly

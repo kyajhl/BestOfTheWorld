@@ -42,8 +42,6 @@
         </span>
       </el-form-item>
 
-      <el-checkbox v-model="checked">记住登录信息</el-checkbox>
-
       <div class="radioCheck">
         <el-radio v-model="loginForm.radioCheck" label="1" border size="medium">学生</el-radio>
         <el-radio v-model="loginForm.radioCheck" label="2" border size="medium">教师</el-radio>
@@ -54,20 +52,17 @@
                  type="primary"
                  style="width:100%;margin-bottom:30px;"
                  @click.native.prevent="handleLogin"
-      >登录
+      >注册
       </el-button>
-      <div class="goRegister">
-        没有账号，<router-link to="/register" class="clickRegister">点击注册>></router-link>
-      </div>
     </el-form>
   </div>
 </template>
 
 <script>
-  import {validUsername} from '@/utils/validate'
+  import router from "@/router";
 
   export default {
-    name: 'Login',
+    name: 'Register',
     data() {
       return {
         loginForm: {
@@ -111,35 +106,27 @@
         this.$refs.loginForm.validate(valid => {
           if (valid) {
             this.loading = true;
-            this.$store.dispatch('user/login', this.loginForm).then(() => {
-
-              // 保存登录信息
-              if (this.checked === true) {
-                localStorage.setItem("username", this.loginForm.username);
-                localStorage.setItem("password", this.loginForm.password);
-                localStorage.setItem("radioCheck", this.loginForm.radioCheck);
-                localStorage.setItem("checked", JSON.stringify(this.checked));
+            this.$store.dispatch('user/register', this.loginForm).then(
+              response => {
+                // 注册成功
+                this.loading = false
+              },
+              error => {
+                // 注册失败
+                this.loading = false
               }
-              // 登录成功跳转首页
-              this.$message.success("登陆成功");
-              this.$router.push({path: this.redirect || '/'});
-              this.loading = false
-            }).catch(() => {
-              this.loading = false
+            ).catch(() => {
+              this.loading = false;
             })
           } else {
-            console.log('用户名或密码未输入');
+            console.log('手机号或密码未输入');
             return false
           }
         })
       }
     },
     mounted() {
-      // 组件挂载就获取用户登录信息
-      this.loginForm.username = localStorage.getItem("username");
-      this.loginForm.password = localStorage.getItem("password");
-      this.loginForm.radioCheck = localStorage.getItem("radioCheck");
-      this.checked = JSON.parse(localStorage.getItem("checked"));
+
     }
   }
 </script>
@@ -253,13 +240,5 @@
   .radioCheck {
     margin: 20px 0;
     text-align: center;
-  }
-  .goRegister {
-    color: white;
-    text-align: center;
-    margin-top: -10px;
-  }
-  .clickRegister {
-    color: #6592ff;
   }
 </style>

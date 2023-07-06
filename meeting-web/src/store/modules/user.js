@@ -1,6 +1,8 @@
-import {login, logout, getInfo} from '@/api/user'
+import {login, logout, getInfo, register} from '@/api/user'
 import {getToken, setToken, removeToken} from '@/utils/auth'
 import {resetRouter} from '@/router'
+import router from '@/router'
+import {Message} from 'element-ui'
 
 const getDefaultState = () => {
   return {
@@ -132,6 +134,25 @@ const actions = {
       removeToken(); // must remove  token  first
       commit('RESET_STATE');
       resolve()
+    })
+  },
+
+  // user register
+  register({commit}, user) {
+    const {username, password, radioCheck} = user;
+    return new Promise((resolve, reject) => {
+      register({username: username.trim(), password: password, radioCheck: radioCheck}, radioCheck).then(
+        response => {
+          Message.success(response.msg);
+          router.push('/login');
+          resolve();
+        },
+        error => {
+          Message.error("手机号存在，注册失败");
+        }
+      ).catch(error => {
+        reject(error);
+      })
     })
   }
 };

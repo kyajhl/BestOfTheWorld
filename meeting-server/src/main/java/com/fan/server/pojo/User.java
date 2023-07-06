@@ -1,20 +1,36 @@
 package com.fan.server.pojo;
 
-import lombok.AllArgsConstructor;
+import com.baomidou.mybatisplus.annotation.TableName;
+import java.time.LocalDate;
+import com.baomidou.mybatisplus.annotation.TableField;
+import java.io.Serializable;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
- * @author KeFan
- * @date 2023/7/6
- * @time 15:08
+ * <p>
+ *
+ * </p>
+ *
+ * @author BestOfTheWorld
+ * @since 2023-07-05
  */
-
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class User {
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+@ApiModel(value="User对象", description="")
+public class User implements Serializable {
+
+    @ApiModelProperty(value = "电话号码")
     private String username;
+
+    @ApiModelProperty(value = "密码")
     private String password;
-    private String radioCheck;
+
+    @ApiModelProperty(value = "辨别码")
+    private String RadioCheck;
+
 }

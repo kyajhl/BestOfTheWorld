@@ -42,8 +42,8 @@ public class EnterpriseController {
 
     @PostMapping("/login")
     @ApiOperation("用户登录接口")
-    public Result<Map<String, Object>> login(@RequestBody Enterprise enterprise) {
-        Map<String, Object> data = enterpriseService.login(enterprise);
+    public Result<Map<String, Object>> login(@RequestBody User user) {
+        Map<String, Object> data = enterpriseService.login(user);
         if (!Objects.isNull(data)) {
             return Result.success(data);
         }

@@ -65,16 +65,16 @@ public class EnterpriseServiceImpl extends ServiceImpl<EnterpriseMapper, Enterpr
     }
 
     @Override
-    public Map<String, Object> login(Enterprise enterprise) {
+    public Map<String, Object> login(User user) {
         // 查询学生是否存在
         LambdaQueryWrapper<Enterprise> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Enterprise::getMobilephone, enterprise.getMobilephone());
+        wrapper.eq(Enterprise::getMobilephone, user.getUsername());
         // 根据登录用户传入的用户名，查询数据库里的用户
         Enterprise dbUser = this.getOne(wrapper);
         // 判断是否非空
-        if (!Objects.isNull(dbUser) && passwordEncoder.matches(enterprise.getPassword(), dbUser.getPassword())) {
+        if (!Objects.isNull(dbUser) && passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
             // 设置 Jwt 中的密码为明文密码，因为要在个人信息中修改，必须要存密码
-            dbUser.setPassword(enterprise.getPassword());
+            dbUser.setPassword(user.getPassword());
             // 生成 Jwt
             String token = null;
             try {

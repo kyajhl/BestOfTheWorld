@@ -19,13 +19,18 @@ public class UserController {
     private JwtUtil jwtUtil;
 
     @GetMapping("/info")
-    public Result<Map<String, String>> getInfo(@RequestParam String token){
+    public Result<Map<String, String>> getInfo(@RequestParam String token) {
         // 解析 Jwt
-        Claims claims = jwtUtil.parseToken(token);
-        String id = claims.getId();
-        String roleId =id.substring(id.length() - 1);
-        HashMap<String, String> data = new HashMap<>();
-        data.put("roleId", roleId);
-        return Result.success(data);
+        try {
+            Claims claims = jwtUtil.parseToken(token);
+            String id = claims.getId();
+            String roleId = id.substring(id.length() - 1);
+            HashMap<String, String> data = new HashMap<>();
+            data.put("roleId", roleId);
+            return Result.success(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Result.fail(202);
     }
 }

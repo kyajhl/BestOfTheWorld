@@ -40,6 +40,7 @@ router.beforeEach(async (to, from, next) => {
         if (to.path === '/dashboard') {
           console.log('没刷新，跳转首页，要获取用户信息');
           try {
+            await store.dispatch('user/getRoleId');
             await store.dispatch('user/getInfo');
             next();
           } catch (error) {
@@ -60,6 +61,7 @@ router.beforeEach(async (to, from, next) => {
         // 第一次登陆进去，由于用户名为空，所以也要获取用户信息
         try {
           // 调用 store 里面 user 模块里的 getInfo方法
+          await store.dispatch('user/getRoleId');
           await store.dispatch('user/getInfo');
 
           // 路由转换

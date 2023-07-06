@@ -64,8 +64,6 @@
 </template>
 
 <script>
-  import {validUsername} from '@/utils/validate'
-
   export default {
     name: 'Login',
     data() {
@@ -112,7 +110,6 @@
           if (valid) {
             this.loading = true;
             this.$store.dispatch('user/login', this.loginForm).then(() => {
-
               // 保存登录信息
               if (this.checked === true) {
                 localStorage.setItem("username", this.loginForm.username);

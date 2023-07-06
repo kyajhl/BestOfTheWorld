@@ -1,12 +1,25 @@
 import request from '@/utils/request'
-import da from "element-ui/src/locale/lang/da";
 
-export function login(data) {
-  return request({
-    url: '/user/login',
-    method: 'post',
-    data
-  })
+export function login(user, roleId) {
+  if (roleId === '1') {
+    return request({
+      url: '/student/login',
+      method: 'post',
+      data: user
+    })
+  } else if (roleId === '2') {
+    return request({
+      url: '/teacher/login',
+      method: 'post',
+      data: user
+    })
+  } else {
+    return request({
+      url: '/enterprise/login',
+      method: 'post',
+      data: user
+    })
+  }
 }
 
 export function register(user, roleId) {
@@ -31,12 +44,34 @@ export function register(user, roleId) {
   }
 }
 
-export function getInfo(token) {
+export function getRoleId(token) {
   return request({
     url: '/user/info',
     method: 'get',
     params: {token}
   })
+}
+
+export function getInfo(token, roleId) {
+  if (roleId === '1') {
+    return request({
+      url: '/student/info',
+      method: 'get',
+      params: {token}
+    })
+  } else if (roleId === '2') {
+    return request({
+      url: '/teacher/info',
+      method: 'get',
+      params: {token}
+    })
+  } else {
+    return request({
+      url: '/enterprise/info',
+      method: 'get',
+      params: {token}
+    })
+  }
 }
 
 export function logout() {

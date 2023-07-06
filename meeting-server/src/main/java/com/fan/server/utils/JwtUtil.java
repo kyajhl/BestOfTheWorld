@@ -47,7 +47,6 @@ public class JwtUtil {
 
     // 根据实体类的类型，创建 token
     public String createToken(Object obj, Class<?> clazz, String roleId) throws Exception {
-
         // 当前时间
         long currentTime = System.currentTimeMillis();
         // 过期时间

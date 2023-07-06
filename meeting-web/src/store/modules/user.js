@@ -1,4 +1,4 @@
-import {login, logout, getInfo, register} from '@/api/user'
+import {login, logout, getInfo, register, getRoleId} from '@/api/user'
 import {getToken, setToken, removeToken} from '@/utils/auth'
 import {resetRouter} from '@/router'
 import router from '@/router'
@@ -82,10 +82,24 @@ const actions = {
     })
   },
 
+  // get user roleId
+  getRoleId({commit, state}) {
+    return new Promise((resolve, reject) => {
+      getRoleId(state.token).then(
+        response => {
+          console.log(response.data.roleId);
+          commit('SET_ROLEID', response.data.roleId);
+        }
+      ).catch(error => {
+        reject(error);
+      })
+    })
+  },
+
   // get user info
   getInfo({commit, state}) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
+      getInfo(state.token, state.roleId).then(response => {
         const {data} = response;
 
         if (!data) {

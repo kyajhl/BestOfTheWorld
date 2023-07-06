@@ -1,5 +1,7 @@
 package com.fan.server.pojo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.time.LocalDate;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -27,6 +29,7 @@ public class Message implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     @ApiModelProperty(value = "发布时间")

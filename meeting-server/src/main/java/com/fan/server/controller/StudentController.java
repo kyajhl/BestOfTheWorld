@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+import java.util.Objects;
+
 /**
  * <p>
  *  前端控制器
@@ -43,9 +46,6 @@ public class StudentController {
         }
         return Result.fail(202);
     }
-
-    @Autowired
-    private IStudentService studentService;
 
     @PostMapping("/login")
     @ApiOperation("用户登录接口")

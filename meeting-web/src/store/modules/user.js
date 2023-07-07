@@ -3,21 +3,25 @@ import {getToken, setToken, removeToken} from '@/utils/auth'
 import {resetRouter} from '@/router'
 import router from '@/router'
 import {Message} from 'element-ui'
+import da from "element-ui/src/locale/lang/da";
 
 const getDefaultState = () => {
   return {
     token: getToken(),
-    name: '',
     avatar: '',
-    menuList: [],
     roleId: '',
-    realName: '',
     major: '',
     majorClass: '',
-    telephone: '',
-    sex: '',
+    mobilephone: '',
+    gender: '',
     birthday: '',
-    password: ''
+    password: '',
+    studentId: '',
+    studentName: '',
+    teacherName: '',
+    enterpriseName: '',
+    email: '',
+    college: ''
   }
 };
 
@@ -30,20 +34,11 @@ const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
   },
-  SET_NAME: (state, name) => {
-    state.name = name
-  },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
   },
-  SET_MENULIST(state, menuList) {
-    state.menuList = menuList;
-  },
   SET_ROLEID(state, roleId) {
     state.roleId = roleId;
-  },
-  SET_REALNAME(state, realName) {
-    state.realName = realName;
   },
   SET_MAJOR(state, major) {
     state.major = major;
@@ -51,18 +46,37 @@ const mutations = {
   SET_MAJORCLASS(state, majorClass) {
     state.majorClass = majorClass;
   },
-  SET_TELEPHONE(state, telephone) {
-    state.telephone = telephone;
+  SET_MOBILEPHONE(state, mobilephone) {
+    state.mobilephone = mobilephone;
   },
-  SET_SEX(state, sex) {
-    state.sex = sex;
+  SET_GENDER(state, gender) {
+    state.gender = gender;
   },
   SET_BIRTHDAY(state, birthday) {
     state.birthday = birthday;
   },
   SET_PASSWORD(state, password) {
     state.password = password;
+  },
+  SET_STUDENTID(state, studentId) {
+    state.studentId = studentId;
+  },
+  SET_STUDENTNAME(state, studentName) {
+    state.studentName = studentName;
+  },
+  SET_TEACHERNAME(state, teacherName) {
+    state.teacherName = teacherName;
+  },
+  SET_ENTERPRISENAME(state, enterpriseName) {
+    state.enterpriseName = enterpriseName;
+  },
+  SET_COLLEGE(state, college) {
+    state.college = college;
+  },
+  SET_EMAIL(state, email) {
+    state.email = email;
   }
+
 };
 
 const actions = {
@@ -109,20 +123,40 @@ const actions = {
           reject('响应数据为空，请重新登录');
         }
 
-        const {name, avatar, roleId, realName, major, majorClass, telephone, sex, birthday, password, menuList} = data;
+        console.log(data);
 
-        commit('SET_NAME', name);
+
+        const {
+          studentId,
+          studentName,
+          mobilephone,
+          password,
+          gender,
+          birthday,
+          college,
+          major,
+          majorClass,
+          avatar,
+
+          teacherName,
+
+          enterpriseName,
+          email
+        } = data;
+
         commit('SET_AVATAR', avatar);
-        commit('SET_ROLEID', roleId);
-        commit('SET_REALNAME', realName);
         commit('SET_MAJOR', major);
         commit('SET_MAJORCLASS', majorClass);
-        commit('SET_TELEPHONE', telephone);
-        commit('SET_SEX', sex);
+        commit('SET_MOBILEPHONE', mobilephone);
+        commit('SET_GENDER', gender);
         commit('SET_BIRTHDAY', birthday);
         commit('SET_PASSWORD', password);
-
-        commit('SET_MENULIST', menuList);
+        commit('SET_STUDENTID', studentId);
+        commit('SET_STUDENTNAME', studentName);
+        commit('SET_TEACHERNAME', teacherName);
+        commit('SET_ENTERPRISENAME', enterpriseName);
+        commit('SET_COLLEGE', college);
+        commit('SET_EMAIL', email);
 
         resolve(data)
       }).catch(error => {

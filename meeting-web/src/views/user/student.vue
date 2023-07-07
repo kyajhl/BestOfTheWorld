@@ -9,28 +9,27 @@
           <div class="grid-content" style="margin-top: 60px">
             <el-form ref="student" :model="student" :rules="rules" label-width="80px" label-position="left">
 
-              <el-form-item label="用户名" prop="studentId">
-                <el-input v-model="student.studentId" :disabled="true"></el-input>
+              <el-form-item label="手机号" prop="mobilephone">
+                <el-input v-model="student.mobilephone" :disabled="true"></el-input>
+              </el-form-item>
+
+              <el-form-item label="学号" prop="studentId">
+                <el-input v-model="student.studentId"></el-input>
+              </el-form-item>
+
+              <el-form-item label="姓名" prop="studentName">
+                <el-input v-model="student.studentName"></el-input>
               </el-form-item>
 
               <el-form-item label="密码" prop="password">
                 <el-input v-model="student.password" show-password></el-input>
               </el-form-item>
 
-              <el-form-item label="姓名" prop="name">
-                <el-input v-model="student.name"></el-input>
-              </el-form-item>
-
-              <el-form-item label="专业" prop="major">
-                <el-input v-model="student.major"></el-input>
-              </el-form-item>
-
-              <el-form-item label="专业班级" prop="majorClass">
-                <el-input v-model="student.majorClass"></el-input>
-              </el-form-item>
-
-              <el-form-item label="电话" prop="telephone">
-                <el-input v-model="student.telephone"></el-input>
+              <el-form-item label="性别" prop="gender">
+                <el-radio-group v-model="student.gender">
+                  <el-radio label="男"></el-radio>
+                  <el-radio label="女"></el-radio>
+                </el-radio-group>
               </el-form-item>
 
               <el-form-item label="生日" prop="birthday">
@@ -40,11 +39,16 @@
                 </el-col>
               </el-form-item>
 
-              <el-form-item label="性别" prop="sex">
-                <el-radio-group v-model="student.sex">
-                  <el-radio label="男"></el-radio>
-                  <el-radio label="女"></el-radio>
-                </el-radio-group>
+              <el-form-item label="学校" prop="college">
+                <el-input v-model="student.college"></el-input>
+              </el-form-item>
+
+              <el-form-item label="专业" prop="major">
+                <el-input v-model="student.major"></el-input>
+              </el-form-item>
+
+              <el-form-item label="专业班级" prop="majorClass">
+                <el-input v-model="student.majorClass"></el-input>
               </el-form-item>
 
               <el-form-item>
@@ -71,57 +75,52 @@
   export default {
     name: "student",
     data() {
-      let checkTelephone = (rule, value, callback) => {
-        // 电话的正则表达式
-        let reg = /^1\d{10}$/;
-        if (!reg.test(value)) {
-          return callback(new Error("电话格式错误"));
-        }
-        callback();
-      };
       return {
         student: {
+          mobilephone: '',
           studentId: '',
+          studentName: '',
           password: '',
-          name: '',
-          major: '',
-          telephone: '',
-          sex: '',
-          majorClass: '',
+          gender: '',
           birthday: '2001-12-01',
+          college: '',
+          major: '',
+          majorClass: '',
         },
         rules: {
+          mobilephone: [
+            {required: true, message: '手机号不能为空', trigger: 'blur'},
+          ],
           studentId: [
-            {required: true, message: '用户名不能为空', trigger: 'blur'},
+            {required: true, message: '学号不能为空', trigger: 'blur'},
+          ],
+          studentName: [
+            {required: true, message: '姓名不能为空', trigger: 'blur'},
           ],
           password: [
             {required: true, message: '密码不能为空', trigger: 'blur'},
           ],
-          name: [
-            {required: true, message: '姓名不能为空', trigger: 'blur'},
+          gender: [
+            {required: true, message: '性别不能为空', trigger: 'blur'}
+          ],
+          birthday: [
+            {type: 'date', required: true, message: '生日不能为空', trigger: 'blur'}
+          ],
+          college: [
+            {required: true, message: '学校不能为空', trigger: 'blur'}
           ],
           major: [
             {required: true, message: '专业不能为空', trigger: 'blur'},
           ],
-          telephone: [
-            {required: true, message: '电话不能为空', trigger: 'blur'},
-            {validator: checkTelephone, trigger: 'blur'}
-          ],
           majorClass: [
             {required: true, message: '专业班级不能为空', trigger: 'blur'},
-          ],
-          birthday: [
-            {type: 'date', required: true, message: '日期不能为空', trigger: 'change'}
-          ],
-          sex: [
-            {required: true, message: '性别不能为空', trigger: 'change'}
           ],
         }
       }
     },
     computed: {
-      ...mapGetters(["name", "roleId", "realName", "major", "majorClass",
-        "telephone", "sex", "birthday", "password"]),
+      ...mapGetters(["mobilephone", "studentId", "studentName", "password", "roleId",
+        "gender", "birthday", "college", "major", "majorClass"]),
     },
     methods: {
       // 提交表单，保存用户信息
@@ -147,7 +146,7 @@
                 }
               },
               error => {
-                this.$message.error('更新用户失败');
+                this.$message.error('修改信息失败');
               }
             );
 
@@ -170,14 +169,15 @@
     },
     mounted() {
       // 当个人信息组件挂载，首先获取用户信息
-      this.student.studentId = this.name;
+      this.student.mobilephone = this.mobilephone;
+      this.student.studentId = this.studentId;
+      this.student.studentName = this.studentName;
       this.student.password = this.password;
-      this.student.name = this.realName;
+      this.student.gender = this.gender;
+      this.student.birthday = this.birthday == null ? '' : this.student.birthday = this.getDateBySplit(this.birthday);
+      this.student.college = this.college;
       this.student.major = this.major;
       this.student.majorClass = this.majorClass;
-      this.student.telephone = this.telephone;
-      this.student.birthday = this.getDateBySplit(this.birthday);
-      this.student.sex = this.sex;
     },
   }
 </script>

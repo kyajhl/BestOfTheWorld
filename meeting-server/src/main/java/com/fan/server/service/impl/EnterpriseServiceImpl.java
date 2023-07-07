@@ -89,10 +89,10 @@ public class EnterpriseServiceImpl extends ServiceImpl<EnterpriseMapper, Enterpr
             LambdaQueryWrapper<Enterprise> wrapper = new LambdaQueryWrapper<>();
             wrapper.eq(Enterprise::getMobilephone, enterprise.getMobilephone());
             // 从数据库里查询学生，不从 token 里直接拿，因为在登录之后
-            // 学生信息有可能被修改
+            // 企业信息有可能被修改
             Enterprise modifyEnterprise = this.getOne(wrapper);
             data.put("enterpriseName", modifyEnterprise.getEnterpriseName());
-            data.put("password", modifyEnterprise.getPassword());
+            data.put("password", enterprise.getPassword());
             data.put("mobilephone", modifyEnterprise.getMobilephone());
             data.put("email", modifyEnterprise.getEmail());
             data.put("avatar", modifyEnterprise.getAvatar());

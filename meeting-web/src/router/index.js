@@ -178,7 +178,7 @@ export const constantRoutes = [
 function getComponentByRoleId() {
   if (getters.roleId(store.state) === '1') return import('@/views/user/student');
   if (getters.roleId(store.state) === '2') return import('@/views/user/teacher');
-  if (getters.roleId(store.state) === '3') return import('@/views/user/admin');
+  if (getters.roleId(store.state) === '3') return import('@/views/user/enterprise');
 }
 
 // 创建路由器的一个箭头函数，返回值是一个路由器

@@ -92,7 +92,7 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
             Teacher modifyTeacher = this.getOne(wrapper);
             data.put("teacherName", modifyTeacher.getTeacherName());
             data.put("mobilephone", modifyTeacher.getMobilephone());
-            data.put("password", modifyTeacher.getPassword());
+            data.put("password", teacher.getPassword());
             data.put("college", modifyTeacher.getCollege());
             data.put("avatar", modifyTeacher.getAvatar());
 

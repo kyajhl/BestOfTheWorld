@@ -98,7 +98,7 @@ export function updateInformation(user, roleId) {
     })
   } else {
     return request({
-      url: '/admin/updateInformation',
+      url: '/enterprise/updateInformation',
       method: 'put',
       data: user
     })

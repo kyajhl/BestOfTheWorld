@@ -4,13 +4,13 @@
       <el-col :span="16" :offset="4">
         <div class="grid-content">
           <div v-if="roleId === '1'">
-            <el-descriptions class="margin-top" title="欢迎来到学生管理系统" :column="2" size="medium" border>
+            <el-descriptions class="margin-top" title="欢迎来到高校实训实习管理平台" :column="2" size="medium" border>
               <el-descriptions-item>
                 <template slot="label">
                   <i class="el-icon-user"></i>
-                  用户名
+                  学号
                 </template>
-                {{ name }}
+                {{ studentId }}
               </el-descriptions-item>
 
               <el-descriptions-item>
@@ -18,7 +18,7 @@
                   <i class="el-icon-s-custom"></i>
                   姓名
                 </template>
-                {{ realName }}
+                {{ studentName }}
               </el-descriptions-item>
 
               <el-descriptions-item>
@@ -26,7 +26,7 @@
                   <i class="el-icon-male"></i>
                   性别
                 </template>
-                {{ sex }}
+                {{ gender }}
               </el-descriptions-item>
 
               <el-descriptions-item>
@@ -58,18 +58,27 @@
                   <i class="el-icon-mobile-phone"></i>
                   手机号
                 </template>
-                {{ telephone }}
+                {{ mobilephone }}
               </el-descriptions-item>
-            </el-descriptions>
-          </div>
-          <div v-else>
-            <el-descriptions class="margin-top" title="欢迎来到学生管理系统" :column="2" size="medium" border>
+
               <el-descriptions-item>
                 <template slot="label">
-                  <i class="el-icon-user"></i>
-                  用户名
+                  <i class="el-icon-location"></i>
+                  学校
                 </template>
-                {{ name }}
+                {{ college }}
+              </el-descriptions-item>
+
+            </el-descriptions>
+          </div>
+          <div v-else-if="roleId === '2'">
+            <el-descriptions class="margin-top" title="欢迎来到高校实训实习管理平台" :column="2" size="medium" border>
+              <el-descriptions-item>
+                <template slot="label">
+                  <i class="el-icon-mobile-phone"></i>
+                  手机号
+                </template>
+                {{ mobilephone }}
               </el-descriptions-item>
 
               <el-descriptions-item>
@@ -77,31 +86,42 @@
                   <i class="el-icon-s-custom"></i>
                   姓名
                 </template>
-                {{ realName }}
+                {{ teacherName }}
               </el-descriptions-item>
 
               <el-descriptions-item>
                 <template slot="label">
-                  <i class="el-icon-male"></i>
-                  性别
+                  <i class="el-icon-location"></i>
+                  学校
                 </template>
-                {{ sex }}
+                {{ college }}
               </el-descriptions-item>
-
-              <el-descriptions-item>
-                <template slot="label">
-                  <i class="el-icon-date"></i>
-                  生日
-                </template>
-                {{ birthday }}
-              </el-descriptions-item>
-
+            </el-descriptions>
+          </div>
+          <div v-else>
+            <el-descriptions class="margin-top" title="欢迎来到高校实训实习管理平台" :column="2" size="medium" border>
               <el-descriptions-item>
                 <template slot="label">
                   <i class="el-icon-mobile-phone"></i>
                   手机号
                 </template>
-                {{ telephone }}
+                {{ mobilephone }}
+              </el-descriptions-item>
+
+              <el-descriptions-item>
+                <template slot="label">
+                  <i class="el-icon-s-custom"></i>
+                  企业名
+                </template>
+                {{ enterpriseName }}
+              </el-descriptions-item>
+
+              <el-descriptions-item>
+                <template slot="label">
+                  <i class="el-icon-message"></i>
+                  邮箱
+                </template>
+                {{ email }}
               </el-descriptions-item>
             </el-descriptions>
           </div>
@@ -117,8 +137,8 @@
   export default {
     name: "Dashboard",
     computed: {
-      ...mapGetters(["name", "roleId", "realName", "major", "majorClass",
-        "telephone", "sex", "birthday"]),
+      ...mapGetters(["studentId", "studentName", "roleId", "major", "majorClass",
+        "mobilephone", "gender", "birthday", "college", "teacherName", "enterpriseName", "email"]),
     },
     mounted() {
 

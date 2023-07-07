@@ -7,22 +7,22 @@
         </el-col>
         <el-col :span="16">
           <div class="grid-content" style="margin-top: 60px">
-            <el-form ref="teacher" :rules="rules" :model="teacher" label-width="80px" label-position="left">
+            <el-form ref="enterprise" :rules="rules" :model="enterprise" label-width="80px" label-position="left">
 
-              <el-form-item label="手机号" prop="mobilephone">
-                <el-input v-model="teacher.mobilephone" :disabled="true"></el-input>
+              <el-form-item label="手机号" prop="enterpriseId">
+                <el-input v-model="enterprise.mobilephone" :disabled="true"></el-input>
               </el-form-item>
 
-              <el-form-item label="姓名" prop="teacherName">
-                <el-input v-model="teacher.teacherName"></el-input>
+              <el-form-item label="企业名" prop="enterpriseName">
+                <el-input v-model="enterprise.enterpriseName"></el-input>
               </el-form-item>
 
               <el-form-item label="密码" prop="password">
-                <el-input v-model="teacher.password" show-password></el-input>
+                <el-input v-model="enterprise.password" show-password></el-input>
               </el-form-item>
 
-              <el-form-item label="学校" prop="college">
-                <el-input v-model="teacher.college"></el-input>
+              <el-form-item label="邮箱" prop="email">
+                <el-input v-model="enterprise.email"></el-input>
               </el-form-item>
 
               <el-form-item>
@@ -42,46 +42,46 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex'
-  import {updateInformation} from "@/api/user";
+  import {mapGetters} from 'vuex';
+  import {updateInformation} from '@/api/user'
   import {removeToken} from "@/utils/auth";
 
   export default {
-    name: "teacher",
+    name: "enterprise",
     data() {
       return {
-        teacher: {
+        enterprise: {
           mobilephone: '',
-          teacherName: '',
+          enterpriseName: '',
           password: '',
-          college: ''
+          email: ''
         },
         rules: {
           mobilephone: [
             {required: true, message: '手机号不能为空', trigger: 'blur'},
           ],
+          enterpriseName: [
+            {required: true, message: '企业名不能为空', trigger: 'blur'},
+          ],
           password: [
             {required: true, message: '密码不能为空', trigger: 'blur'},
           ],
-          teacherName: [
-            {required: true, message: '姓名不能为空', trigger: 'blur'},
-          ],
-          college: [
-            {required: true, message: '学校不能为空', trigger: 'blur'},
+          email: [
+            {required: true, message: '邮箱不能为空', trigger: 'blur'},
           ],
         }
       }
     },
     computed: {
-      ...mapGetters(["mobilephone", "teacherName", "roleId", "password", "college"]),
+      ...mapGetters(["mobilephone", "roleId", "enterpriseName", "password", "email"]),
     },
     methods: {
       // 提交表单，保存用户信息
       onSubmit() {
-        this.$refs.teacher.validate((valid) => {
+        this.$refs.enterprise.validate((valid) => {
           if (valid) {
             // 调用更新个人信息接口
-            updateInformation(this.teacher, this.roleId).then(
+            updateInformation(this.enterprise, this.roleId).then(
               response => {
                 // 判断密码是否匹配，匹配，跳转到首页
                 if (response.data === true) {
@@ -114,10 +114,10 @@
     },
     mounted() {
       // 当个人信息组件挂载，首先获取用户信息
-      this.teacher.mobilephone = this.mobilephone;
-      this.teacher.teacherName = this.teacherName;
-      this.teacher.password = this.password;
-      this.teacher.college = this.college;
+      this.enterprise.mobilephone = this.mobilephone;
+      this.enterprise.enterpriseName = this.enterpriseName;
+      this.enterprise.password = this.password;
+      this.enterprise.email = this.email;
     }
   }
 </script>

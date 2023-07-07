@@ -57,22 +57,6 @@ public class TeacherController {
         if (!Objects.isNull(data)) {
             return Result.success(data);
         }
-        return Result.fail(203, "用户不存在");
+        return Result.fail(203, "教师不存在");
     }
-
-    @PostMapping("/addTeacher")
-    public Result<?> addStudent(@RequestBody Teacher teacher) {
-        try {
-            // 先查询是否有这个学生
-            Teacher teacher1 = teacherService.getTeacher(teacher.getMobilephone());
-            if (teacher1 == null) {
-                teacherService.addTeacher(teacher);
-                return Result.success("添加学生成功");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return Result.fail(202);
-    }
-
 }

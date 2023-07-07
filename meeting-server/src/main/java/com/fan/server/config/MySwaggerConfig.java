@@ -60,8 +60,8 @@ public class MySwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("学生管理系统接口文档")
-                .description("最实用的学生管理系统")
+                .title("高校实训实习管理平台接口文档")
+                .description("高校实训实习管理平台")
                 .version("1.0")
                 .contact(new Contact("kefan", "https://www.baidu.com", "136273344@qq.com"))
                 .build();

@@ -44,5 +44,6 @@ public class Teacher implements Serializable {
     @TableField("teacher_name")
     private String teacherName;
 
-
+    @ApiModelProperty(value = "头像")
+    private String avatar;
 }

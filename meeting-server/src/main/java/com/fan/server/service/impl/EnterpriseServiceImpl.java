@@ -52,19 +52,6 @@ public class EnterpriseServiceImpl extends ServiceImpl<EnterpriseMapper, Enterpr
     }
 
     @Override
-    public Enterprise getEnterprise(String mobilephone) {
-        LambdaQueryWrapper<Enterprise> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Enterprise::getMobilephone, mobilephone);
-        Enterprise data = this.getOne(wrapper);
-        return data;
-    }
-
-    @Override
-    public void addEnterprise(Enterprise enterprise) {
-        this.save(enterprise);
-    }
-
-    @Override
     public Map<String, Object> login(User user) {
         // 查询学生是否存在
         LambdaQueryWrapper<Enterprise> wrapper = new LambdaQueryWrapper<>();
@@ -78,7 +65,7 @@ public class EnterpriseServiceImpl extends ServiceImpl<EnterpriseMapper, Enterpr
             // 生成 Jwt
             String token = null;
             try {
-                token = jwtUtil.createToken(dbUser, Enterprise.class, "3");
+                token = jwtUtil.createToken(dbUser, "3");
                 // 返回数据
                 HashMap<String, Object> data = new HashMap<>();
                 data.put("token", token);
@@ -93,14 +80,10 @@ public class EnterpriseServiceImpl extends ServiceImpl<EnterpriseMapper, Enterpr
 
     @Override
     public Map<String, Object> getInfo(String token) {
-        // 解析 Jwt
-        Claims claims = jwtUtil.parseToken(token);
-        String id = claims.getId();
-
         Enterprise enterprise = jwtUtil.parseToken(token, Enterprise.class);
         if (!Objects.isNull(enterprise)) {
             HashMap<String, Object> data = new HashMap<>();
-            // 根据 studentId 查询学生表
+            // 根据 mobilePhone 查询企业表
             LambdaQueryWrapper<Enterprise> wrapper = new LambdaQueryWrapper<>();
             wrapper.eq(Enterprise::getMobilephone, enterprise.getMobilephone());
             // 从数据库里查询学生，不从 token 里直接拿，因为在登录之后
@@ -110,6 +93,7 @@ public class EnterpriseServiceImpl extends ServiceImpl<EnterpriseMapper, Enterpr
             data.put("password", modifyEnterprise.getPassword());
             data.put("mobilephone", modifyEnterprise.getMobilephone());
             data.put("email", modifyEnterprise.getEmail());
+            data.put("avatar", modifyEnterprise.getAvatar());
 
             return data;
         }

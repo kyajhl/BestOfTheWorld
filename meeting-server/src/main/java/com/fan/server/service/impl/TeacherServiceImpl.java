@@ -52,21 +52,8 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
     }
 
     @Override
-    public Teacher getTeacher(String mobilephone) {
-        LambdaQueryWrapper<Teacher> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Teacher::getMobilephone, mobilephone);
-        Teacher data = this.getOne(wrapper);
-        return data;
-    }
-
-    @Override
-    public void addTeacher(Teacher teacher) {
-        this.save(teacher);
-    }
-
-    @Override
     public Map<String, Object> login(User user) {
-        // 查询学生是否存在
+        // 查询教师是否存在
         LambdaQueryWrapper<Teacher> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Teacher::getMobilephone, user.getUsername());
         // 根据登录用户传入的用户名，查询数据库里的用户
@@ -78,7 +65,7 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
             // 生成 Jwt
             String token = null;
             try {
-                token = jwtUtil.createToken(dbUser, Teacher.class, "2");
+                token = jwtUtil.createToken(dbUser, "2");
                 // 返回数据
                 HashMap<String, Object> data = new HashMap<>();
                 data.put("token", token);
@@ -93,14 +80,10 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
 
     @Override
     public Map<String, Object> getInfo(String token) {
-        // 解析 Jwt
-        Claims claims = jwtUtil.parseToken(token);
-        String id = claims.getId();
-
         Teacher teacher = jwtUtil.parseToken(token, Teacher.class);
         if (!Objects.isNull(teacher)) {
             HashMap<String, Object> data = new HashMap<>();
-            // 根据 studentId 查询学生表
+            // 根据 mobilePhone 查询教师表
             LambdaQueryWrapper<Teacher> wrapper = new LambdaQueryWrapper<>();
             wrapper.eq(Teacher::getMobilephone, teacher.getMobilephone());
             // 从数据库里查询学生，不从 token 里直接拿，因为在登录之后
@@ -110,6 +93,7 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
             data.put("mobilephone", modifyTeacher.getMobilephone());
             data.put("password", modifyTeacher.getPassword());
             data.put("college", modifyTeacher.getCollege());
+            data.put("avatar", modifyTeacher.getAvatar());
 
             return data;
         }

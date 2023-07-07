@@ -22,9 +22,4 @@ public interface IEnterpriseService extends IService<Enterprise> {
     Map<String, Object> login(User user);
 
     Map<String, Object> getInfo(String token);
-
-    void addEnterprise(Enterprise enterprise);
-
-    Enterprise getEnterprise(String mobilephone);
-
 }

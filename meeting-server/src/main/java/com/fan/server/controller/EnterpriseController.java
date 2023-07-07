@@ -57,22 +57,6 @@ public class EnterpriseController {
         if (!Objects.isNull(data)) {
             return Result.success(data);
         }
-        return Result.fail(203, "用户不存在");
+        return Result.fail(203, "企业不存在");
     }
-
-    @PostMapping("/addEnterprise")
-    public Result<?> addStudent(@RequestBody Enterprise enterprise) {
-        try {
-            // 先查询是否有这个学生
-            Enterprise enterprise1 = enterpriseService.getEnterprise(enterprise.getMobilephone());
-            if (enterprise1 == null) {
-                enterpriseService.addEnterprise(enterprise);
-                return Result.success("添加学生成功");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return Result.fail(202);
-    }
-
 }

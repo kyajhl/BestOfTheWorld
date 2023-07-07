@@ -65,10 +65,4 @@ public class Student implements Serializable {
 
     @ApiModelProperty(value = "头像")
     private String avatar;
-
-    @ApiModelProperty(value = "角色id")
-    @TableField("role_id")
-    private String roleId;
-
-
 }

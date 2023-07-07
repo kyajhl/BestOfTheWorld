@@ -4,12 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.fan.server.pojo.Student;
 import com.fan.server.mapper.StudentMapper;
 import com.fan.server.pojo.User;
-import com.fan.server.pojo.Teacher;
 import com.fan.server.service.IStudentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.fan.server.service.ITeacherService;
 import com.fan.server.utils.JwtUtil;
-import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,9 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * <p>
@@ -31,6 +26,13 @@ import java.util.Objects;
  */
 @Service
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements IStudentService {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @Override
     public void register(User user) throws Exception {
         // 判断 student 表是否存在 mobilePhone
@@ -48,30 +50,11 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         this.save(res);
     }
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    @Override
-    public Student getStudent(String studentId) {
-        LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Student::getStudentId, studentId);
-        Student data = this.getOne(wrapper);
-        return data;
-    }
-
-    @Override
-    public void addStudent(Student student) {
-        this.save(student);
-    }
-
     @Override
     public Map<String, Object> login(User user) {
         // 查询学生是否存在
         LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Student::getStudentId, user.getUsername());
+        wrapper.eq(Student::getMobilephone, user.getUsername());
         // 根据登录用户传入的用户名，查询数据库里的用户
         Student dbUser = this.getOne(wrapper);
         // 判断是否非空
@@ -81,7 +64,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
             // 生成 Jwt
             String token = null;
             try {
-                token = jwtUtil.createToken(dbUser, Student.class, "1");
+                token = jwtUtil.createToken(dbUser, "1");
                 // 返回数据
                 HashMap<String, Object> data = new HashMap<>();
                 data.put("token", token);
@@ -96,16 +79,12 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
     @Override
     public Map<String, Object> getInfo(String token) {
-        // 解析 Jwt
-        Claims claims = jwtUtil.parseToken(token);
-        String id = claims.getId();
-
         Student student = jwtUtil.parseToken(token, Student.class);
         if (!Objects.isNull(student)) {
             HashMap<String, Object> data = new HashMap<>();
             // 根据 studentId 查询学生表
             LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
-            wrapper.eq(Student::getStudentId, student.getStudentId());
+            wrapper.eq(Student::getMobilephone, student.getMobilephone());
             // 从数据库里查询学生，不从 token 里直接拿，因为在登录之后
             // 学生信息有可能被修改
             Student modifyStudent = this.getOne(wrapper);

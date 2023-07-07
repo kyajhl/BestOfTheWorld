@@ -30,15 +30,15 @@ public class JwtUtil {
     // 令牌秘钥
     private static final String secretKey = "*.&#%#%.[{666}].$%#&&.*";
 
-    // 创建 token
-    public String createToken(Object data) {
+    // 根据 roleId 创建 token
+    public String createToken(Object data, String roleId) {
         // 当前时间
         long currentTime = System.currentTimeMillis();
         // 过期时间
         long expirationTime = currentTime + time;
         // 构建 jwt
         JwtBuilder builder = Jwts.builder()
-                .setId(UUID.randomUUID() + "")
+                .setId(UUID.randomUUID() + "-" + roleId)
                 .setSubject(JSON.toJSONString(data))
                 .signWith(SignatureAlgorithm.HS256, encodeSecret(secretKey))
                 .setExpiration(new Date(expirationTime));
@@ -46,11 +46,20 @@ public class JwtUtil {
     }
 
     // 根据实体类的类型，创建 token
-    public String createToken(Object obj, Class<?> clazz, String roleId) throws Exception {
-        // 当前时间
-        long currentTime = System.currentTimeMillis();
+    public String createToken(Object obj, Class<?> clazz) throws Exception {
+        String roleId = null;
+        // 获取 roleId 的属性
+        Field field = clazz.getDeclaredField("roleId");
+        // 获取属性名
+        String roleIdName = field.getName();
+        // 获取属性值，通过get方法获取
+        String getMethodName = "get" + roleIdName.substring(0, 1).toUpperCase() + roleIdName.substring(1);
+        Method getMethod = obj.getClass().getMethod(getMethodName);
+        Object value = getMethod.invoke(obj);
+        // 给 roleId 赋值
+        roleId = (String) value;
         // 过期时间
-        long expirationTime = currentTime + time;
+        long expirationTime = System.currentTimeMillis() + time;
         // 构建 jwt
         JwtBuilder builder = Jwts.builder()
                 .setId(UUID.randomUUID() + "-" + roleId)

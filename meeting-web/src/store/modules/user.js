@@ -70,7 +70,7 @@ const actions = {
   login({commit}, userInfo) {
     const {username, password, radioCheck} = userInfo;
     return new Promise((resolve, reject) => {
-      login({username: username.trim(), password: password, radioCheck: radioCheck}).then(response => {
+      login({username: username.trim(), password: password, radioCheck: radioCheck}, radioCheck).then(response => {
         const {data} = response;
         commit('SET_TOKEN', data.token);
         // 把 token 存入 cookie
@@ -87,8 +87,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       getRoleId(state.token).then(
         response => {
-          console.log(response.data.roleId);
           commit('SET_ROLEID', response.data.roleId);
+          resolve();
         }
       ).catch(error => {
         reject(error);
@@ -98,6 +98,9 @@ const actions = {
 
   // get user info
   getInfo({commit, state}) {
+
+    console.log("state.roleId：", state.roleId);
+
     return new Promise((resolve, reject) => {
       getInfo(state.token, state.roleId).then(response => {
         const {data} = response;

@@ -46,108 +46,108 @@ export const constantRoutes = [
   },
 
   // 学生管理路由
-  // {
-  //   path: '/student',
-  //   component: Layout,
-  //   redirect: '/student/course_selection_system',
-  //   name: 'student',
-  //   meta: {title: '学生管理', icon: 'student_management'},
-  //   // 选课系统，查询课程成绩，查询已选课程
-  //   children: [
-  //     {
-  //       path: 'course_selection_system',
-  //       name: 'course_selection_system',
-  //       component: () => import('@/views/student/CourseSelectionSystem'),
-  //       meta: {title: '选课系统', icon: 'course_selection_system'},
-  //     },
-  //     {
-  //       path: 'course_grade',
-  //       name: 'course_grade',
-  //       component: () => import('@/views/student/CourseGrade'),
-  //       meta: {title: '课程成绩', icon: 'course_grade'}
-  //     },
-  //     {
-  //       path: 'course_selected',
-  //       name: 'course_selected',
-  //       component: () => import('@/views/student/CourseSelected'),
-  //       meta: {title: '已选课程', icon: 'course_selected'}
-  //     }
-  //   ]
-  // },
+  {
+    path: '/student',
+    component: Layout,
+    redirect: '/student/course_selection_system',
+    name: 'student',
+    meta: {title: '学生管理', icon: 'student_management'},
+    // 选课系统，查询课程成绩，查询已选课程
+    children: [
+      {
+        path: 'course_selection_system',
+        name: 'course_selection_system',
+        component: () => import('@/views/student/CourseSelectionSystem'),
+        meta: {title: '选课系统', icon: 'course_selection_system'},
+      },
+      {
+        path: 'course_grade',
+        name: 'course_grade',
+        component: () => import('@/views/student/CourseGrade'),
+        meta: {title: '课程成绩', icon: 'course_grade'}
+      },
+      {
+        path: 'course_selected',
+        name: 'course_selected',
+        component: () => import('@/views/student/CourseSelected'),
+        meta: {title: '已选课程', icon: 'course_selected'}
+      }
+    ]
+  },
 
   // 教师管理路由
-  // {
-  //   path: '/teacher',
-  //   component: Layout,
-  //   redirect: '/teacher/teaching_course',
-  //   name: 'teacher',
-  //   meta: {title: '教师管理', icon: 'teacher_management'},
-  //   // 查询教授课程，记录学生成绩
-  //   children: [
-  //     {
-  //       path: 'teaching_course',
-  //       name: 'teaching_course',
-  //       component: () => import('@/views/teacher/TeachingCourse'),
-  //       meta: {title: '教授课程', icon: 'teaching_course'}
-  //     },
-  //     {
-  //       path: 'record_grade',
-  //       name: 'record_grade',
-  //       component: () => import('@/views/teacher/RecordGrade'),
-  //       meta: {title: '记录成绩', icon: 'record_grade'},
-  //       children: [
-  //         {
-  //           path: 'all_student',
-  //           name: 'all_student',
-  //           component: () => import('@/views/teacher/student/AllStudent'),
-  //           meta: {title: '学生列表'},
-  //           hidden: true,
-  //           // 获取路由参数
-  //           props({query: {teacherId, cno}}) {
-  //             return {teacherId, cno};
-  //           }
-  //         }
-  //       ]
-  //     }
-  //   ]
-  // },
+  {
+    path: '/teacher',
+    component: Layout,
+    redirect: '/teacher/teaching_course',
+    name: 'teacher',
+    meta: {title: '教师管理', icon: 'teacher_management'},
+    // 查询教授课程，记录学生成绩
+    children: [
+      {
+        path: 'teaching_course',
+        name: 'teaching_course',
+        component: () => import('@/views/teacher/TeachingCourse'),
+        meta: {title: '教授课程', icon: 'teaching_course'}
+      },
+      {
+        path: 'record_grade',
+        name: 'record_grade',
+        component: () => import('@/views/teacher/RecordGrade'),
+        meta: {title: '记录成绩', icon: 'record_grade'},
+        children: [
+          {
+            path: 'all_student',
+            name: 'all_student',
+            component: () => import('@/views/teacher/student/AllStudent'),
+            meta: {title: '学生列表'},
+            hidden: true,
+            // 获取路由参数
+            props({query: {teacherId, cno}}) {
+              return {teacherId, cno};
+            }
+          }
+        ]
+      }
+    ]
+  },
 
   // 管理员管理路由
-  // {
-  //   path: '/admin',
-  //   component: Layout,
-  //   redirect: '/admin/student_information',
-  //   name: 'admin',
-  //   meta: {title: '管理员管理', icon: 'admin_management'},
-  //   // 修改学生信息，修改教师信息
-  //   children: [
-  //     {
-  //       path: 'student_information',
-  //       name: 'student_information',
-  //       component: () => import('@/views/admin/StudentInformation'),
-  //       meta: {title: '学生信息', icon: 'student_information'}
-  //     },
-  //     {
-  //       path: 'teacher_information',
-  //       name: 'teacher_information',
-  //       component: () => import('@/views/admin/TeacherInformation'),
-  //       meta: {title: '教师信息', icon: 'teacher_information'},
-  //       children: [
-  //         {
-  //           path: 'teacher_course',
-  //           name: 'teacher_course',
-  //           component: () => import('@/views/admin/teacher_course/AllCourse'),
-  //           meta: {title: '课程列表'},
-  //           hidden: true,
-  //           // 获取路由参数
-  //           props({query: {teacherId}}) {
-  //             return {teacherId};
-  //           }
-  //         }
-  //       ]
-  //     }
-  //   ]
-  // },
+  {
+    path: '/admin',
+    component: Layout,
+    redirect: '/admin/student_information',
+    name: 'admin',
+    meta: {title: '管理员管理', icon: 'admin_management'},
+    // 修改学生信息，修改教师信息
+    children: [
+      {
+        path: 'student_information',
+        name: 'student_information',
+        component: () => import('@/views/admin/StudentInformation'),
+        meta: {title: '学生信息', icon: 'student_information'}
+      },
+      {
+        path: 'teacher_information',
+        name: 'teacher_information',
+        component: () => import('@/views/admin/TeacherInformation'),
+        meta: {title: '教师信息', icon: 'teacher_information'},
+        children: [
+          {
+            path: 'teacher_course',
+            name: 'teacher_course',
+            component: () => import('@/views/admin/teacher_course/AllCourse'),
+            meta: {title: '课程列表'},
+            hidden: true,
+            // 获取路由参数
+            props({query: {teacherId}}) {
+              return {teacherId};
+            }
+          }
+        ]
+      }
+    ]
+  },
 
   // 个人信息路由
   {
@@ -167,11 +167,11 @@ export const constantRoutes = [
   },
 
   // 404 page must be placed at the end !!!
-  // {
-  //   path: '*',
-  //   redirect: '/404',
-  //   hidden: true
-  // }
+  {
+    path: '*',
+    redirect: '/404',
+    hidden: true
+  }
 ];
 
 // 个人信息中判断角色 id 来导入哪个组件

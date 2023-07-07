@@ -60,22 +60,6 @@ public class StudentController {
         if (!Objects.isNull(data)) {
             return Result.success(data);
         }
-        return Result.fail(203, "用户不存在");
+        return Result.fail(203, "学生不存在");
     }
-
-    @PostMapping("/addStudent")
-    public Result<?> addStudent(@RequestBody Student student) {
-        try {
-            // 先查询是否有这个学生
-            Student student1 = studentService.getStudent(student.getStudentId());
-            if (student1 == null) {
-                studentService.addStudent(student);
-                return Result.success("添加学生成功");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return Result.fail(202);
-    }
-
 }

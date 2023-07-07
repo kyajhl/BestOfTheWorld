@@ -46,7 +46,7 @@ export function register(user, roleId) {
 
 export function getRoleId(token) {
   return request({
-    url: '/user/info',
+    url: '/user/getRoleId',
     method: 'get',
     params: {token}
   })

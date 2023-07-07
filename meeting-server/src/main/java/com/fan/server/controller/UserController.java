@@ -1,6 +1,7 @@
 package com.fan.server.controller;
 
 import com.fan.server.common.Result;
+import com.fan.server.service.IUserService;
 import com.fan.server.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,18 +17,23 @@ import java.util.Set;
 public class UserController {
 
     @Autowired
-    private JwtUtil jwtUtil;
+    private IUserService userService;
 
-    @GetMapping("/info")
-    public Result<Map<String, String>> getInfo(@RequestParam String token) {
-        // 解析 Jwt
+    @GetMapping("/getRoleId")
+    public Result<Map<String, String>> getRoleId(@RequestParam String token) {
         try {
-            Claims claims = jwtUtil.parseToken(token);
-            String id = claims.getId();
-            String roleId = id.substring(id.length() - 1);
-            HashMap<String, String> data = new HashMap<>();
-            data.put("roleId", roleId);
+            Map<String, String> data = userService.getRoleId(token);
             return Result.success(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Result.fail(202);
+    }
+
+    @PostMapping("/logout")
+    public Result<?> logout() {
+        try {
+            return Result.success("退出成功，虽然这段文字不会显示，但还是要加上");
         } catch (Exception e) {
             e.printStackTrace();
         }

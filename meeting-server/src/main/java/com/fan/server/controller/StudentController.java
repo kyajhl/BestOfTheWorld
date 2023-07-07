@@ -4,6 +4,7 @@ package com.fan.server.controller;
 import com.fan.server.common.Result;
 import com.fan.server.pojo.User;
 import com.fan.server.service.IStudentService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,6 +34,7 @@ public class StudentController {
     private IStudentService studentService;
 
     @PostMapping("/register")
+    @ApiOperation("学生注册接口")
     public Result<?> register(@RequestBody User user) {
         try {
             studentService.register(user);
@@ -44,7 +46,7 @@ public class StudentController {
     }
 
     @PostMapping("/login")
-    @ApiOperation("用户登录接口")
+    @ApiOperation("学生登录接口")
     public Result<Map<String, Object>> login(@RequestBody User user) {
         Map<String, Object> data = studentService.login(user);
         if (!Objects.isNull(data)) {
@@ -54,7 +56,7 @@ public class StudentController {
     }
 
     @GetMapping("/info")
-    @ApiOperation("用户获取信息接口")
+    @ApiOperation("学生获取信息接口")
     public Result<Map<String, Object>> getInfo(@RequestParam String token) {
         Map<String, Object> data = studentService.getInfo(token);
         if (!Objects.isNull(data)) {
@@ -62,4 +64,18 @@ public class StudentController {
         }
         return Result.fail(203, "学生不存在");
     }
+
+    @PutMapping("/updateInformation")
+    @ApiOperation("完善学生信息")
+    public Result<Boolean>updateInformation(@RequestBody Student student){
+        try {
+            Boolean isMatchPassword = studentService.updateInformation(student);
+            if (isMatchPassword) return Result.success(true, "修改成功");
+            else return Result.success(false, "密码已修改，请重新登录");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Result.fail(202);
+    }
+
 }

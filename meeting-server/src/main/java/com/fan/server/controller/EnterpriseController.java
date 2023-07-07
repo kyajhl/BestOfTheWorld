@@ -30,6 +30,7 @@ public class EnterpriseController {
     private IEnterpriseService enterpriseService;
 
     @PostMapping("/register")
+    @ApiOperation("企业注册接口")
     public Result<?> register(@RequestBody User user) {
         try {
             enterpriseService.register(user);
@@ -41,7 +42,7 @@ public class EnterpriseController {
     }
 
     @PostMapping("/login")
-    @ApiOperation("用户登录接口")
+    @ApiOperation("企业登录接口")
     public Result<Map<String, Object>> login(@RequestBody User user) {
         Map<String, Object> data = enterpriseService.login(user);
         if (!Objects.isNull(data)) {
@@ -51,7 +52,7 @@ public class EnterpriseController {
     }
 
     @GetMapping("/info")
-    @ApiOperation("用户获取信息接口")
+    @ApiOperation("企业获取信息接口")
     public Result<Map<String, Object>> getInfo(@RequestParam String token) {
         Map<String, Object> data = enterpriseService.getInfo(token);
         if (!Objects.isNull(data)) {
@@ -59,4 +60,5 @@ public class EnterpriseController {
         }
         return Result.fail(203, "企业不存在");
     }
+
 }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -47,7 +48,7 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
         // 空直接添加
         Teacher res = new Teacher();
         res.setMobilephone(user.getUsername());
-        res.setPassword(user.getPassword());
+        res.setPassword(passwordEncoder.encode(user.getPassword()));
         this.save(res);
     }
 
@@ -98,6 +99,24 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
             return data;
         }
         return null;
+    }
+
+    @Override
+    public Boolean updateInformation(Teacher teacher) throws Exception{
+        // 根据 studentId 查询用户
+        LambdaQueryWrapper<Teacher> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Teacher::getMobilephone, teacher.getMobilephone());
+        Teacher dbTeacher = this.getOne(wrapper);
+        if(Objects.isNull(dbTeacher))
+            throw new Exception("用户不存在");
+        // 判断密码是否修改   true：密码匹配，未修改，    false：密码不匹配，修改了密码
+        boolean isMatchPassword = passwordEncoder.matches(teacher.getPassword(), dbTeacher.getPassword());
+        // 修改用户时，要把密码加密存到数据库
+        teacher.setPassword(passwordEncoder.encode(teacher.getPassword()));
+        // 修改
+        this.update(teacher, wrapper);
+        // 返回
+        return isMatchPassword;
     }
 
 }

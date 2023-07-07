@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.fan.server.pojo.Enterprise;
 import com.fan.server.mapper.EnterpriseMapper;
 import com.fan.server.pojo.Student;
+import com.fan.server.pojo.Teacher;
 import com.fan.server.pojo.User;
 import com.fan.server.service.IEnterpriseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -47,7 +49,7 @@ public class EnterpriseServiceImpl extends ServiceImpl<EnterpriseMapper, Enterpr
         // 空直接添加
         Enterprise res = new Enterprise();
         res.setMobilephone(user.getUsername());
-        res.setPassword(user.getPassword());
+        res.setPassword(passwordEncoder.encode(user.getPassword()));
         this.save(res);
     }
 
@@ -98,6 +100,24 @@ public class EnterpriseServiceImpl extends ServiceImpl<EnterpriseMapper, Enterpr
             return data;
         }
         return null;
+    }
+
+    @Override
+    public Boolean updateInformation(Enterprise enterprise) throws Exception{
+        // 根据 studentId 查询用户
+        LambdaQueryWrapper<Enterprise> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Enterprise::getMobilephone, enterprise.getMobilephone());
+        Enterprise dbEnterprise = this.getOne(wrapper);
+        if(Objects.isNull(dbEnterprise))
+            throw new Exception("用户不存在");
+        // 判断密码是否修改   true：密码匹配，未修改，    false：密码不匹配，修改了密码
+        boolean isMatchPassword = passwordEncoder.matches(enterprise.getPassword(), dbEnterprise.getPassword());
+        // 修改用户时，要把密码加密存到数据库
+        enterprise.setPassword(passwordEncoder.encode(enterprise.getPassword()));
+        // 修改
+        this.update(enterprise, wrapper);
+        // 返回
+        return isMatchPassword;
     }
 
 }

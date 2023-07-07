@@ -30,6 +30,7 @@ public class TeacherController {
     private ITeacherService teacherService;
 
     @PostMapping("/register")
+    @ApiOperation("教师注册接口")
     public Result<?> register(@RequestBody User user) {
         try {
             teacherService.register(user);
@@ -41,7 +42,7 @@ public class TeacherController {
     }
 
     @PostMapping("/login")
-    @ApiOperation("用户登录接口")
+    @ApiOperation("教师登录接口")
     public Result<Map<String, Object>> login(@RequestBody User user) {
         Map<String, Object> data = teacherService.login(user);
         if (!Objects.isNull(data)) {
@@ -51,7 +52,7 @@ public class TeacherController {
     }
 
     @GetMapping("/info")
-    @ApiOperation("用户获取信息接口")
+    @ApiOperation("教师获取信息接口")
     public Result<Map<String, Object>> getInfo(@RequestParam String token) {
         Map<String, Object> data = teacherService.getInfo(token);
         if (!Objects.isNull(data)) {
@@ -59,4 +60,18 @@ public class TeacherController {
         }
         return Result.fail(203, "教师不存在");
     }
+
+    @PutMapping("/updateInformation")
+    @ApiOperation("完善教师信息")
+    public Result<Boolean>updateInformation(@RequestBody Teacher teacher){
+        try {
+            Boolean isMatchPassword = teacherService.updateInformation(teacher);
+            if (isMatchPassword) return Result.success(true, "修改成功");
+            else return Result.success(false, "密码已修改，请重新登录");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Result.fail(202);
+    }
+
 }

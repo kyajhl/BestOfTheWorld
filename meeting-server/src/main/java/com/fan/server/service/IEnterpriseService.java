@@ -2,7 +2,6 @@ package com.fan.server.service;
 
 import com.fan.server.pojo.Enterprise;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.fan.server.pojo.Student;
 import com.fan.server.pojo.User;
 
 import java.util.Map;
@@ -22,4 +21,6 @@ public interface IEnterpriseService extends IService<Enterprise> {
     Map<String, Object> login(User user);
 
     Map<String, Object> getInfo(String token);
+
+    Boolean updateInformation(Enterprise enterprise) throws Exception;
 }

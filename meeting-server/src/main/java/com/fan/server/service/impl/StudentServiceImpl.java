@@ -47,7 +47,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         // 空直接添加
         Student res = new Student();
         res.setMobilephone(user.getUsername());
-        res.setPassword(user.getPassword());
+        res.setPassword(passwordEncoder.encode(user.getPassword()));
         this.save(res);
     }
 
@@ -110,11 +110,13 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     }
 
     @Override
-    public Boolean updateInformation(Student student) {
+    public Boolean updateInformation(Student student) throws Exception{
         // 根据 studentId 查询用户
         LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Student::getMobilephone, student.getMobilephone());
         Student dbStudent = this.getOne(wrapper);
+        if(Objects.isNull(dbStudent))
+            throw new Exception("用户不存在");
         // 判断密码是否修改   true：密码匹配，未修改，    false：密码不匹配，修改了密码
         boolean isMatchPassword = passwordEncoder.matches(student.getPassword(), dbStudent.getPassword());
         // 修改用户时，要把密码加密存到数据库

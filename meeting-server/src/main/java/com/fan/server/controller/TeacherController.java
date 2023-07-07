@@ -61,4 +61,17 @@ public class TeacherController {
         return Result.fail(203, "教师不存在");
     }
 
+    @PutMapping("/updateInformation")
+    @ApiOperation("完善教师信息")
+    public Result<Boolean>updateInformation(@RequestBody Teacher teacher){
+        try {
+            Boolean isMatchPassword = teacherService.updateInformation(teacher);
+            if (isMatchPassword) return Result.success(true, "修改成功");
+            else return Result.success(false, "密码已修改，请重新登录");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Result.fail(202);
+    }
+
 }

@@ -61,4 +61,17 @@ public class EnterpriseController {
         return Result.fail(203, "企业不存在");
     }
 
+    @PutMapping("/updateInformation")
+    @ApiOperation("完善企业信息")
+    public Result<Boolean>updateInformation(@RequestBody Enterprise enterprise){
+        try {
+            Boolean isMatchPassword = enterpriseService.updateInformation(enterprise);
+            if (isMatchPassword) return Result.success(true, "修改成功");
+            else return Result.success(false, "密码已修改，请重新登录");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Result.fail(202);
+    }
+
 }

@@ -9,6 +9,7 @@
         <result column="password" property="password" />
         <result column="college" property="college" />
         <result column="teacher_name" property="teacherName" />
+        <result column="avatar" property="avatar"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

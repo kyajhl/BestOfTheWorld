@@ -9,6 +9,7 @@
         <result column="password" property="password" />
         <result column="mobilephone" property="mobilephone" />
         <result column="email" property="email" />
+        <result column="avatar" property="avatar"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

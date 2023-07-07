@@ -15,7 +15,6 @@
         <result column="major" property="major" />
         <result column="major_class" property="majorClass" />
         <result column="avatar" property="avatar" />
-        <result column="role_id" property="roleId" />
     </resultMap>
 
     <!-- 通用查询结果列 -->

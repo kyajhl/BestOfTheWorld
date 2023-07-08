@@ -112,37 +112,31 @@ export const constantRoutes = [
     ]
   },
 
-  // 管理员管理路由
+  // 企业管理路由
   {
-    path: '/admin',
+    path: '/enterprise',
+    name: 'enterprise',
     component: Layout,
-    redirect: '/admin/student_information',
-    name: 'admin',
-    meta: {title: '管理员管理', icon: 'admin_management'},
-    // 修改学生信息，修改教师信息
+    redirect: '/enterprise/project_operation',
+    meta: {title: '企业管理', icon: 'enterprise_management'},
+    // 管理项目创建，团队创建
     children: [
       {
-        path: 'student_information',
-        name: 'student_information',
-        component: () => import('@/views/admin/StudentInformation'),
-        meta: {title: '学生信息', icon: 'student_information'}
-      },
-      {
-        path: 'teacher_information',
-        name: 'teacher_information',
-        component: () => import('@/views/admin/TeacherInformation'),
-        meta: {title: '教师信息', icon: 'teacher_information'},
+        path: 'project_operation',
+        name: 'project_operation',
+        component: () => import('@/views/enterprise/ProjectOperation'),
+        meta: {title: '项目操作', icon: 'project_operation'},
         children: [
           {
-            path: 'teacher_course',
-            name: 'teacher_course',
-            component: () => import('@/views/admin/teacher_course/AllCourse'),
-            meta: {title: '课程列表'},
+            path: 'project_information',
+            name: 'project_information',
+            component: () => import('@/views/enterprise/project_information/ProjectInformation'),
+            meta: {title: '项目信息'},
             hidden: true,
             // 获取路由参数
-            props({query: {teacherId}}) {
-              return {teacherId};
-            }
+            // props({query: {teacherId}}) {
+            //   return {teacherId};
+            // }
           }
         ]
       }

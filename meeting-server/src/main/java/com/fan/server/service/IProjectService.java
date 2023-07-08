@@ -15,4 +15,8 @@ public interface IProjectService extends IService<Project> {
 
     void addProject(Project project) throws Exception;
 
+    void deleteProject(Integer projectId) throws Exception;
+
+    void updateProject(Project project) throws Exception;
+
 }

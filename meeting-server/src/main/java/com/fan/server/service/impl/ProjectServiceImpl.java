@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -40,6 +41,36 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         }
         // 空直接添加
         this.save(project);
+    }
+
+    @Override
+    public void deleteProject(Integer projectId) throws Exception {
+        LambdaQueryWrapper<Project> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Project::getProjectId, projectId);
+        Project project1 = this.getOne(wrapper);
+        if(Objects.isNull(project1)) {
+            //未找到项目
+            throw  new Exception(("项目号不存在"));
+        }
+        this.remove(wrapper);
+    }
+
+    @Override
+    public void updateProject(Project project) throws Exception {
+        LambdaQueryWrapper<Project> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Project::getProjectId, project.getProjectId());
+        Project project1 = this.getOne(wrapper);
+        if(Objects.isNull(project1)) {
+            //未找到项目
+            throw  new Exception(("项目号不存在"));
+        }
+        LocalDate beginDate = project.getBeginDate();
+        LocalDate endDate = project.getEndDate();
+        beginDate = beginDate.plusDays(1);
+        endDate = endDate.plusDays(1);
+        project.setBeginDate(beginDate);
+        project.setEndDate((endDate));
+        this.update(project, wrapper);
     }
 
 }

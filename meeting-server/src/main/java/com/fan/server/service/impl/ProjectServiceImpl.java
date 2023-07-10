@@ -1,6 +1,8 @@
 package com.fan.server.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fan.server.common.Result;
 import com.fan.server.pojo.Project;
 import com.fan.server.mapper.ProjectMapper;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -71,6 +75,22 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         project.setBeginDate(beginDate);
         project.setEndDate((endDate));
         this.update(project, wrapper);
+    }
+
+    @Override
+    public Map<String, Object> getProjectList(){
+        LambdaQueryWrapper<Project> wrapper = new LambdaQueryWrapper<>();
+        wrapper.orderByAsc(Project::getProjectId);
+
+        IPage<Project> page = new Page<>();
+        this.page(page, wrapper);
+
+        //封装map
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("total", page.getTotal());
+        data.put("ProjectList", page.getRecords());
+
+        return data;
     }
 
 }

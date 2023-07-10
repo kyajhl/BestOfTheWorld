@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * <p>
  *  前端控制器
@@ -60,6 +62,20 @@ public class ProjectController {
             e.printStackTrace();
         }
         return Result.fail(202);
+    }
+
+    @GetMapping("/getProjectList")
+    @ApiOperation("获取所有项目接口")
+    public Result<Map<String, Object>> getProjectList(){
+
+        try {
+            Map<String, Object> data = projectService.getProjectList();
+            return Result.success(data, "获取项目列表成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Result.fail(202);
+
     }
 
 }

@@ -2,6 +2,7 @@ package com.fan.server.service;
 
 import com.fan.server.pojo.Project;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.security.core.parameters.P;
 
 import java.util.Map;
 
@@ -22,5 +23,7 @@ public interface IProjectService extends IService<Project> {
     void updateProject(Project project) throws Exception;
 
     Map<String, Object> getProjectList(Long pageNo, Long pageSize, Integer projectId, String projectName);
+
+    Project getProjectById(Integer projectId) throws  Exception;
 
 }

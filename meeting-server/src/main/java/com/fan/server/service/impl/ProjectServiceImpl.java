@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static ch.qos.logback.core.joran.action.ActionConst.NULL;
+
 /**
  * <p>
  *  服务实现类
@@ -78,11 +80,13 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
     }
 
     @Override
-    public Map<String, Object> getProjectList(){
+    public Map<String, Object> getProjectList(Long pageNo, Long pageSize, Integer projectId, String projectName){
         LambdaQueryWrapper<Project> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(projectId != null, Project::getProjectId, projectId);
+        wrapper.like(Project::getProjectName, projectName);
         wrapper.orderByAsc(Project::getProjectId);
 
-        IPage<Project> page = new Page<>();
+        IPage<Project> page = new Page<>(pageNo, pageSize);
         this.page(page, wrapper);
 
         //封装map

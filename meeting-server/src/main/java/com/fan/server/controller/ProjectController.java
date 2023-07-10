@@ -66,10 +66,15 @@ public class ProjectController {
 
     @GetMapping("/getProjectList")
     @ApiOperation("获取所有项目接口")
-    public Result<Map<String, Object>> getProjectList(){
+    public Result<Map<String, Object>> getProjectList(
+            @RequestParam("pageNo") Long pageNo,
+            @RequestParam("pageSize") Long pageSize,
+            @RequestParam(required = false, value = "projectId") Integer projectId,
+            @RequestParam(required = false, value = "projectName") String projectName
+    ){
 
         try {
-            Map<String, Object> data = projectService.getProjectList();
+            Map<String, Object> data = projectService.getProjectList(pageNo, pageSize, projectId, projectName);
             return Result.success(data, "获取项目列表成功");
         } catch (Exception e) {
             e.printStackTrace();

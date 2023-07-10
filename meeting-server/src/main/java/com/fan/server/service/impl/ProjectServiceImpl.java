@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -92,9 +93,23 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         //封装map
         HashMap<String, Object> data = new HashMap<>();
         data.put("total", page.getTotal());
-        data.put("ProjectList", page.getRecords());
+//        List<Project> projectList = page.getRecords();
+//        projectList.forEach(project -> {
+//            project.getBeginDate() = project.getBeginDate().toString();
+//        });
+        data.put("projectList", page.getRecords());
 
         return data;
+    }
+
+    @Override
+    public Project getProjectById(Integer projectId) throws Exception{
+        LambdaQueryWrapper<Project> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Project::getProjectId, projectId);
+        Project project = this.getOne(wrapper);
+        if(Objects.isNull(project))
+            throw new Exception("未找到项目");
+        return project;
     }
 
 }

@@ -4,6 +4,7 @@ package com.fan.server.controller;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.fan.server.common.Result;
 import com.fan.server.pojo.Project;
+import com.fan.server.pojo.Student;
 import com.fan.server.pojo.User;
 import com.fan.server.service.IProjectService;
 import io.swagger.annotations.ApiOperation;
@@ -81,6 +82,18 @@ public class ProjectController {
         }
         return Result.fail(202);
 
+    }
+
+    @GetMapping("/getProjectById")
+    @ApiOperation("通过项目id获取项目接口")
+    public Result<Project> getProjectById(@RequestParam("projectId") Integer projectId) {
+        try {
+            Project data = projectService.getProjectById(projectId);
+            return Result.success(data, "获取学生信息成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Result.fail(202);
     }
 
 }

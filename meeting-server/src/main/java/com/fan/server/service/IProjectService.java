@@ -3,6 +3,8 @@ package com.fan.server.service;
 import com.fan.server.pojo.Project;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.Map;
+
 /**
  * <p>
  *  服务类
@@ -18,5 +20,7 @@ public interface IProjectService extends IService<Project> {
     void deleteProject(Integer projectId) throws Exception;
 
     void updateProject(Project project) throws Exception;
+
+    Map<String, Object> getProjectList();
 
 }

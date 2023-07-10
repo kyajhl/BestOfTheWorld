@@ -13,7 +13,7 @@
         </span>
         <el-input
           ref="username"
-          v-model="loginForm.username"
+          v-model.trim="loginForm.username"
           placeholder="手机号"
           name="username"
           type="text"
@@ -29,7 +29,7 @@
         <el-input
           :key="passwordType"
           ref="password"
-          v-model="loginForm.password"
+          v-model.trim="loginForm.password"
           :type="passwordType"
           placeholder="密码"
           name="password"
@@ -42,13 +42,15 @@
         </span>
       </el-form-item>
 
-      <el-checkbox v-model="checked">记住登录信息</el-checkbox>
+      <el-form-item prop="radioCheck">
+        <div class="radioCheck">
+          <el-radio v-model="loginForm.radioCheck" label="1" border size="medium">学生</el-radio>
+          <el-radio v-model="loginForm.radioCheck" label="2" border size="medium">教师</el-radio>
+          <el-radio v-model="loginForm.radioCheck" label="3" border size="medium">企业</el-radio>
+        </div>
+      </el-form-item>
 
-      <div class="radioCheck">
-        <el-radio v-model="loginForm.radioCheck" label="1" border size="medium">学生</el-radio>
-        <el-radio v-model="loginForm.radioCheck" label="2" border size="medium">教师</el-radio>
-        <el-radio v-model="loginForm.radioCheck" label="3" border size="medium">企业</el-radio>
-      </div>
+      <el-checkbox v-model="checked" style="margin-bottom: 20px">记住登录信息</el-checkbox>
 
       <el-button :loading="loading"
                  type="primary"
@@ -76,7 +78,8 @@
         checked: false,
         loginRules: {
           username: [{required: true, trigger: 'blur', message: "请输入手机号"}],
-          password: [{required: true, trigger: 'blur', message: "请输入密码"}]
+          password: [{required: true, trigger: 'blur', message: "请输入密码"}],
+          radioCheck: [{required: true, trigger: 'blur', message: "请选择角色"}]
         },
         loading: false,
         passwordType: 'password',

@@ -134,11 +134,17 @@ export const constantRoutes = [
             meta: {title: '项目信息'},
             hidden: true,
             // 获取路由参数
-            // props({query: {teacherId}}) {
-            //   return {teacherId};
-            // }
+            props({query: {projectId}}) {
+              return {projectId};
+            }
           }
         ]
+      },
+      {
+        path: 'team_operation',
+        name: 'team_operation',
+        component: () => import('@/views/enterprise/TeamOperation'),
+        meta: {title: '团队操作', icon: 'team_operation'},
       }
     ]
   },

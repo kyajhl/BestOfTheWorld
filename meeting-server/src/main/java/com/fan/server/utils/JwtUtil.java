@@ -24,8 +24,9 @@ import java.util.UUID;
 @Component
 public class JwtUtil {
     // 有效期
-    private static final long time = 6 * 60 * 60 * 1000L;  // 30 分钟
+//    private static final long time = 6 * 60 * 60 * 1000L;  // 6 小时
 //    private static final long time = 3000L;  // 3 s
+    private static final long time = 30 * 60 * 1000L;
 
     // 令牌秘钥
     private static final String secretKey = "*.&#%#%.[{666}].$%#&&.*";

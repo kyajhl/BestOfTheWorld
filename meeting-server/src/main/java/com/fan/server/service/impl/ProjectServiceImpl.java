@@ -47,6 +47,8 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
             throw new Exception("项目号已存在");
         }
         // 空直接添加
+        project.setBeginDate(project.getBeginDate().plusDays(1));
+        project.setEndDate(project.getEndDate().plusDays(1));
         this.save(project);
     }
 
@@ -57,7 +59,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         Project project1 = this.getOne(wrapper);
         if(Objects.isNull(project1)) {
             //未找到项目
-            throw  new Exception(("项目号不存在"));
+            throw new Exception(("项目号不存在"));
         }
         this.remove(wrapper);
     }
@@ -69,14 +71,10 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         Project project1 = this.getOne(wrapper);
         if(Objects.isNull(project1)) {
             //未找到项目
-            throw  new Exception(("项目号不存在"));
+            throw new Exception(("项目号不存在"));
         }
-        LocalDate beginDate = project.getBeginDate();
-        LocalDate endDate = project.getEndDate();
-        beginDate = beginDate.plusDays(1);
-        endDate = endDate.plusDays(1);
-        project.setBeginDate(beginDate);
-        project.setEndDate((endDate));
+        project.setBeginDate(project.getBeginDate().plusDays(1));
+        project.setEndDate(project.getEndDate().plusDays(1));
         this.update(project, wrapper);
     }
 
@@ -90,13 +88,9 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         IPage<Project> page = new Page<>(pageNo, pageSize);
         this.page(page, wrapper);
 
-        //封装map
+        //封装 map
         HashMap<String, Object> data = new HashMap<>();
         data.put("total", page.getTotal());
-//        List<Project> projectList = page.getRecords();
-//        projectList.forEach(project -> {
-//            project.getBeginDate() = project.getBeginDate().toString();
-//        });
         data.put("projectList", page.getRecords());
 
         return data;

@@ -1,22 +1,17 @@
 package com.fan.server.controller;
 
-
-import com.baomidou.mybatisplus.extension.api.R;
 import com.fan.server.common.Result;
 import com.fan.server.pojo.Project;
-import com.fan.server.pojo.Student;
-import com.fan.server.pojo.User;
 import com.fan.server.service.IProjectService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author BestOfTheWorld
@@ -43,11 +38,11 @@ public class ProjectController {
 
     @DeleteMapping("/deleteProject")
     @ApiOperation("删除项目接口")
-    public Result<?> deleteProject(@RequestBody Integer projectId) {
-        try{
+    public Result<?> deleteProject(@RequestParam Integer projectId) {
+        try {
             projectService.deleteProject(projectId);
             return Result.success("删除项目成功");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return Result.fail(202);
@@ -56,10 +51,10 @@ public class ProjectController {
     @PutMapping("/updateProject")
     @ApiOperation("更新项目接口")
     public Result<?> updateProject(@RequestBody Project project) {
-        try{
+        try {
             projectService.updateProject(project);
             return Result.success("更新项目成功");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return Result.fail(202);
@@ -72,8 +67,7 @@ public class ProjectController {
             @RequestParam("pageSize") Long pageSize,
             @RequestParam(required = false, value = "projectId") Integer projectId,
             @RequestParam(required = false, value = "projectName") String projectName
-    ){
-
+    ) {
         try {
             Map<String, Object> data = projectService.getProjectList(pageNo, pageSize, projectId, projectName);
             return Result.success(data, "获取项目列表成功");
@@ -89,7 +83,7 @@ public class ProjectController {
     public Result<Project> getProjectById(@RequestParam("projectId") Integer projectId) {
         try {
             Project data = projectService.getProjectById(projectId);
-            return Result.success(data, "获取学生信息成功");
+            return Result.success(data, "获取项目信息成功");
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -42,11 +42,13 @@
         </span>
       </el-form-item>
 
-      <div class="radioCheck">
-        <el-radio v-model="loginForm.radioCheck" label="1" border size="medium">学生</el-radio>
-        <el-radio v-model="loginForm.radioCheck" label="2" border size="medium">教师</el-radio>
-        <el-radio v-model="loginForm.radioCheck" label="3" border size="medium">企业</el-radio>
-      </div>
+      <el-form-item prop="radioCheck">
+        <div class="radioCheck">
+          <el-radio v-model="loginForm.radioCheck" label="1" border size="medium">学生</el-radio>
+          <el-radio v-model="loginForm.radioCheck" label="2" border size="medium">教师</el-radio>
+          <el-radio v-model="loginForm.radioCheck" label="3" border size="medium">企业</el-radio>
+        </div>
+      </el-form-item>
 
       <el-button :loading="loading"
                  type="primary"
@@ -71,7 +73,8 @@
         checked: false,
         loginRules: {
           username: [{required: true, trigger: 'blur', message: "请输入手机号"}],
-          password: [{required: true, trigger: 'blur', message: "请输入密码"}]
+          password: [{required: true, trigger: 'blur', message: "请输入密码"}],
+          radioCheck: [{required: true, trigger: 'blur', message: "请选择角色"}]
         },
         loading: false,
         passwordType: 'password',

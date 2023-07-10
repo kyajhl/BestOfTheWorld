@@ -24,6 +24,6 @@ public interface IProjectService extends IService<Project> {
 
     Map<String, Object> getProjectList(Long pageNo, Long pageSize, Integer projectId, String projectName);
 
-    Project getProjectById(Integer projectId) throws  Exception;
+    Project getProjectById(Integer projectId) throws Exception;
 
 }

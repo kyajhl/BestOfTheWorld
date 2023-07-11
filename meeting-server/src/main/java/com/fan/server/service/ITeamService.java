@@ -22,7 +22,7 @@ public interface ITeamService extends IService<Team> {
 
     void updateTeam(Team team) throws Exception;
 
-    Map<String, Object> getTeamList(Long pageNo, Long pageSize, String teamId, String teamName);
+    Map<String, Object> getTeamList(Long pageNo, Long pageSize, String teamName);
 
     void TeamNumberPlusOne(String teamId) throws Exception;
 

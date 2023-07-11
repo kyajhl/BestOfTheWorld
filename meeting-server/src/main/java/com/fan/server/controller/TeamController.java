@@ -13,7 +13,7 @@ import java.util.Map;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author BestOfTheWorld
@@ -29,10 +29,10 @@ public class TeamController {
     @PostMapping("/addTeam")
     @ApiOperation("添加团队接口")
     public Result<?> addTeam(@RequestBody Team team) {
-        try{
+        try {
             teamService.addTeam(team.getTeamName(), team.getProjectId());
             return Result.success("添加团队成功");
-        }catch(Exception e){
+        } catch (Exception e) {
             return Result.fail("项目不存在");
         }
     }
@@ -40,11 +40,11 @@ public class TeamController {
 
     @DeleteMapping("/deleteTeam")
     @ApiOperation("删除团队接口")
-    public Result<?> delete(@RequestBody String teamId){
-        try{
+    public Result<?> delete(@RequestBody String teamId) {
+        try {
             teamService.deleteTeam(teamId);
             return Result.success("删除团队成功");
-        }catch (Exception e) {
+        } catch (Exception e) {
             return Result.fail("团队不存在");
         }
     }
@@ -54,27 +54,24 @@ public class TeamController {
     public Result<Map<String, Object>> getTeamList(
             @RequestParam("pageNo") Long pageNo,
             @RequestParam("pageSize") Long pageSize,
-            @RequestParam(required = false, value = "teamId") String teamId,
             @RequestParam(required = false, value = "teamName") String teamName
-    ){
-
+    ) {
         try {
-            Map<String, Object> data = teamService.getTeamList(pageNo, pageSize, teamId, teamName);
-            return Result.success(data, "获取项目列表成功");
+            Map<String, Object> data = teamService.getTeamList(pageNo, pageSize, teamName);
+            return Result.success(data, "获取团队列表成功");
         } catch (Exception e) {
             e.printStackTrace();
         }
         return Result.fail(202);
-
     }
 
     @PostMapping("/updateTeam")
     @ApiOperation("更新团队信息接口")
     public Result<?> updateProject(@RequestBody Team team) {
-        try{
+        try {
             teamService.updateTeam(team);
-            return Result.success("更新项目成功");
-        }catch (Exception e){
+            return Result.success("更新团队成功");
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return Result.fail(202);

@@ -13,4 +13,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IStudentLogService extends IService<StudentLog> {
 
+    void addStudentLog(String content, String mobilephone) throws Exception;
+
+    void updateStudentLog(StudentLog studentLog) throws Exception;
+
+    void deleteStudentLog(StudentLog studentLog);
+
 }

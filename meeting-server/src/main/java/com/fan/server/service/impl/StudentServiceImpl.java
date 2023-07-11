@@ -63,7 +63,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
             // 设置 Jwt 中的密码为明文密码，因为要在个人信息中修改，必须要存密码
             dbUser.setPassword(user.getPassword());
             // 生成 Jwt
-            String token = null;
+            String token;
             try {
                 token = jwtUtil.createToken(dbUser, "1");
                 // 返回数据
@@ -129,6 +129,26 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         this.update(student, wrapper);
         // 返回
         return isMatchPassword;
+    }
+
+    @Override
+    public Integer getStudentIdByMobilephone(String mobilephone) throws Exception{
+        LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Student::getMobilephone, mobilephone);
+        Student student = this.getOne(wrapper);
+        if(Objects.isNull(student))
+                throw new Exception("用户不存在");
+        return student.getId();
+    }
+
+    @Override
+    public String getStudentMobilephoneById(Integer id) throws Exception{
+        LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Student::getId, id);
+        Student student = this.getOne(wrapper);
+        if(Objects.isNull(student))
+            throw new Exception("用户不存在");
+        return student.getMobilephone();
     }
 
 }

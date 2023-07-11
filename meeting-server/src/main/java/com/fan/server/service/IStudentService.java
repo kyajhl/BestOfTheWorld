@@ -23,4 +23,9 @@ public interface IStudentService extends IService<Student> {
     Map<String, Object> getInfo(String token);
 
     Boolean updateInformation(Student student) throws Exception;
+
+    Integer getStudentIdByMobilephone(String mobilephone) throws Exception;
+
+    String getStudentMobilephoneById(Integer id) throws Exception;
+
 }

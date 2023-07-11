@@ -45,7 +45,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team> implements IT
             team.setTeamNumber(0);
             this.save(team);
         }catch (Exception e) {
-            throw e;
+            throw new Exception(e.getMessage());
         }
     }
 
@@ -68,7 +68,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team> implements IT
         Team team1 = this.getOne(wrapper);
         if(Objects.isNull(team1)) {
             //未找到团队
-            throw  new Exception(("团队不存在"));
+            throw new Exception(("团队不存在"));
         }
         this.update(team, wrapper);
     }
@@ -88,6 +88,28 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team> implements IT
         data.put("teamList", page.getRecords());
 
         return data;
+    }
+
+    @Override
+    public void TeamNumberPlusOne(String teamId) throws Exception{
+        LambdaQueryWrapper<Team> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Team::getTeamId, teamId);
+        Team team = this.getOne(wrapper);
+        if(Objects.isNull(team))
+            throw new Exception("团队不存在");
+        team.setTeamNumber(team.getTeamNumber() + 1);
+        this.updateById(team);
+    }
+
+    @Override
+    public void TeamNumberSubOne(String teamId) throws Exception{
+        LambdaQueryWrapper<Team> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Team::getTeamId, teamId);
+        Team team = this.getOne(wrapper);
+        if(Objects.isNull(team))
+            throw new Exception("团队不存在");
+        team.setTeamNumber(team.getTeamNumber() - 1);
+        this.updateById(team);
     }
 
 }

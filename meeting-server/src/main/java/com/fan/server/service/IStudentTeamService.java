@@ -13,4 +13,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IStudentTeamService extends IService<StudentTeam> {
 
+    void addStudentTeam(String mobilephone, String teamId, String position) throws Exception;
+
+    void deleteStudentTeam(String mobilephone, String teamId) throws Exception;
+
 }

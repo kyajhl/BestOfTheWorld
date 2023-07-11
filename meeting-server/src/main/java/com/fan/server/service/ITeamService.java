@@ -24,4 +24,8 @@ public interface ITeamService extends IService<Team> {
 
     Map<String, Object> getTeamList(Long pageNo, Long pageSize, String teamId, String teamName);
 
+    void TeamNumberPlusOne(String teamId) throws Exception;
+
+    void TeamNumberSubOne(String teamId) throws Exception;
+
 }

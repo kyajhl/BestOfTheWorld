@@ -1,6 +1,9 @@
 package com.fan.server.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fan.server.pojo.Project;
 import com.fan.server.pojo.StudentTeam;
 import com.fan.server.mapper.StudentTeamMapper;
 import com.fan.server.service.IStudentService;
@@ -12,6 +15,8 @@ import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -61,7 +66,6 @@ public class StudentTeamServiceImpl extends ServiceImpl<StudentTeamMapper, Stude
 
     @Override
     public void deleteStudentTeam(String mobilephone, String teamId) throws Exception{
-        StudentTeam studentTeam = new StudentTeam();
         Integer studentId;
         try {
             studentId = studentService.getStudentIdByMobilephone(mobilephone);
@@ -81,6 +85,34 @@ public class StudentTeamServiceImpl extends ServiceImpl<StudentTeamMapper, Stude
             throw new Exception("团队不存在");
         }
         this.remove(wrapper);
+    }
+
+    @Override
+    public void updateStudentTeam(StudentTeam studentTeam) throws Exception {
+        LambdaQueryWrapper<StudentTeam> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(StudentTeam::getId, studentTeam.getId());
+        if(Objects.isNull(this.getOne(wrapper))){
+            //为空，代表没有找到该学生在团队中的信息
+            throw new Exception("团队中无该学生");
+        }
+        this.updateById(studentTeam);
+    }
+
+    @Override
+    public Map<String, Object> getStudentListByTeamId(Long pageNo, Long pageSize, String teamId) {
+        LambdaQueryWrapper<StudentTeam> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(StudentTeam::getTeamId, teamId);
+        wrapper.orderByAsc(StudentTeam::getStudentId);
+
+        IPage<StudentTeam> page = new Page<>(pageNo, pageSize);
+        this.page(page, wrapper);
+
+        //封装 map
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("total", page.getTotal());
+        data.put("projectList", page.getRecords());
+
+        return data;
     }
 
 }

@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,9 +54,14 @@ public class StudentTeamController {
 
     @PutMapping("/updateStudentTeam")
     @ApiOperation("更新学生在团队中的信息接口")
-    public Result<?> updateStudentTeam(@RequestBody StudentTeam studentTeam) {
+    public Result<?> updateStudentTeam(
+            @RequestParam String teamName,
+            @RequestParam Integer projectId,
+            @RequestParam String teamId,
+            @RequestParam List<String> selectedStudentList
+    ) {
         try {
-            studentTeamService.updateStudentTeam(studentTeam);
+            studentTeamService.updateStudentTeam(teamName, projectId, teamId, selectedStudentList);
             return Result.success("修改成功");
         }catch (Exception e){
             return Result.fail(e.getMessage());

@@ -43,8 +43,14 @@ public class MessageController {
             @RequestParam("pageNo") Long pageNo,
             @RequestParam("pageSize") Long pageSize
     ){
-        messageService.getMessageList(pageNo, pageSize);
-        return Result.success("获取留言列表成功");
+        try {
+            Map<String, Object> data = messageService.getMessageList(pageNo, pageSize);
+            return Result.success(data, "获取留言列表成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Result.fail(202);
+
     }
 
 }

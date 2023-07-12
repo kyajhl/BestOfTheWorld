@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fan.server.pojo.Project;
 import com.fan.server.pojo.StudentTeam;
 import com.fan.server.mapper.StudentTeamMapper;
+import com.fan.server.pojo.Team;
 import com.fan.server.service.IStudentService;
 import com.fan.server.service.IStudentTeamService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -88,14 +90,30 @@ public class StudentTeamServiceImpl extends ServiceImpl<StudentTeamMapper, Stude
     }
 
     @Override
-    public void updateStudentTeam(StudentTeam studentTeam) throws Exception {
-        LambdaQueryWrapper<StudentTeam> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(StudentTeam::getId, studentTeam.getId());
-        if(Objects.isNull(this.getOne(wrapper))){
-            //为空，代表没有找到该学生在团队中的信息
-            throw new Exception("团队中无该学生");
-        }
-        this.updateById(studentTeam);
+    public void deleteStudentTeam(StudentTeam studentTeam) {
+        removeById(studentTeam.getId());
+    }
+
+    @Override
+    public void updateStudentTeam(String teamName, Integer projectId, String teamId, List<String> selectedStudentList) throws Exception {
+        LambdaQueryWrapper<StudentTeam> studentTeamWrapper = new LambdaQueryWrapper<>();
+        studentTeamWrapper.eq(StudentTeam::getTeamId, teamId);
+        List<StudentTeam> preList = this.list(studentTeamWrapper);
+        preList.forEach(this::deleteStudentTeam);
+        Team team = new Team();
+        team.setTeamId(teamId);
+        team.setTeamNumber(0);
+        team.setTeamName(teamName);
+        team.setProjectId(projectId);
+        teamService.updateTeam(team);
+        selectedStudentList.forEach((value) -> {
+            String[] nowString = value.split("-");
+            try {
+                addStudentTeam(nowString[0], teamId, nowString[1]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override

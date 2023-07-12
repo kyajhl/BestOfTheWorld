@@ -3,6 +3,7 @@ package com.fan.server.service;
 import com.fan.server.pojo.StudentTeam;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,8 +20,10 @@ public interface IStudentTeamService extends IService<StudentTeam> {
 
     void deleteStudentTeam(String mobilephone, String teamId) throws Exception;
 
-    void updateStudentTeam(StudentTeam studentTeam) throws Exception;
+    void updateStudentTeam(String teamName, Integer projectId, String teamId, List<String> selectedStudentList) throws Exception;
 
     Map<String, Object> getStudentListByTeamId(Long pageNo, Long pageSize, String teamId);
+
+    void deleteStudentTeam(StudentTeam studentTeam);
 
 }

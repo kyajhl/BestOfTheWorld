@@ -28,4 +28,6 @@ public interface IStudentService extends IService<Student> {
 
     String getStudentMobilephoneById(Integer id) throws Exception;
 
+    String getStudentNameByMobilephone(String mobilephone) throws Exception;
+
 }

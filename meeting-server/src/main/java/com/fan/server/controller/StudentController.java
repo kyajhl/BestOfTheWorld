@@ -67,7 +67,7 @@ public class StudentController {
 
     @PutMapping("/updateInformation")
     @ApiOperation("完善学生信息")
-    public Result<Boolean>updateInformation(@RequestBody Student student){
+    public Result<Boolean> updateInformation(@RequestBody Student student){
         try {
             Boolean isMatchPassword = studentService.updateInformation(student);
             if (isMatchPassword) return Result.success(true, "修改成功");
@@ -76,6 +76,17 @@ public class StudentController {
             e.printStackTrace();
         }
         return Result.fail(202);
+    }
+
+    @GetMapping("/getSudentNameByMobilephone")
+    @ApiOperation("通过手机号查询学生姓名接口")
+    public Result<?> getStudentNameByMobilephone(@RequestParam String mobilephone) {
+        try {
+            String studentName = studentService.getStudentNameByMobilephone(mobilephone);
+            return Result.success(studentName);
+        }catch (Exception e) {
+            return Result.fail(e.getMessage());
+        }
     }
 
 }

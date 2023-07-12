@@ -151,4 +151,16 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         return student.getMobilephone();
     }
 
+    @Override
+    public String getStudentNameByMobilephone(String mobilephone) throws Exception {
+        LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Student::getMobilephone, mobilephone);
+        Student student = this.getOne(wrapper);
+        if(Objects.isNull(student)) {
+            //为空
+            throw new Exception("未找到该学生");
+        }
+        return student.getStudentName();
+    }
+
 }

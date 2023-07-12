@@ -76,7 +76,7 @@ public class TeamLogServiceImpl extends ServiceImpl<TeamLogMapper, TeamLog> impl
         //封装 map
         HashMap<String, Object> data = new HashMap<>();
         data.put("total", page.getTotal());
-        data.put("projectList", page.getRecords());
+        data.put("teamLogList", page.getRecords());
 
         return data;
     }

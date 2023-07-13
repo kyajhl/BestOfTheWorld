@@ -39,9 +39,9 @@ public class Message implements Serializable {
     @ApiModelProperty(value = "留言内容")
     private String content;
 
-    @ApiModelProperty(value = "学号")
-    @TableField("student_id")
-    private String studentId;
+    @ApiModelProperty(value = "学生手机号")
+    @TableField("mobilephone")
+    private String mobilephone;
 
 
 }

@@ -188,7 +188,7 @@
             :label-width="formLabelWidth"
           >
             <el-col :span="10">
-              <el-date-picker type="date" placeholder="选择日期" v-model="projectForm.beginDate"
+              <el-date-picker type="date" placeholder="选择开始日期" v-model="projectForm.beginDate"
                               style="width: 100%;"></el-date-picker>
             </el-col>
           </el-form-item>
@@ -199,7 +199,7 @@
             :label-width="formLabelWidth"
           >
             <el-col :span="10">
-              <el-date-picker type="date" placeholder="选择日期" v-model="projectForm.endDate"
+              <el-date-picker type="date" placeholder="选择结束日期" v-model="projectForm.endDate"
                               style="width: 100%;"></el-date-picker>
             </el-col>
           </el-form-item>
@@ -211,7 +211,7 @@
           >
             <el-input
               type="textarea"
-              :rows="2"
+              :rows="5"
               placeholder="请输入项目简介"
               v-model="projectForm.content">
             </el-input>
@@ -232,7 +232,7 @@
           >
             <el-input
               type="textarea"
-              :rows="2"
+              :rows="5"
               placeholder="请输入验收标准"
               v-model="projectForm.acceptanceCriteria">
             </el-input>

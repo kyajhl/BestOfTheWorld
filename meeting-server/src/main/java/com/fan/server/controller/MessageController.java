@@ -40,8 +40,8 @@ public class MessageController {
     @GetMapping("/getMessageList")
     @ApiOperation("获取留言列表接口")
     public Result<Map<String, Object>> getMessageList(
-            @RequestParam("pageNo") Long pageNo,
-            @RequestParam("pageSize") Long pageSize
+            @RequestParam(value = "pageNo", required = false) Long pageNo,
+            @RequestParam(value = "pageSize", required = false) Long pageSize
     ){
         try {
             Map<String, Object> data = messageService.getMessageList(pageNo, pageSize);

@@ -168,7 +168,7 @@
           <el-form-item
             v-if="teamForm.id === '777'"
           >
-            <hr>
+            <el-divider></el-divider>
           </el-form-item>
 
           <el-form-item
@@ -237,6 +237,7 @@
           teamId: '',
           projectId: '',
           teamName: '',
+          volume: '',
           selectedStudentList: [
             // "111-项目经理",
             // "222-技术经理"
@@ -301,6 +302,14 @@
     methods: {
       // 添加学生到团队
       addStudent2Form() {
+        // 先判断学生人数是否超过了项目容量
+        if (this.teamForm.selectedStudentList.length === this.teamForm.volume) {
+          this.$message.error("人数超过上限");
+          // 清空表单
+          this.mobilephone = '';
+          this.position = '';
+          return;
+        }
         // 先判断手机号是否重复添加
         let isHasMobilePhone = this.teamForm.selectedStudentOnlyList.some(student => {
           return student.value === this.mobilephone;
@@ -361,6 +370,7 @@
             response => {
               this.$message.success(response.msg);
               // 这个 response.data 里面是否有 teamId ??? (没有)
+              this.teamForm.volume = response.data.volume;
               this.teamForm.teamName = response.data.teamName;
               this.teamForm.projectId = response.data.projectId;
               this.teamForm.teamId = teamId;
@@ -386,8 +396,6 @@
                   }
                 );
               });
-              console.log(this.teamForm.selectedStudentList);
-              console.log(this.teamForm.selectedStudentOnlyList)
             },
             error => {
               this.$message.error("获取团队信息失败");
@@ -439,6 +447,9 @@
       clearForm() {
         // 清除表单验证提示信息
         this.$refs.teamFormRef.clearValidate();
+        // 删除 添加学生表单 的相关信息
+        this.mobilephone = '';
+        this.position = '';
       },
       // 分页数据
       handleSizeChange(pageSize) {

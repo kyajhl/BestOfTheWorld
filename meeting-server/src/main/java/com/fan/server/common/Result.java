@@ -31,7 +31,7 @@ public class Result<T> {
     }
 
     public static <T> Result<T> fail(String msg) {
-        return new Result<T>(201, msg, null);
+        return new Result<T>(202, msg, null);
     }
 
     public static <T> Result<T> fail(Integer code, String msg) {

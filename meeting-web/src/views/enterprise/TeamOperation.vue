@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div v-if="$route.name !== 'team_information'">
       <!-- 表单搜索 -->
       <el-card id="search">
         <el-row>
@@ -8,7 +8,7 @@
 
             <el-input
               v-model.lazy="searchForm.teamName"
-              placeholder="团队号"
+              placeholder="团队名"
               @keyup.enter.native="getTeamList"
             ></el-input>
 
@@ -57,12 +57,6 @@
                                          border
                                          style="width: 100%"
                         >
-                          <el-descriptions-item>
-                            <template slot="label">
-                              团队号
-                            </template>
-                            {{ team.teamId }}
-                          </el-descriptions-item>
                           <el-descriptions-item>
                             <template slot="label">
                               项目号
@@ -125,6 +119,18 @@
         <el-form :model="teamForm" :rules="rules" ref="teamFormRef">
 
           <el-form-item
+            prop="projectId"
+            label="项目号"
+            :label-width="formLabelWidth"
+          >
+            <el-input
+              v-model.number="teamForm.projectId"
+              autocomplete="off"
+              :disabled="teamForm.id === '777'"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item
             prop="teamName"
             label="团队名字"
             :label-width="formLabelWidth"
@@ -136,14 +142,67 @@
           </el-form-item>
 
           <el-form-item
-            prop="projectId"
-            label="项目号"
+            label="已有学生"
             :label-width="formLabelWidth"
+            v-if="teamForm.id === '777'"
+          >
+            <el-select
+              v-model="teamForm.selectedStudentList"
+              multiple
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in teamForm.selectedStudentOnlyList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value + '-' + item.position"
+              >
+                <span style="float: left; margin-right: 10px">{{ item.label }}</span>
+                <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                <span
+                  style="color: #8492a6; font-size: 13px; margin-right: 10px">{{ item.position }}</span>
+              </el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item
+            v-if="teamForm.id === '777'"
+          >
+            <hr>
+          </el-form-item>
+
+          <el-form-item
+            label="添加待选学生"
+            :label-width="formLabelWidth"
+            v-if="teamForm.id === '777'"
           >
             <el-input
-              v-model.number="teamForm.projectId"
+              v-model="mobilephone"
               autocomplete="off"
+              placeholder="请输入学生手机号"
+              style="width: 200px;margin-right: 20px"
             ></el-input>
+
+            <el-select
+              v-model="position"
+              placeholder="请选择"
+              style="margin-right: 20px"
+            >
+              <el-option
+                v-for="item in positionList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+
+            <el-button
+              type="primary"
+              @click="addStudent2Form"
+            >
+              添 加
+            </el-button>
+
           </el-form-item>
 
         </el-form>
@@ -160,7 +219,7 @@
 </template>
 
 <script>
-  import team from "@/api/team";
+  import enterpriseManage from "@/api/enterpriseManage";
 
   export default {
     name: "TeamOperation",
@@ -175,30 +234,106 @@
           teamName: ''
         },
         teamForm: {
+          teamId: '',
           projectId: '',
           teamName: '',
+          selectedStudentList: [
+            // "111-项目经理",
+            // "222-技术经理"
+          ],
+
+          selectedStudentOnlyList: [
+            // {
+            //   value: '111',
+            //   label: '陈少荣',
+            //   position: '项目经理'
+            // },
+            // {
+            //   value: '222',
+            //   label: '周杰伦',
+            //   position: '技术经理'
+            // },
+            // {
+            //   value: '333',
+            //   label: '温荣森',
+            //   position: '产品经理'
+            // },
+          ]
         },
+        mobilephone: '',
+        position: '',
+        positionList: [
+          {
+            value: '项目经理',
+            label: '项目经理'
+          }, {
+            value: '技术经理',
+            label: '技术经理'
+          }, {
+            value: '产品经理',
+            label: '产品经理'
+          }, {
+            value: '测试人员',
+            label: '测试人员'
+          }, {
+            value: '开发人员',
+            label: '开发人员'
+          }
+        ],
         rules: {
-          projectId: [{
-            required: true,
-            message: '请输入项目号',
-            trigger: 'blur'
-          },],
-          teamName: [{
-            required: true,
-            message: '请输入团队名字',
-            trigger: 'blur'
-          },],
+          projectId: [{required: true, message: '请输入项目号', trigger: 'blur'}],
+          teamName: [{required: true, message: '请输入团队名字', trigger: 'blur'}],
         },
         teamList: [],
         total: 0,
         currentPage: 1,
       }
     },
+    watch: {
+      'teamForm.selectedStudentList': {
+        handler(value) {
+          console.log(value)
+        },
+        deep: true,
+        immediate: true
+      },
+    },
     methods: {
-      // 获取团队列表出 没改
+      // 添加学生到团队
+      addStudent2Form() {
+        // 先判断手机号是否重复添加
+        let isHasMobilePhone = this.teamForm.selectedStudentOnlyList.some(student => {
+          return student.value === this.mobilephone;
+        });
+        if (isHasMobilePhone) {
+          this.$message.error("手机号重复添加，请重新添加");
+          // 清空表单
+          this.mobilephone = '';
+          this.position = '';
+          return;
+        }
+        // 封装对象
+        // label 为对应手机号的学生姓名
+        // 先调用接口获取相应手机号的姓名
+        enterpriseManage.getStudentName(this.mobilephone).then(
+          response => {
+            this.label = response.data.studentName;
+            let studentInformation = {value: this.mobilephone, label: this.label, position: this.position};
+            this.teamForm.selectedStudentOnlyList.push(studentInformation);
+            let studentInformationStr = this.mobilephone + '-' + this.position;
+            this.teamForm.selectedStudentList.push(studentInformationStr);
+            // 清空表单
+            this.mobilephone = '';
+            this.position = '';
+          },
+          error => {
+            this.$message.error("获取对应手机号的学生姓名失败");
+          }
+        );
+      },
+      // 获取团队列表
       getTeamList() {
-        team.getTeamList(this.searchForm).then(
+        enterpriseManage.getTeamList(this.searchForm).then(
           response => {
             this.teamList = response.data.teamList;
             this.total = response.data.total;
@@ -217,16 +352,42 @@
           };
         } else {
           this.title = '修改团队';
-          // 根据 teamId 查询团队信息 没改
-          team.getTeam(teamId).then(
+          this.teamForm.id = '777';
+          // 清除 teamForm 里面的信息
+          this.teamForm.selectedStudentOnlyList = [];
+          this.teamForm.selectedStudentList = [];
+          // 根据 teamId 查询团队信息
+          enterpriseManage.getTeam(teamId).then(
             response => {
               this.$message.success(response.msg);
-              this.projectForm = response.data;
-              this.projectForm.id = '777';
-              this.projectForm.beginDate = this.projectForm.beginDate.join('-');
-              this.projectForm.beginDate = this.getDateBySplit(this.projectForm.beginDate);
-              this.projectForm.endDate = this.projectForm.endDate.join('-');
-              this.projectForm.endDate = this.getDateBySplit(this.projectForm.endDate);
+              // 这个 response.data 里面是否有 teamId ??? (没有)
+              this.teamForm.teamName = response.data.teamName;
+              this.teamForm.projectId = response.data.projectId;
+              this.teamForm.teamId = teamId;
+              // selectedStudentList 和 selectedStudentOnlyList赋值，作为数据回显
+              let selectStudentList = response.data.selectedStudentList;
+              selectStudentList.map(selectedStudent => {
+                // 先根据手机号查询学生姓名
+                enterpriseManage.getStudentName(selectedStudent.mobilephone).then(
+                  response => {
+                    let studentName = response.data.studentName;
+                    let studentInformationOnly = {
+                      value: selectedStudent.mobilephone,
+                      label: studentName,
+                      position: selectedStudent.position
+                    };
+                    let studentInformation =
+                      selectedStudent.mobilephone + '-' + selectedStudent.position;
+                    this.teamForm.selectedStudentOnlyList.push(studentInformationOnly);
+                    this.teamForm.selectedStudentList.push(studentInformation);
+                  },
+                  error => {
+                    this.$message.error("获取学生姓名失败")
+                  }
+                );
+              });
+              console.log(this.teamForm.selectedStudentList);
+              console.log(this.teamForm.selectedStudentOnlyList)
             },
             error => {
               this.$message.error("获取团队信息失败");
@@ -235,12 +396,12 @@
         }
         this.dialogFormVisible = true;
       },
-      // 保存项目
+      // 保存团队
       saveTeam() {
         this.$refs.teamFormRef.validate(
           (valid) => {
             if (valid) {
-              team.saveTeam(this.teamForm).then(
+              enterpriseManage.saveTeam(this.teamForm).then(
                 response => {
                   this.$message.success(response.msg);
                   this.dialogFormVisible = false;
@@ -263,7 +424,7 @@
           cancelButtonText: "取消",
           type: "warning",
         }).then(() => {
-          team.deleteTeam(team.teamId).then(
+          enterpriseManage.deleteTeam(team.teamId).then(
             response => {
               this.$message.success(response.msg);
               this.getTeamList();
@@ -287,9 +448,7 @@
       handleCurrentChange(pageNo) {
         this.searchForm.pageNo = pageNo;
         this.getTeamList();
-      },
-      // 把日期字符串转换为日期
-
+      }
     },
     mounted() {
       this.getTeamList();

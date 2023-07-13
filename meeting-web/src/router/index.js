@@ -145,6 +145,19 @@ export const constantRoutes = [
         name: 'team_operation',
         component: () => import('@/views/enterprise/TeamOperation'),
         meta: {title: '团队操作', icon: 'team_operation'},
+        children: [
+          {
+            path: 'team_information',
+            name: 'team_information',
+            component: () => import('@/views/enterprise/team_information/TeamInformation'),
+            meta: {title: '团队信息'},
+            hidden: true,
+            // 获取路由参数
+            props({query: {teamId}}) {
+              return {teamId};
+            }
+          }
+        ]
       }
     ]
   },

@@ -20,7 +20,7 @@ import java.util.Objects;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author BestOfTheWorld
@@ -62,12 +62,12 @@ public class StudentController {
         if (!Objects.isNull(data)) {
             return Result.success(data);
         }
-        return Result.fail(203, "学生不存在");
+        return Result.fail(202, "学生不存在");
     }
 
     @PutMapping("/updateInformation")
     @ApiOperation("完善学生信息")
-    public Result<Boolean> updateInformation(@RequestBody Student student){
+    public Result<Boolean> updateInformation(@RequestBody Student student) {
         try {
             Boolean isMatchPassword = studentService.updateInformation(student);
             if (isMatchPassword) return Result.success(true, "修改成功");
@@ -78,13 +78,13 @@ public class StudentController {
         return Result.fail(202);
     }
 
-    @GetMapping("/getSudentNameByMobilephone")
+    @GetMapping("/getStudentNameByMobilePhone")
     @ApiOperation("通过手机号查询学生姓名接口")
-    public Result<?> getStudentNameByMobilephone(@RequestParam String mobilephone) {
+    public Result<Map<String, String>> getStudentNameByMobilePhone(@RequestParam String mobilephone) {
         try {
-            String studentName = studentService.getStudentNameByMobilephone(mobilephone);
-            return Result.success(studentName);
-        }catch (Exception e) {
+            Map<String, String> data = studentService.getStudentNameByMobilephone(mobilephone);
+            return Result.success(data);
+        } catch (Exception e) {
             return Result.fail(e.getMessage());
         }
     }

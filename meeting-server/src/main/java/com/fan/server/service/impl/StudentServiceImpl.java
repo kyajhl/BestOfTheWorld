@@ -152,7 +152,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     }
 
     @Override
-    public String getStudentNameByMobilephone(String mobilephone) throws Exception {
+    public Map<String, String> getStudentNameByMobilephone(String mobilephone) throws Exception {
         LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Student::getMobilephone, mobilephone);
         Student student = this.getOne(wrapper);
@@ -160,7 +160,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
             //为空
             throw new Exception("未找到该学生");
         }
-        return student.getStudentName();
+        HashMap<String, String> data = new HashMap<>();
+        data.put("studentName", student.getStudentName());
+        return data;
     }
 
 }

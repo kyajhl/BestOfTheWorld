@@ -37,7 +37,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team> implements IT
         try {
             Project project = projectService.getProjectById(projectId);
             if (Objects.isNull(project))
-                throw new Exception("团队不存在");
+                throw new Exception("项目不存在");
             Team team = new Team();
             team.setTeamId(UUID.randomUUID().toString());
             team.setTeamName(teamName);
@@ -55,7 +55,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team> implements IT
         wrapper.eq(Team::getTeamId, teamId);
         Team team1 = this.getOne(wrapper);
         if (Objects.isNull(team1)) {
-            //未找到项目
+            // 未找到项目
             throw new Exception(("团队不存在"));
         }
         this.remove(wrapper);
@@ -67,7 +67,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team> implements IT
         wrapper.eq(Team::getTeamId, team.getTeamId());
         Team team1 = this.getOne(wrapper);
         if (Objects.isNull(team1)) {
-            //未找到团队
+            // 未找到团队
             throw new Exception(("团队不存在"));
         }
         this.update(team, wrapper);
@@ -81,7 +81,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team> implements IT
         IPage<Team> page = new Page<>(pageNo, pageSize);
         this.page(page, wrapper);
 
-        //封装map
+        // 封装 map
         HashMap<String, Object> data = new HashMap<>();
         data.put("total", page.getTotal());
         data.put("teamList", page.getRecords());

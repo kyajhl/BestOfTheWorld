@@ -14,7 +14,7 @@ import java.util.Map;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author BestOfTheWorld
@@ -32,10 +32,10 @@ public class StudentTeamController {
     public Result<?> addStudentTeam(@RequestParam String mobilephone,
                                     @RequestParam String teamId,
                                     @RequestParam String position) {
-        try{
+        try {
             studentTeamService.addStudentTeam(mobilephone, teamId, position);
             return Result.success("添加成员成功");
-        }catch (Exception e) {
+        } catch (Exception e) {
             return Result.fail(e.getMessage());
         }
     }
@@ -44,10 +44,10 @@ public class StudentTeamController {
     @ApiOperation("从团队删除学生接口")
     public Result<?> deleteStudentTeam(@RequestParam String mobilephone,
                                        @RequestParam String teamId) {
-        try{
+        try {
             studentTeamService.deleteStudentTeam(mobilephone, teamId);
             return Result.success("删除成员成功");
-        }catch (Exception e){
+        } catch (Exception e) {
             return Result.fail(e.getMessage());
         }
     }
@@ -55,15 +55,18 @@ public class StudentTeamController {
     @PutMapping("/updateStudentTeam")
     @ApiOperation("更新学生在团队中的信息接口")
     public Result<?> updateStudentTeam(
-            @RequestParam String teamName,
-            @RequestParam Integer projectId,
-            @RequestParam String teamId,
-            @RequestParam List<String> selectedStudentList
+            @RequestParam(value = "teamName") String teamName,
+            @RequestParam(value = "projectId") Integer projectId,
+            @RequestParam(value = "teamId") String teamId,
+            @RequestParam(value = "selectedStudentList") List<String> selectedStudentList
     ) {
+
+        System.out.println(teamName + '-' + projectId + '-' + teamId + '-' + selectedStudentList);
+
         try {
             studentTeamService.updateStudentTeam(teamName, projectId, teamId, selectedStudentList);
             return Result.success("修改成功");
-        }catch (Exception e){
+        } catch (Exception e) {
             return Result.fail(e.getMessage());
         }
     }
@@ -73,11 +76,11 @@ public class StudentTeamController {
     public Result<Map<String, Object>> getStudentListByTeamId(
             @RequestParam("pageNo") Long pageNo,
             @RequestParam("pageSize") Long pageSize,
-            @RequestParam(required = false, value = "teamId") String teamId){
-        try{
+            @RequestParam(required = false, value = "teamId") String teamId) {
+        try {
             Map<String, Object> data = studentTeamService.getStudentListByTeamId(pageNo, pageSize, teamId);
             return Result.success(data, "获取成员成功");
-        }catch (Exception e) {
+        } catch (Exception e) {
             return Result.fail(e.getMessage());
         }
     }
@@ -85,29 +88,28 @@ public class StudentTeamController {
     @GetMapping("/getTeamInfById")
     @ApiOperation("获取团队所有信息接口")
     public Result<Map<String, Object>> getTeamInfById(@RequestParam String teamId) {
-        try{
+        try {
             Map<String, Object> data = studentTeamService.getTeamInfById(teamId);
             /*
-            * teamName
-            * projectId
-            * studentList
-            * */
-            return Result.success(data);
-        }catch (Exception e) {
+             * teamName
+             * projectId
+             * selectedStudentList
+             * */
+            return Result.success(data, "获取团队信息成功");
+        } catch (Exception e) {
             return Result.fail(e.getMessage());
         }
     }
 
-    @GetMapping("/deleteTeam")
+    @DeleteMapping("/deleteTeam")
     @ApiOperation("删除整个团队")
     public Result<?> deleteTeam(@RequestParam String teamId) {
         try {
             studentTeamService.deleteTeam(teamId);
             return Result.success("删除成功");
-        }catch (Exception e){
+        } catch (Exception e) {
             return Result.fail(e.getMessage());
         }
-
     }
 
 }

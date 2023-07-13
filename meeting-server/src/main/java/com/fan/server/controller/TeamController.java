@@ -33,14 +33,13 @@ public class TeamController {
             teamService.addTeam(team.getTeamName(), team.getProjectId());
             return Result.success("添加团队成功");
         } catch (Exception e) {
-            return Result.fail("项目不存在");
+            return Result.fail("团队不存在");
         }
     }
 
-
     @DeleteMapping("/deleteTeam")
     @ApiOperation("删除团队接口")
-    public Result<?> delete(@RequestBody String teamId) {
+    public Result<?> delete(@RequestParam String teamId) {
         try {
             teamService.deleteTeam(teamId);
             return Result.success("删除团队成功");
@@ -76,5 +75,4 @@ public class TeamController {
         }
         return Result.fail(202);
     }
-
 }

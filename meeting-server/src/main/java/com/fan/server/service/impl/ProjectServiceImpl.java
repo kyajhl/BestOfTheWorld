@@ -106,4 +106,14 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         return project;
     }
 
+    @Override
+    public Integer getVolumeById(Integer projectId) throws Exception {
+        LambdaQueryWrapper<Project> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Project::getProjectId, projectId);
+        Project project = this.getOne(wrapper);
+        if(Objects.isNull(project))
+            throw new Exception("未找到项目");
+        return project.getVolume();
+    }
+
 }

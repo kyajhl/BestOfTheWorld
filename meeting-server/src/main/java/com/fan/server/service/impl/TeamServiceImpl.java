@@ -38,6 +38,13 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team> implements IT
             Project project = projectService.getProjectById(projectId);
             if (Objects.isNull(project))
                 throw new Exception("项目不存在");
+            LambdaQueryWrapper<Team> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(Team::getTeamName, teamName);
+            wrapper.eq(Team::getProjectId, projectId);
+            if(!Objects.isNull(this.getOne(wrapper))){
+                //非空，已存在
+                throw new Exception("团队名重复");
+            }
             Team team = new Team();
             team.setTeamId(UUID.randomUUID().toString());
             team.setTeamName(teamName);

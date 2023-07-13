@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fan.server.pojo.*;
 import com.fan.server.mapper.StudentTeamMapper;
+import com.fan.server.service.IProjectService;
 import com.fan.server.service.IStudentService;
 import com.fan.server.service.IStudentTeamService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -32,6 +33,9 @@ public class StudentTeamServiceImpl extends ServiceImpl<StudentTeamMapper, Stude
 
     @Autowired
     ITeamService teamService;
+
+    @Autowired
+    IProjectService projectService;
 
     @Override
     public void addStudentTeam(String mobilephone, String teamId, String position) throws Exception {
@@ -142,6 +146,11 @@ public class StudentTeamServiceImpl extends ServiceImpl<StudentTeamMapper, Stude
         Map<String, Object> data = new HashMap<>();
         data.put("teamName", team.getTeamName());
         data.put("projectId", team.getProjectId());
+        try {
+            data.put("volume", projectService.getVolumeById(team.getProjectId()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         LambdaQueryWrapper<StudentTeam> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(StudentTeam::getTeamId, teamId);
         List<StudentTeam> list = this.list(wrapper);

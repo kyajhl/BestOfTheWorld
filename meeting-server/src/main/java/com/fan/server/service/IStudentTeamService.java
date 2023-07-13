@@ -26,4 +26,8 @@ public interface IStudentTeamService extends IService<StudentTeam> {
 
     void deleteStudentTeam(StudentTeam studentTeam);
 
+    Map<String ,Object> getTeamInfById(String teamId);
+
+    void deleteTeam(String teamId) throws Exception;
+
 }

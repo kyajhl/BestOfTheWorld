@@ -3,10 +3,8 @@ package com.fan.server.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.fan.server.pojo.Project;
-import com.fan.server.pojo.StudentTeam;
+import com.fan.server.pojo.*;
 import com.fan.server.mapper.StudentTeamMapper;
-import com.fan.server.pojo.Team;
 import com.fan.server.service.IStudentService;
 import com.fan.server.service.IStudentTeamService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -16,10 +14,7 @@ import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * <p>
@@ -90,6 +85,14 @@ public class StudentTeamServiceImpl extends ServiceImpl<StudentTeamMapper, Stude
     }
 
     @Override
+    public void deleteTeam(String teamId) throws Exception{
+        LambdaQueryWrapper<StudentTeam> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(StudentTeam::getTeamId, teamId);
+        this.remove(wrapper);
+        teamService.deleteTeam(teamId);
+    }
+
+    @Override
     public void deleteStudentTeam(StudentTeam studentTeam) {
         removeById(studentTeam.getId());
     }
@@ -128,8 +131,32 @@ public class StudentTeamServiceImpl extends ServiceImpl<StudentTeamMapper, Stude
         //封装 map
         HashMap<String, Object> data = new HashMap<>();
         data.put("total", page.getTotal());
-        data.put("projectList", page.getRecords());
+        data.put("StudentList", page.getRecords());
 
+        return data;
+    }
+
+    @Override
+    public Map<String, Object> getTeamInfById(String teamId) {
+        Team team = teamService.getTeamByTeamId(teamId);
+        Map<String, Object> data = new HashMap<>();
+        data.put("teamName", team.getTeamName());
+        data.put("projectId", team.getProjectId());
+        LambdaQueryWrapper<StudentTeam> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(StudentTeam::getTeamId, teamId);
+        List<StudentTeam> list = this.list(wrapper);
+        List<StudentTeamInf> list1 = new ArrayList<>();
+        list.forEach((value) -> {
+            StudentTeamInf now = new StudentTeamInf();
+            now.setStudentTeamInf(value);
+            try {
+                now.setMobilephone(studentService.getStudentMobilephoneById(value.getStudentId()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            list1.add(now);
+        });
+        data.put("selectedStudentList", list1);
         return data;
     }
 

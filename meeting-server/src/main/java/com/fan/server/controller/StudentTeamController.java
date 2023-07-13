@@ -82,4 +82,32 @@ public class StudentTeamController {
         }
     }
 
+    @GetMapping("/getTeamInfById")
+    @ApiOperation("获取团队所有信息接口")
+    public Result<Map<String, Object>> getTeamInfById(@RequestParam String teamId) {
+        try{
+            Map<String, Object> data = studentTeamService.getTeamInfById(teamId);
+            /*
+            * teamName
+            * projectId
+            * studentList
+            * */
+            return Result.success(data);
+        }catch (Exception e) {
+            return Result.fail(e.getMessage());
+        }
+    }
+
+    @GetMapping("/deleteTeam")
+    @ApiOperation("删除整个团队")
+    public Result<?> deleteTeam(@RequestParam String teamId) {
+        try {
+            studentTeamService.deleteTeam(teamId);
+            return Result.success("删除成功");
+        }catch (Exception e){
+            return Result.fail(e.getMessage());
+        }
+
+    }
+
 }

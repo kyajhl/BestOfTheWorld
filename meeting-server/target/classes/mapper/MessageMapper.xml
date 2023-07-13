@@ -7,7 +7,7 @@
         <id column="id" property="id" />
         <result column="message_date" property="messageDate" />
         <result column="content" property="content" />
-        <result column="student_id" property="studentId" />
+        <result column="mobilephone" property="mobilephone" />
     </resultMap>
 
     <!-- 通用查询结果列 -->

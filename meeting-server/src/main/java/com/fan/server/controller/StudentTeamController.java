@@ -60,9 +60,6 @@ public class StudentTeamController {
             @RequestParam(value = "teamId") String teamId,
             @RequestParam(value = "selectedStudentList") List<String> selectedStudentList
     ) {
-
-        System.out.println(teamName + '-' + projectId + '-' + teamId + '-' + selectedStudentList);
-
         try {
             studentTeamService.updateStudentTeam(teamName, projectId, teamId, selectedStudentList);
             return Result.success("修改成功");
@@ -91,12 +88,13 @@ public class StudentTeamController {
         try {
             Map<String, Object> data = studentTeamService.getTeamInfById(teamId);
             /*
-             * teamName
-             * projectId
-             * selectedStudentList
-             * */
+            * teamName
+            * projectId
+            * volume
+            * selectedStudentList
+            * */
             return Result.success(data, "获取团队信息成功");
-        } catch (Exception e) {
+        }catch (Exception e) {
             return Result.fail(e.getMessage());
         }
     }

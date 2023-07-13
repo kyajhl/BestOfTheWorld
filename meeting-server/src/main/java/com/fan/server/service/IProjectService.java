@@ -26,4 +26,6 @@ public interface IProjectService extends IService<Project> {
 
     Project getProjectById(Integer projectId) throws Exception;
 
+    Integer getVolumeById(Integer projectId) throws Exception;
+
 }

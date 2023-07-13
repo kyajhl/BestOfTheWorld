@@ -5,12 +5,17 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fan.server.pojo.Message;
 import com.fan.server.mapper.MessageMapper;
+import com.fan.server.pojo.MessageAndName;
 import com.fan.server.pojo.Project;
 import com.fan.server.service.IMessageService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fan.server.service.IStudentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,13 +29,16 @@ import java.util.Map;
 @Service
 public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> implements IMessageService {
 
+    @Autowired
+    IStudentService studentService;
+
     @Override
     public void addMessage(Message message) {
         this.save(message);
     }
 
     @Override
-    public Map<String, Object> getMessageList(Long pageNo, Long pageSize) {
+    public Map<String, Object> getMessageListByPage(Long pageNo, Long pageSize) {
         LambdaQueryWrapper<Message> wrapper = new LambdaQueryWrapper<>();
         wrapper.orderByDesc(Message::getMessageDate);
 
@@ -42,6 +50,26 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         data.put("total", page.getTotal());
         data.put("messageList", page.getRecords());
 
+        return data;
+    }
+
+    @Override
+    public Map<String, Object> getMessageList() {
+        Map<String, Object> data = new HashMap<>();
+        LambdaQueryWrapper<Message> wrapper = new LambdaQueryWrapper<>();
+        List<Message> list =  this.list(wrapper);
+        List<MessageAndName> list1 = new ArrayList<>();
+        list.forEach((value) -> {
+            MessageAndName now = new MessageAndName();
+            now.setMessageInf(value);
+            try {
+                now.setStudentName(studentService.getStudentNameByPhone(value.getMobilephone()));
+                list1.add(now);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        data.put("messageList", list1);
         return data;
     }
 

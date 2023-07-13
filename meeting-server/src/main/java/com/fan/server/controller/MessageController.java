@@ -39,12 +39,9 @@ public class MessageController {
 
     @GetMapping("/getMessageList")
     @ApiOperation("获取留言列表接口")
-    public Result<Map<String, Object>> getMessageList(
-            @RequestParam(value = "pageNo", required = false) Long pageNo,
-            @RequestParam(value = "pageSize", required = false) Long pageSize
-    ){
+    public Result<Map<String, Object>> getMessageList(){
         try {
-            Map<String, Object> data = messageService.getMessageList(pageNo, pageSize);
+            Map<String, Object> data = messageService.getMessageList();
             return Result.success(data, "获取留言列表成功");
         } catch (Exception e) {
             e.printStackTrace();

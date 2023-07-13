@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 
@@ -35,6 +36,9 @@ public class StudentTeamInf implements Serializable {
 
     @ApiModelProperty(value = "手机号")
     private String mobilephone;
+
+    @ApiModelProperty(value = "学生姓名")
+    private String studentName;
 
     public void setStudentTeamInf(StudentTeam studentTeam) {
         this.setStudentId(studentTeam.getStudentId());

@@ -17,6 +17,8 @@ public interface IMessageService extends IService<Message> {
 
     void addMessage(Message message);
 
-    Map<String, Object> getMessageList(Long pageNo, Long pageSize);
+    Map<String, Object> getMessageListByPage(Long pageNo, Long pageSize);
+
+    Map<String, Object> getMessageList();
 
 }

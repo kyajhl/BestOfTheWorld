@@ -160,9 +160,21 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
             //为空
             throw new Exception("未找到该学生");
         }
-        HashMap<String, String> data = new HashMap<>();
-        data.put("studentName", student.getStudentName());
+        Map<String, String> data = new HashMap<>();
+        data.put("Mobilephone", student.getMobilephone());
         return data;
+    }
+
+    @Override
+    public String getStudentNameByPhone(String mobilephone) throws Exception {
+        LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Student::getMobilephone, mobilephone);
+        Student student = this.getOne(wrapper);
+        if(Objects.isNull(student)) {
+            //为空
+            throw new Exception("未找到该学生");
+        }
+        return student.getStudentName();
     }
 
 }

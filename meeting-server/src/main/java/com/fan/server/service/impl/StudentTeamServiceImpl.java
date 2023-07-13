@@ -169,4 +169,31 @@ public class StudentTeamServiceImpl extends ServiceImpl<StudentTeamMapper, Stude
         return data;
     }
 
+    @Override
+    public Map<String, Object> getTeamInfomation(String teamId) throws Exception {
+        Team team = teamService.getTeamByTeamId(teamId);
+        Map<String, Object> data = new HashMap<>();
+        data.put("teamName", team.getTeamName());
+        data.put("projectId", team.getProjectId());
+        data.put("projectName", projectService.getProjectNameById(team.getProjectId()));
+        LambdaQueryWrapper<StudentTeam> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(StudentTeam::getTeamId, teamId);
+        List<StudentTeam> list = this.list(wrapper);
+        List<StudentTeamInf> list1 = new ArrayList<>();
+        list.forEach((value) -> {
+            StudentTeamInf now = new StudentTeamInf();
+            now.setStudentTeamInf(value);
+            try {
+                String nowMobilephone = studentService.getStudentMobilephoneById(value.getStudentId());
+                now.setMobilephone(nowMobilephone);
+                now.setStudentName(studentService.getStudentNameByPhone(nowMobilephone));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            list1.add(now);
+        });
+        data.put("selectedStudentList", list1);
+        return data;
+    }
+
 }

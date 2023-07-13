@@ -100,12 +100,29 @@ public class StudentTeamController {
     }
 
     @DeleteMapping("/deleteTeam")
-    @ApiOperation("删除整个团队")
+    @ApiOperation("删除整个团队接口")
     public Result<?> deleteTeam(@RequestParam String teamId) {
         try {
             studentTeamService.deleteTeam(teamId);
             return Result.success("删除成功");
         } catch (Exception e) {
+            return Result.fail(e.getMessage());
+        }
+    }
+
+    @GetMapping("/getTeamInfomation")
+    @ApiOperation("获取团队信息和成员所有信息接口")
+    public Result<?> getTeamInfomation(@RequestParam String teamId) {
+        try {
+            Map<String, Object> data = studentTeamService.getTeamInfomation(teamId);
+            /*
+             * teamName
+             * projectId
+             * projectName
+             * studentList
+             * */
+            return Result.success(data, "获取团队信息成功");
+        }catch (Exception e) {
             return Result.fail(e.getMessage());
         }
     }

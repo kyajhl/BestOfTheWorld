@@ -111,4 +111,11 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team> implements IT
         this.updateById(team);
     }
 
+    @Override
+    public Team getTeamByTeamId(String teamId) {
+        LambdaQueryWrapper<Team> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Team::getTeamId, teamId);
+        return this.getOne(wrapper);
+    }
+
 }

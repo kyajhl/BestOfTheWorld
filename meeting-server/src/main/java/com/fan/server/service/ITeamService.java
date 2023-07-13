@@ -28,4 +28,6 @@ public interface ITeamService extends IService<Team> {
 
     void TeamNumberSubOne(String teamId) throws Exception;
 
+    Team getTeamByTeamId(String teamId);
+
 }

@@ -47,7 +47,6 @@ public class MessageController {
             e.printStackTrace();
         }
         return Result.fail(202);
-
     }
 
 }

@@ -66,7 +66,7 @@
 
                           <el-descriptions-item>
                             <template slot="label">
-                              团队名字
+                              团队名
                             </template>
                             {{ team.teamName }}
                           </el-descriptions-item>
@@ -132,7 +132,7 @@
 
           <el-form-item
             prop="teamName"
-            label="团队名字"
+            label="团队名"
             :label-width="formLabelWidth"
           >
             <el-input
@@ -283,7 +283,7 @@
         ],
         rules: {
           projectId: [{required: true, message: '请输入项目号', trigger: 'blur'}],
-          teamName: [{required: true, message: '请输入团队名字', trigger: 'blur'}],
+          teamName: [{required: true, message: '请输入团队名', trigger: 'blur'}],
         },
         teamList: [],
         total: 0,

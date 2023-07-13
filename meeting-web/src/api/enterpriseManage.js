@@ -105,5 +105,18 @@ export default {
       method: 'delete',
       params: {teamId}
     })
+  },
+  getTeamInformation(teamId) {
+    return request({
+      url: '/student-team/getTeamInformation',
+      method: 'get',
+      params: {teamId}
+    })
+  },
+  getMessageList() {
+    return request({
+      url: '/message/getMessageList',
+      method: 'get'
+    })
   }
 }

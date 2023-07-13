@@ -110,11 +110,11 @@ public class StudentTeamController {
         }
     }
 
-    @GetMapping("/getTeamInfomation")
+    @GetMapping("/getTeamInformation")
     @ApiOperation("获取团队信息和成员所有信息接口")
-    public Result<?> getTeamInfomation(@RequestParam String teamId) {
+    public Result<?> getTeamInformation(@RequestParam String teamId) {
         try {
-            Map<String, Object> data = studentTeamService.getTeamInfomation(teamId);
+            Map<String, Object> data = studentTeamService.getTeamInformation(teamId);
             /*
              * teamName
              * projectId

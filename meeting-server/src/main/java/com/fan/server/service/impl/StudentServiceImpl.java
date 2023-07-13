@@ -161,7 +161,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
             throw new Exception("未找到该学生");
         }
         Map<String, String> data = new HashMap<>();
-        data.put("Mobilephone", student.getMobilephone());
+        data.put("studentName", student.getStudentName());
         return data;
     }
 

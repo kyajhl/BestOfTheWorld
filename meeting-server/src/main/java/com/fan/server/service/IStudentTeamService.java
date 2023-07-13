@@ -30,6 +30,6 @@ public interface IStudentTeamService extends IService<StudentTeam> {
 
     void deleteTeam(String teamId) throws Exception;
 
-    Map<String, Object> getTeamInfomation(String teamId) throws Exception;
+    Map<String, Object> getTeamInformation(String teamId) throws Exception;
 
 }

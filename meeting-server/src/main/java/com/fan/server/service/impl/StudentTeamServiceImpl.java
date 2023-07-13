@@ -170,7 +170,7 @@ public class StudentTeamServiceImpl extends ServiceImpl<StudentTeamMapper, Stude
     }
 
     @Override
-    public Map<String, Object> getTeamInfomation(String teamId) throws Exception {
+    public Map<String, Object> getTeamInformation(String teamId) throws Exception {
         Team team = teamService.getTeamByTeamId(teamId);
         Map<String, Object> data = new HashMap<>();
         data.put("teamName", team.getTeamName());
@@ -192,7 +192,7 @@ public class StudentTeamServiceImpl extends ServiceImpl<StudentTeamMapper, Stude
             }
             list1.add(now);
         });
-        data.put("selectedStudentList", list1);
+        data.put("studentList", list1);
         return data;
     }
 

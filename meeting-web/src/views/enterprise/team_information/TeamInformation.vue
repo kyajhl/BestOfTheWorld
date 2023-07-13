@@ -33,7 +33,10 @@
                     v-for="student in teamInformation.studentList"
                     :key="student.mobilephone"
                   >
-                    <el-card :body-style="{ padding: '0px' }">
+                    <el-card
+                      :body-style="{ padding: '0px' }"
+                      style="margin-right: 10px"
+                    >
                       <div style="padding: 14px;">
                         <p>姓名：{{ student.studentName }}</p>
                         <p>手机号：{{ student.mobilephone }}</p>
@@ -44,7 +47,7 @@
                 </el-row>
               </el-descriptions-item>
 
-              <el-descriptions-item label="小组留言">
+              <el-descriptions-item label="全部留言">
                 <el-card class="box-card">
                   <div slot="header" class="clearfix">
                     <span>全部留言</span>
@@ -77,58 +80,45 @@
           teamName: '',
           projectId: '',
           projectName: '',
-          studentList: [
-            {
-              studentName: '温荣森',
-              mobilephone: '111',
-              position: '产品经理'
-            },
-            {
-              studentName: '周杰伦',
-              mobilephone: '222',
-              position: '项目经理'
-            },
-            {
-              studentName: '陈少荣',
-              mobilephone: '333',
-              position: '技术经理'
-            },
-            {
-              studentName: '陈少荣',
-              mobilephone: '444',
-              position: '技术经理'
-            },
-            {
-              studentName: '陈少荣',
-              mobilephone: '555',
-              position: '技术经理'
-            }
-          ],
+          studentList: [],
         },
-        messageList: [
-          {
-            studentName: '温荣森',
-            content: '666',
-            messageDate: '2023-7-13'
-          },
-          {
-            studentName: '周杰伦',
-            content: '777',
-            messageDate: '2023-7-12'
-          },
-          {
-            studentName: '陈少荣',
-            content: '888',
-            messageDate: '2023-7-11'
-          }
-        ]
+        messageList: []
       }
     },
     props: ["teamId"],
     methods: {
       // 获取团队信息
       getTeamInformation() {
+        enterpriseManage.getTeamInformation(this.teamId).then(
+          response => {
+            this.teamInformation.teamId = this.teamId;
+            // 赋值
+            this.teamInformation.teamName = response.data.teamName;
+            this.teamInformation.projectId = response.data.projectId;
+            this.teamInformation.projectName = response.data.projectName;
+            this.teamInformation.studentList = response.data.studentList;
 
+            this.$message.success(response.msg);
+          },
+          error => {
+            this.$message.error("获取团队信息失败");
+          }
+        );
+        enterpriseManage.getMessageList().then(
+          response => {
+            this.messageList = response.data.messageList;
+            this.messageList.map(message => {
+              message.messageDate = message.messageDate.join('-');
+              return message;
+            });
+            this.$message.success(response.msg);
+
+            console.log(this.messageList)
+          },
+          error => {
+            this.$message.error("获取留言列表失败")
+          }
+        )
       },
       // 把日期字符串转换为日期
       getDateBySplit(currentTime) {
@@ -149,5 +139,25 @@
 <style scoped>
   .dashboard-container {
     margin-top: 30px;
+  }
+  .text {
+    font-size: 14px;
+  }
+
+  .item {
+    margin-bottom: 18px;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
+  .clearfix:after {
+    clear: both
+  }
+
+  .box-card {
+    width: 900px;
   }
 </style>

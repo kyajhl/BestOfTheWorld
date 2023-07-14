@@ -89,4 +89,16 @@ public class StudentController {
         }
     }
 
+    @GetMapping("/getIdByMobilePhone")
+    @ApiOperation("通过手机号获取学生的id")
+    public Result<?> getIdByMobilePhone(@RequestParam String mobilephone) {
+        try {
+            Map<String, Integer> data = studentService.getIdByMobilePhone(mobilephone);
+            return Result.success(data);
+        } catch (Exception e) {
+            return Result.fail(e.getMessage());
+        }
+    }
+
+
 }

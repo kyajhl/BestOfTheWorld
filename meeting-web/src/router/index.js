@@ -61,8 +61,8 @@ export const constantRoutes = [
         meta: {title: '学生操作', icon: 'student_operation'},
         children: [
           {
-            path: 'team_information',
-            name: 'team_information',
+            path: 'student_team_information',
+            name: 'student_team_information',
             component: () => import('@/views/student/team_information/TeamInformation'),
             meta: {title: '已选团队信息'},
             hidden: true,

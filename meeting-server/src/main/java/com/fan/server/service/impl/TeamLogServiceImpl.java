@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -30,6 +31,9 @@ public class TeamLogServiceImpl extends ServiceImpl<TeamLogMapper, TeamLog> impl
 
     @Autowired
     ITeamService teamService;
+
+    @Autowired
+    private TeamLogMapper teamLogMapper;
 
     @Override
     public void addTeamLog(String content, String teamId) throws Exception {
@@ -56,6 +60,7 @@ public class TeamLogServiceImpl extends ServiceImpl<TeamLogMapper, TeamLog> impl
             //为空，未找到该日志
             throw new Exception("该团队日志不存在");
         }
+        teamLog.setLogDate(teamLog.getLogDate().plusDays(1));
         this.updateById(teamLog);
     }
 
@@ -65,18 +70,13 @@ public class TeamLogServiceImpl extends ServiceImpl<TeamLogMapper, TeamLog> impl
     }
 
     @Override
-    public Map<String, Object> getTeamLogList(Long pageNo, Long pageSize, LocalDate logDate) {
-        LambdaQueryWrapper<TeamLog> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(TeamLog::getLogDate, logDate);
-        wrapper.orderByAsc(TeamLog::getLogDate);
-
-        IPage<TeamLog> page = new Page<>(pageNo, pageSize);
-        this.page(page, wrapper);
+    public Map<String, Object> getTeamLogList(String studentId) {
+        // 写 sql 查询
+        List<TeamLog> teamLogsList = teamLogMapper.getTeamLogList(studentId);
 
         //封装 map
         HashMap<String, Object> data = new HashMap<>();
-        data.put("total", page.getTotal());
-        data.put("teamLogList", page.getRecords());
+        data.put("teamLogsList", teamLogsList);
 
         return data;
     }

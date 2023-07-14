@@ -177,4 +177,14 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         return student.getStudentName();
     }
 
+    @Override
+    public Map<String, Integer> getIdByMobilePhone(String mobilephone) {
+        LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Student::getMobilephone, mobilephone);
+        Student student = this.getOne(wrapper);
+
+        HashMap<String, Integer> data = new HashMap<>();
+        data.put("id", student.getId());
+        return data;
+    }
 }

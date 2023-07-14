@@ -137,13 +137,13 @@ public class StudentTeamController {
             @RequestParam(required = false, value = "teamName") String teamName) {
         try{
             /*
-            项目名
-            团队名
-            团队人数
-            团队Id
+                项目名
+                团队名
+                团队人数
+                团队Id
              */
             Map<String, Object> data = studentTeamService.getTeamListByMobilephone(pageNo, pageSize, mobilephone, teamName);
-            return Result.success(data, "获取学生选择的团队列表成功");
+            return Result.success(data, "获取学生选择的团队列表");
         }catch (Exception e) {
             return Result.fail(e.getMessage());
         }

@@ -32,4 +32,5 @@ public interface IStudentService extends IService<Student> {
 
     String getStudentNameByPhone(String mobilephone) throws Exception;
 
+    Map<String, Integer> getIdByMobilePhone(String mobilephone);
 }

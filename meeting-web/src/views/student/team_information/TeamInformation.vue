@@ -43,21 +43,105 @@
                 </el-row>
               </el-descriptions-item>
 
+              <el-descriptions-item label="操作">
+
+                <el-row>
+                  <el-col :span="12">
+                    <el-button
+                      type="primary"
+                      round
+                      style="margin-right: 10px"
+                      @click="openDialog('777')"
+                      :disabled="this.position !== '项目经理'"
+                    >
+                      发布团队日志
+                    </el-button>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-button
+                      type="primary"
+                      round
+                      @click="openDialog('666')"
+                    >
+                      提交实训总结
+                    </el-button>
+                  </el-col>
+                </el-row>
+
+              </el-descriptions-item>
+
             </el-descriptions>
           </div>
         </el-col>
       </el-row>
     </div>
+
+    <!-- 日志和实训总结表单 -->
+    <el-dialog
+      @close="clearForm"
+      :title="title"
+      :visible.sync="dialogFormVisible"
+    >
+
+      <el-form
+        :model="logsForm"
+        :rules="rules"
+        ref="logsFormRef"
+        v-if="this.id === '777'"
+      >
+        <el-form-item
+          prop="logsContent"
+          label="日志"
+          :label-width="formLabelWidth"
+        >
+          <el-input
+            type="textarea"
+            :rows="5"
+            placeholder="请输入日志"
+            v-model="logsForm.logsContent">
+          </el-input>
+        </el-form-item>
+      </el-form>
+
+      <el-form
+        :model="summaryForm"
+        :rules="rules"
+        ref="summaryFormRef"
+        v-if="this.id === '666'"
+      >
+        <el-form-item
+          prop="summaryContent"
+          label="实训总结"
+          :label-width="formLabelWidth"
+        >
+          <el-input
+            type="textarea"
+            :rows="5"
+            placeholder="请输入实训总结"
+            v-model="summaryForm.content">
+          </el-input>
+        </el-form-item>
+      </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="saveInformation">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
   import studentManage from "@/api/studentManage";
+  import {mapGetters} from 'vuex';
 
   export default {
     name: "TeamInformation",
     data() {
       return {
+        id: '',
+        formLabelWidth: '100px',
+        dialogFormVisible: false,
         teamInformation: {
           teamId: '',
           teamName: '',
@@ -65,11 +149,79 @@
           projectName: '',
           studentList: [],
         },
-        messageList: []
+        messageList: [],
+        logsForm: {
+          logsContent: '',
+          teamId: ''
+        },
+        summaryForm: {
+          content: '',
+          studentId: '',
+          teamId: ''
+        },
+        title: '',
+        rules: {
+          logsContent: [
+            {required: true, message: '请填写日志', trigger: 'blur'}
+          ],
+          summaryContent: [
+            {required: true, message: '请填写实训总结', trigger: 'blur'}
+          ]
+        },
+        position: ''
       }
     },
     props: ["teamId"],
+    computed: {
+      ...mapGetters(["mobilephone"]),
+    },
     methods: {
+      // 打开表单
+      openDialog(id) {
+        if (id === '666') {
+          // 实训总结
+          this.id = '666';
+          this.title = '提交实训总结';
+          this.dialogFormVisible = true;
+          this.summaryForm = {
+            studentId: this.mobilephone,
+            teamId: this.teamId
+          };
+        } else {
+          // 日志
+          this.id = '777';
+          this.title = '发布日志';
+          this.dialogFormVisible = true;
+          this.logsForm = {
+            teamId: this.teamId
+          };
+        }
+      },
+      // 保存信息
+      saveInformation() {
+        if (this.id === '666') {
+          // 保存总结
+          studentManage.addSummary(this.summaryForm).then(
+            response => {
+              this.$message.success(response.msg);
+            },
+            error => {
+              this.$message.error("添加实训总结失败");
+            }
+          )
+        } else {
+          // 保存日志
+          studentManage.addTeamLogs(this.logsForm).then(
+            response => {
+              this.$message.success(response.msg);
+            },
+            error => {
+              this.$message.error("添加日志失败");
+            }
+          )
+        }
+        this.dialogFormVisible = false;
+      },
       // 获取团队信息
       getTeamInformation() {
         studentManage.getTeamInformation(this.teamId).then(
@@ -78,6 +230,12 @@
             this.teamInformation.teamName = response.data.teamName;
             this.teamInformation.projectId = response.data.projectId;
             this.teamInformation.projectName = response.data.projectName;
+            this.teamInformation.studentList = response.data.studentList;
+            this.teamInformation.studentList.forEach(student => {
+              if (student.mobilephone === this.mobilephone) {
+                this.position = student.position;
+              }
+            });
             this.$message.success(response.msg);
           },
           error => {
@@ -85,7 +243,15 @@
           }
         )
       },
-
+      // 清除表单的信息
+      clearForm() {
+        // 清除表单验证提示信息
+        if (this.id === '666') {
+          this.$refs.summaryFormRef.clearValidate();
+        } else {
+          this.$refs.logsFormRef.clearValidate();
+        }
+      },
       // 把日期字符串转换为日期
       getDateBySplit(currentTime) {
         let dateArray = currentTime.split('-');

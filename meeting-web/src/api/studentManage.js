@@ -14,10 +14,16 @@ export default {
       params: searchForm
     })
   },
-  addLogs(logsForm) {
+  addPersonLogs(logsForm) {
     return request({
       url: `/student-log/addStudentLog?mobilephone=${logsForm.mobilephone}&content=${logsForm.logsContent}`,
-      method: 'post',
+      method: 'post'
+    })
+  },
+  addTeamLogs(logsForm) {
+    return request({
+      url: `/team-log/addTeamLog?content=${logsForm.logsContent}&teamId=${logsForm.teamId}`,
+      method: 'post'
     })
   },
   addSummary(summaryForm) {
@@ -31,7 +37,55 @@ export default {
     return request({
       url: '/student-team/getTeamInformation',
       method: 'get',
-      params: teamId
+      params: {teamId}
+    })
+  },
+  getMessageList() {
+    return request({
+      url: '/message/getMessageList',
+      method: 'get'
+    })
+  },
+  addMessage(data) {
+    return request({
+      url: '/message/addMessage',
+      method: 'post',
+      data
+    })
+  },
+  getPersonLogsList(mobilephone) {
+    return request({
+      url: '/student-log/getStudentLogList',
+      method: 'get',
+      params: {mobilephone}
+    })
+  },
+  updatePersonLog(data) {
+    return request({
+      url: '/student-log/updateStudentLog',
+      method: 'put',
+      data
+    })
+  },
+  deletePersonLog(data) {
+    return request({
+      url: '/student-log/deleteStudentLog',
+      method: 'delete',
+      data
+    })
+  },
+  getIdByMobilePhone(mobilephone) {
+    return request({
+      url: '/student/getIdByMobilePhone',
+      method: 'get',
+      params: {mobilephone}
+    })
+  },
+  getTeamLogsList(studentId) {
+    return request({
+      url: '/team-log/getTeamLogList',
+      method: 'get',
+      params: {studentId}
     })
   }
 }

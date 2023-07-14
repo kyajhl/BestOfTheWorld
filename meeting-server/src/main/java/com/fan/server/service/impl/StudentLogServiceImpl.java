@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -50,12 +51,14 @@ public class StudentLogServiceImpl extends ServiceImpl<StudentLogMapper, Student
     @Override
     public void updateStudentLog(StudentLog studentLog) throws Exception {
         LambdaQueryWrapper<StudentLog> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(StudentLog::getStudentId, studentLog.getStudentId());
         wrapper.eq(StudentLog::getId, studentLog.getId());
         if(Objects.isNull(this.getOne(wrapper)))
         {
             //为空，未找到该日志
             throw new Exception("该学生日志不存在");
         }
+        studentLog.setLogDate(LocalDateTime.now());
         this.updateById(studentLog);
     }
 
@@ -65,17 +68,22 @@ public class StudentLogServiceImpl extends ServiceImpl<StudentLogMapper, Student
     }
 
     @Override
-    public Map<String, Object> getStudentLogList(Long pageNo, Long pageSize, Integer id){
+    public Map<String, Object> getStudentLogList(String mobilephone){
+        // 根据 电话 查询 学生 id
+        LambdaQueryWrapper<Student> studentWrapper = new LambdaQueryWrapper<>();
+        studentWrapper.eq(Student::getMobilephone, mobilephone);
+        Student student = studentService.getOne(studentWrapper);
+
         LambdaQueryWrapper<StudentLog> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(id != null, StudentLog::getStudentId, id);
-        wrapper.orderByAsc(StudentLog::getLogDate);
-        IPage<StudentLog> page = new Page<>(pageNo, pageSize);
-        this.page(page, wrapper);
+        wrapper.eq(student.getId() != null, StudentLog::getStudentId, student.getId());
+        wrapper.orderByDesc(StudentLog::getLogDate);
+        List<StudentLog> studentLogs = this.list(wrapper);
 
         //封装 map
         HashMap<String, Object> data = new HashMap<>();
-        data.put("total", page.getTotal());
-        data.put("studentLogList", page.getRecords());
+        data.put("personLogsList", studentLogs);
+
+        System.out.println(data);
 
         return data;
     }

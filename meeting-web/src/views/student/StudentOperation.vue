@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="$route.name !== 'team_information'">
+    <div v-if="$route.name !== 'student_team_information'">
       <!-- 表单搜索 -->
       <el-card id="search">
         <el-row>
@@ -26,18 +26,10 @@
               type="primary"
               class="floatRight"
               round
-              @click="openDialog('666')"
-            >
-              提交实训总结
-            </el-button>
-            <el-button
-              type="primary"
-              class="floatRight"
-              round
               style="margin-right: 10px"
-              @click="openDialog('777')"
+              @click="openDialog"
             >
-              发布日志
+              发布个人日志
             </el-button>
           </el-col>
         </el-row>
@@ -56,7 +48,7 @@
                 <el-row :gutter="20">
                   <el-col :span="24">
                     <router-link
-                      :to="`/student/student_operation/team_information?teamId=${team.teamId}`"
+                      :to="`/student/student_operation/student_team_information?teamId=${team.teamId}`"
                       class="item"
                     >
                       <div class="grid-content">
@@ -123,7 +115,6 @@
           :model="logsForm"
           :rules="rules"
           ref="logsFormRef"
-          v-if="this.id === '777'"
         >
           <el-form-item
             prop="logsContent"
@@ -135,26 +126,6 @@
               :rows="5"
               placeholder="请输入日志"
               v-model="logsForm.logsContent">
-            </el-input>
-          </el-form-item>
-        </el-form>
-
-        <el-form
-          :model="summaryForm"
-          :rules="rules"
-          ref="summaryFormRef"
-          v-if="this.id === '666'"
-        >
-          <el-form-item
-            prop="summaryContent"
-            label="实训总结"
-            :label-width="formLabelWidth"
-          >
-            <el-input
-              type="textarea"
-              :rows="5"
-              placeholder="请输入实训总结"
-              v-model="summaryForm.content">
             </el-input>
           </el-form-item>
         </el-form>
@@ -178,7 +149,6 @@
     name: "StudentOperation",
     data() {
       return {
-        id: '',
         formLabelWidth: '100px',
         dialogFormVisible: false,
         searchForm: {
@@ -202,9 +172,6 @@
         rules: {
           logsContent: [
             {required: true, message: '请填写日志', trigger: 'blur'}
-          ],
-          summaryContent: [
-            {required: true, message: '请填写实训总结', trigger: 'blur'}
           ]
         }
       }
@@ -214,49 +181,33 @@
     },
     methods: {
       // 打开表单
-      openDialog(id) {
-        if (id === '666') {
-          // 实训总结
-          this.id = '666';
-          this.title = '提交实训总结';
-          this.dialogFormVisible = true;
-          this.summaryForm = {
-            studentId: this.studentId
-          };
-        } else {
-          // 日志
-          this.id = '777';
-          this.title = '发布日志';
-          this.dialogFormVisible = true;
-          this.logsForm = {
-            mobilephone: this.mobilephone
-          };
-        }
+      openDialog() {
+        // 日志
+        this.title = '发布日志';
+        this.dialogFormVisible = true;
+        this.logsForm = {
+          mobilephone: this.mobilephone
+        };
       },
       // 保存信息
       saveInformation() {
-        if (this.id === '666') {
-          // 保存总结
-          studentManage.addSummary(this.summaryForm).then(
-            response => {
-              this.$message.success(response.msg);
-            },
-            error => {
-              this.$message.error("添加实训总结失败");
-            }
-          )
-        } else {
-          // 保存日志
-          studentManage.addLogs(this.logsForm).then(
-            response => {
-              this.$message.success(response.msg);
-            },
-            error => {
-              this.$message.error("添加日志失败");
-            }
-          )
-        }
-        this.dialogFormVisible = false;
+        this.$refs['logsFormRef'].validate((valid) => {
+          if (valid) {
+            // 保存日志
+            studentManage.addPersonLogs(this.logsForm).then(
+              response => {
+                this.$message.success(response.msg);
+              },
+              error => {
+                this.$message.error("添加日志失败");
+              }
+            );
+            this.dialogFormVisible = false;
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
       },
       // 获取团队列表
       getTeamList() {
@@ -265,7 +216,6 @@
             this.teamList = response.data.teamList;
             this.total = response.data.total;
             console.log(this.teamList);
-            this.$message.success(response.msg);
           },
           error => {
             this.$message.error("获取已选团队失败");
@@ -275,11 +225,7 @@
       // 清除表单的信息
       clearForm() {
         // 清除表单验证提示信息
-        if (this.id === '666') {
-          this.$refs.summaryFormRef.clearValidate();
-        } else {
-          this.$refs.logsFormRef.clearValidate();
-        }
+        this.$refs.logsFormRef.clearValidate();
       },
       // 改变分页的参数，不需要加实参，Element-UI 自动提供，但是要加形参
       handleSizeChange(pageSize) {

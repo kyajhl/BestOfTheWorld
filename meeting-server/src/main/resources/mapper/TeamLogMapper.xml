@@ -4,12 +4,12 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.fan.server.pojo.TeamLog">
-        <id column="id" property="id" />
-        <result column="content" property="content" />
-        <result column="team_id" property="teamId" />
-        <result column="log_date" property="logDate" />
-        <result column="comment" property="comment" />
-        <result column="grade" property="grade" />
+        <id column="id" property="id"/>
+        <result column="content" property="content"/>
+        <result column="team_id" property="teamId"/>
+        <result column="log_date" property="logDate"/>
+        <result column="comment" property="comment"/>
+        <result column="grade" property="grade"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -18,5 +18,12 @@
             id, content, team_id, log_date, comment, grade
         </if>
     </sql>
+    <select id="getTeamLogList" resultType="com.fan.server.pojo.TeamLog">
+        SELECT *
+        FROM team_log tl
+        WHERE tl.team_id in
+              (SELECT team_id FROM student_team st WHERE st.student_id = #{studentId})
+        order by tl.log_date desc
+    </select>
 
 </mapper>

@@ -48,7 +48,7 @@
                   <div slot="header" class="clearfix">
                     <span>全部留言</span>
                   </div>
-                  <div v-for="message in messageList" :key="message.mobilephone" class="text item">
+                  <div v-for="(message, index) in messageList" :key="index" class="text item">
                     <span>{{ message.studentName }}：</span>
                     <span>{{ message.content }}</span>
                     <span style="float: right">{{ message.messageDate }}</span>

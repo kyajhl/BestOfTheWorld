@@ -64,13 +64,9 @@ public class TeamLogController {
 
     @GetMapping("/getTeamLogList")
     @ApiOperation("查询团队日志接口")
-    public Result<Map<String, Object>> getTeamLogList(
-            @RequestParam("pageNo") Long pageNo,
-            @RequestParam("pageSize") Long pageSize,
-            @RequestParam(required = false, value = "logTime") LocalDate logTime
-    ){
+    public Result<Map<String, Object>> getTeamLogList(@RequestParam String studentId){
         try {
-            Map<String, Object> data = teamLogService.getTeamLogList(pageNo, pageSize, logTime);
+            Map<String, Object> data = teamLogService.getTeamLogList(studentId);
             return Result.success(data, "获取团队日志列表成功");
         } catch (Exception e) {
             e.printStackTrace();

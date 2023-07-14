@@ -34,6 +34,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
 
     @Override
     public void addMessage(Message message) {
+        message.setMessageDate(message.getMessageDate().plusDays(1));
         this.save(message);
     }
 
@@ -57,7 +58,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     public Map<String, Object> getMessageList() {
         Map<String, Object> data = new HashMap<>();
         LambdaQueryWrapper<Message> wrapper = new LambdaQueryWrapper<>();
-        wrapper.orderByDesc(Message::getMessageDate);
+        wrapper.orderByDesc(Message::getId);
         List<Message> list =  this.list(wrapper);
         List<MessageAndName> list1 = new ArrayList<>();
         list.forEach((value) -> {

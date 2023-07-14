@@ -30,9 +30,6 @@ public class StudentLogController {
     public Result<?> addStudentLog(@RequestParam String content,
                                    @RequestParam String mobilephone){
         try{
-
-            System.out.println(content + '-' + mobilephone);
-
             studentLogService.addStudentLog(content, mobilephone);
             return Result.success("添加学生日志成功");
         }catch (Exception e) {
@@ -45,7 +42,7 @@ public class StudentLogController {
     public Result<?> updateStudentLog(@RequestBody StudentLog studentLog) {
         try{
             studentLogService.updateStudentLog(studentLog);
-            return Result.success("添加学生日志成功");
+            return Result.success("更新学生日志成功");
         }catch (Exception e) {
             return Result.fail(e.getMessage());
         }
@@ -64,14 +61,10 @@ public class StudentLogController {
 
     @GetMapping("/getStudentLogList")
     @ApiOperation("查询学生日志列表接口")
-    public Result<Map<String, Object>> getStudentLogList(
-            @RequestParam("pageNo") Long pageNo,
-            @RequestParam("pageSize") Long pageSize,
-            @RequestParam(required = false, value = "studentId") Integer studentId
-            ){
+    public Result<Map<String, Object>> getStudentLogList(@RequestParam String mobilephone){
         try {
-            Map<String, Object> data = studentLogService.getStudentLogList(pageNo, pageSize, studentId);
-            return Result.success(data, "获取学生日日志列表成功");
+            Map<String, Object> data = studentLogService.getStudentLogList(mobilephone);
+            return Result.success(data, "获取个人日志列表成功");
         } catch (Exception e) {
             e.printStackTrace();
         }

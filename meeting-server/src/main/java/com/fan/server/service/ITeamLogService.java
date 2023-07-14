@@ -22,6 +22,6 @@ public interface ITeamLogService extends IService<TeamLog> {
 
     void deleteTeamLog(TeamLog teamLog);
 
-    Map<String, Object> getTeamLogList(Long pageNo, Long pageSize, LocalDate logDate);
+    Map<String, Object> getTeamLogList(String studentId);
 
 }

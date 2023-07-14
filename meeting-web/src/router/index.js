@@ -49,28 +49,35 @@ export const constantRoutes = [
   {
     path: '/student',
     component: Layout,
-    redirect: '/student/course_selection_system',
+    redirect: '/student/student_operation',
     name: 'student',
     meta: {title: '学生管理', icon: 'student_management'},
-    // 选课系统，查询课程成绩，查询已选课程
+    // 学生操作
     children: [
       {
-        path: 'course_selection_system',
-        name: 'course_selection_system',
-        component: () => import('@/views/student/CourseSelectionSystem'),
-        meta: {title: '选课系统', icon: 'course_selection_system'},
+        path: 'student_operation',
+        name: 'student_operation',
+        component: () => import('@/views/student/StudentOperation'),
+        meta: {title: '学生操作', icon: 'student_operation'},
+        children: [
+          {
+            path: 'team_information',
+            name: 'team_information',
+            component: () => import('@/views/student/team_information/TeamInformation'),
+            meta: {title: '已选团队信息'},
+            hidden: true,
+            // 获取路由参数
+            props({query: {teamId}}) {
+              return {teamId};
+            }
+          }
+        ]
       },
       {
-        path: 'course_grade',
-        name: 'course_grade',
-        component: () => import('@/views/student/CourseGrade'),
-        meta: {title: '课程成绩', icon: 'course_grade'}
-      },
-      {
-        path: 'course_selected',
-        name: 'course_selected',
-        component: () => import('@/views/student/CourseSelected'),
-        meta: {title: '已选课程', icon: 'course_selected'}
+        path: 'information_show',
+        name: 'information_show',
+        component: () => import('@/views/student/InformationShow'),
+        meta: {title: '信息交流', icon: 'information_show'},
       }
     ]
   },

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -36,7 +37,18 @@ public class MyInterceptorConfig implements WebMvcConfigurer {
                         "/error",
                         "/swagger-ui/**",
                         "/swagger-resources/**",
-                        "/v3/**"
+                        "/v3/**",
+                        "/static/**",
+                        "/public/**",
+                        "/template/**"
                 );
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // 开放static,templates,public 目录 但是请求时候需要加上对应的前缀
+        // 比如我访问static下的资源/static/xxxx/xx.js
+        registry.addResourceHandler("/static/**", "/resource/**", "/public/**")
+                .addResourceLocations("classpath:/static/", "classpath:/resource/", "classpath:/public/");
     }
 }

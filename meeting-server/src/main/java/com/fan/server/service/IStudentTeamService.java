@@ -32,4 +32,6 @@ public interface IStudentTeamService extends IService<StudentTeam> {
 
     Map<String, Object> getTeamInformation(String teamId) throws Exception;
 
+    Map<String, Object> getTeamListByMobilephone(Long pageNo, Long pageSize, String mobilephone, String teamName) throws Exception;
+
 }

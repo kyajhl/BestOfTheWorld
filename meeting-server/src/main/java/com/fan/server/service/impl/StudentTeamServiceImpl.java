@@ -3,6 +3,7 @@ package com.fan.server.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fan.server.mapper.StudentTeamListMapper;
 import com.fan.server.pojo.*;
 import com.fan.server.mapper.StudentTeamMapper;
 import com.fan.server.service.IProjectService;
@@ -10,8 +11,6 @@ import com.fan.server.service.IStudentService;
 import com.fan.server.service.IStudentTeamService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fan.server.service.ITeamService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +35,9 @@ public class StudentTeamServiceImpl extends ServiceImpl<StudentTeamMapper, Stude
 
     @Autowired
     IProjectService projectService;
+
+    @Autowired
+    StudentTeamListMapper studentTeamListMapper;
 
     @Override
     public void addStudentTeam(String mobilephone, String teamId, String position) throws Exception {
@@ -193,6 +195,17 @@ public class StudentTeamServiceImpl extends ServiceImpl<StudentTeamMapper, Stude
             list1.add(now);
         });
         data.put("studentList", list1);
+        return data;
+    }
+
+    @Override
+    public Map<String, Object> getTeamListByMobilephone(Long pageNo, Long pageSize, String mobilephone, String teamName) throws Exception{
+        Integer id = studentService.getStudentIdByMobilephone(mobilephone);
+        List<StudentTeamList> list1 = studentTeamListMapper.getTeamListByMobilephone((pageNo.intValue() - 1 ) * pageSize.intValue(), pageSize.intValue(), id, teamName);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("teamList", list1);
+
         return data;
     }
 

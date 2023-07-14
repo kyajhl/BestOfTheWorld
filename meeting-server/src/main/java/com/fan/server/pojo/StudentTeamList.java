@@ -31,4 +31,7 @@ public class StudentTeamList implements Serializable{
     @ApiModelProperty(value = "团队人数")
     private Integer teamNumber;
 
+    @ApiModelProperty(value = "团队Id")
+    private String teamId;
+
 }

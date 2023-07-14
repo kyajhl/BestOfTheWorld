@@ -1,0 +1,170 @@
+Index: meeting-server/src/main/java/com/fan/server/controller/EnterpriseController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.fan.server.controller;\r\n\r\n\r\nimport com.fan.server.common.Result;\r\nimport com.fan.server.pojo.Enterprise;\r\nimport com.fan.server.pojo.Student;\r\nimport com.fan.server.pojo.User;\r\nimport com.fan.server.service.IEnterpriseService;\r\nimport com.fan.server.service.IStudentService;\r\nimport io.swagger.annotations.ApiOperation;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.web.bind.annotation.*;\r\n\r\nimport java.util.Map;\r\nimport java.util.Objects;\r\n\r\n/**\r\n * <p>\r\n *  前端控制器\r\n * </p>\r\n *\r\n * @author BestOfTheWorld\r\n * @since 2023-07-05\r\n */\r\n@RestController\r\n@RequestMapping(\"/enterprise\")\r\npublic class EnterpriseController {\r\n\r\n    @Autowired\r\n    private IEnterpriseService enterpriseService;\r\n\r\n    @PostMapping(\"/register\")\r\n    public Result<?> register(@RequestBody User user) {\r\n        try {\r\n            enterpriseService.register(user);\r\n            return Result.success(\"注册成功\");\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n        return Result.fail(202);\r\n    }\r\n\r\n    @PostMapping(\"/login\")\r\n    @ApiOperation(\"用户登录接口\")\r\n    public Result<Map<String, Object>> login(@RequestBody User user) {\r\n        Map<String, Object> data = enterpriseService.login(user);\r\n        if (!Objects.isNull(data)) {\r\n            return Result.success(data);\r\n        }\r\n        return Result.fail(202, \"用户名或密码错误\");\r\n    }\r\n\r\n    @GetMapping(\"/info\")\r\n    @ApiOperation(\"用户获取信息接口\")\r\n    public Result<Map<String, Object>> getInfo(@RequestParam String token) {\r\n        Map<String, Object> data = enterpriseService.getInfo(token);\r\n        if (!Objects.isNull(data)) {\r\n            return Result.success(data);\r\n        }\r\n        return Result.fail(203, \"用户不存在\");\r\n    }\r\n\r\n    @PostMapping(\"/addEnterprise\")\r\n    public Result<?> addStudent(@RequestBody Enterprise enterprise) {\r\n        try {\r\n            // 先查询是否有这个学生\r\n            Enterprise enterprise1 = enterpriseService.getEnterprise(enterprise.getMobilephone());\r\n            if (enterprise1 == null) {\r\n                enterpriseService.addEnterprise(enterprise);\r\n                return Result.success(\"添加学生成功\");\r\n            }\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n        return Result.fail(202);\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/meeting-server/src/main/java/com/fan/server/controller/EnterpriseController.java b/meeting-server/src/main/java/com/fan/server/controller/EnterpriseController.java
+--- a/meeting-server/src/main/java/com/fan/server/controller/EnterpriseController.java	(revision e2e057ae4ef53d0e71d4e32afb1d3e1c693fa079)
++++ b/meeting-server/src/main/java/com/fan/server/controller/EnterpriseController.java	(date 1688716243702)
+@@ -30,6 +30,7 @@
+     private IEnterpriseService enterpriseService;
+ 
+     @PostMapping("/register")
++    @ApiOperation("企业注册接口")
+     public Result<?> register(@RequestBody User user) {
+         try {
+             enterpriseService.register(user);
+@@ -41,7 +42,7 @@
+     }
+ 
+     @PostMapping("/login")
+-    @ApiOperation("用户登录接口")
++    @ApiOperation("企业登录接口")
+     public Result<Map<String, Object>> login(@RequestBody User user) {
+         Map<String, Object> data = enterpriseService.login(user);
+         if (!Objects.isNull(data)) {
+@@ -51,7 +52,7 @@
+     }
+ 
+     @GetMapping("/info")
+-    @ApiOperation("用户获取信息接口")
++    @ApiOperation("企业获取信息接口")
+     public Result<Map<String, Object>> getInfo(@RequestParam String token) {
+         Map<String, Object> data = enterpriseService.getInfo(token);
+         if (!Objects.isNull(data)) {
+@@ -61,6 +62,7 @@
+     }
+ 
+     @PostMapping("/addEnterprise")
++    @ApiOperation("添加企业")
+     public Result<?> addStudent(@RequestBody Enterprise enterprise) {
+         try {
+             // 先查询是否有这个学生
+Index: meeting-server/src/main/java/com/fan/server/controller/StudentController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.fan.server.controller;\r\n\r\n\r\nimport com.fan.server.common.Result;\r\nimport com.fan.server.pojo.User;\r\nimport com.fan.server.service.IStudentService;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.web.bind.annotation.PostMapping;\r\nimport org.springframework.web.bind.annotation.RequestBody;\r\nimport org.springframework.web.bind.annotation.RequestMapping;\r\nimport com.fan.server.pojo.Student;\r\nimport io.swagger.annotations.ApiOperation;\r\nimport org.springframework.web.bind.annotation.*;\r\n\r\nimport org.springframework.web.bind.annotation.RestController;\r\n\r\nimport java.util.Map;\r\nimport java.util.Objects;\r\n\r\n/**\r\n * <p>\r\n *  前端控制器\r\n * </p>\r\n *\r\n * @author BestOfTheWorld\r\n * @since 2023-07-05\r\n */\r\n@RestController\r\n@RequestMapping(\"/student\")\r\npublic class StudentController {\r\n\r\n    @Autowired\r\n    private IStudentService studentService;\r\n\r\n    @PostMapping(\"/register\")\r\n    public Result<?> register(@RequestBody User user) {\r\n        try {\r\n            studentService.register(user);\r\n            return Result.success(\"注册成功\");\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n        return Result.fail(202);\r\n    }\r\n\r\n    @PostMapping(\"/login\")\r\n    @ApiOperation(\"用户登录接口\")\r\n    public Result<Map<String, Object>> login(@RequestBody User user) {\r\n        Map<String, Object> data = studentService.login(user);\r\n        if (!Objects.isNull(data)) {\r\n            return Result.success(data);\r\n        }\r\n        return Result.fail(202, \"用户名或密码错误\");\r\n    }\r\n\r\n    @GetMapping(\"/info\")\r\n    @ApiOperation(\"用户获取信息接口\")\r\n    public Result<Map<String, Object>> getInfo(@RequestParam String token) {\r\n        Map<String, Object> data = studentService.getInfo(token);\r\n        if (!Objects.isNull(data)) {\r\n            return Result.success(data);\r\n        }\r\n        return Result.fail(203, \"用户不存在\");\r\n    }\r\n\r\n    @PostMapping(\"/addStudent\")\r\n    public Result<?> addStudent(@RequestBody Student student) {\r\n        try {\r\n            // 先查询是否有这个学生\r\n            Student student1 = studentService.getStudent(student.getStudentId());\r\n            if (student1 == null) {\r\n                studentService.addStudent(student);\r\n                return Result.success(\"添加学生成功\");\r\n            }\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n        return Result.fail(202);\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/meeting-server/src/main/java/com/fan/server/controller/StudentController.java b/meeting-server/src/main/java/com/fan/server/controller/StudentController.java
+--- a/meeting-server/src/main/java/com/fan/server/controller/StudentController.java	(revision e2e057ae4ef53d0e71d4e32afb1d3e1c693fa079)
++++ b/meeting-server/src/main/java/com/fan/server/controller/StudentController.java	(date 1688710016344)
+@@ -33,6 +33,7 @@
+     private IStudentService studentService;
+ 
+     @PostMapping("/register")
++    @ApiOperation("学生注册接口")
+     public Result<?> register(@RequestBody User user) {
+         try {
+             studentService.register(user);
+@@ -44,7 +45,7 @@
+     }
+ 
+     @PostMapping("/login")
+-    @ApiOperation("用户登录接口")
++    @ApiOperation("学生登录接口")
+     public Result<Map<String, Object>> login(@RequestBody User user) {
+         Map<String, Object> data = studentService.login(user);
+         if (!Objects.isNull(data)) {
+@@ -54,7 +55,7 @@
+     }
+ 
+     @GetMapping("/info")
+-    @ApiOperation("用户获取信息接口")
++    @ApiOperation("学生获取信息接口")
+     public Result<Map<String, Object>> getInfo(@RequestParam String token) {
+         Map<String, Object> data = studentService.getInfo(token);
+         if (!Objects.isNull(data)) {
+@@ -64,6 +65,7 @@
+     }
+ 
+     @PostMapping("/addStudent")
++    @ApiOperation("添加学生")
+     public Result<?> addStudent(@RequestBody Student student) {
+         try {
+             // 先查询是否有这个学生
+Index: meeting-server/src/main/java/com/fan/server/controller/TeacherController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.fan.server.controller;\r\n\r\n\r\nimport com.fan.server.common.Result;\r\nimport com.fan.server.pojo.Student;\r\nimport com.fan.server.pojo.Teacher;\r\nimport com.fan.server.pojo.User;\r\nimport com.fan.server.service.IStudentService;\r\nimport com.fan.server.service.ITeacherService;\r\nimport io.swagger.annotations.ApiOperation;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.web.bind.annotation.*;\r\n\r\nimport java.util.Map;\r\nimport java.util.Objects;\r\n\r\n/**\r\n * <p>\r\n *  前端控制器\r\n * </p>\r\n *\r\n * @author BestOfTheWorld\r\n * @since 2023-07-05\r\n */\r\n@RestController\r\n@RequestMapping(\"/teacher\")\r\npublic class TeacherController {\r\n\r\n    @Autowired\r\n    private ITeacherService teacherService;\r\n\r\n    @PostMapping(\"/register\")\r\n    public Result<?> register(@RequestBody User user) {\r\n        try {\r\n            teacherService.register(user);\r\n            return Result.success(\"注册成功\");\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n        return Result.fail(202);\r\n    }\r\n\r\n    @PostMapping(\"/login\")\r\n    @ApiOperation(\"用户登录接口\")\r\n    public Result<Map<String, Object>> login(@RequestBody User user) {\r\n        Map<String, Object> data = teacherService.login(user);\r\n        if (!Objects.isNull(data)) {\r\n            return Result.success(data);\r\n        }\r\n        return Result.fail(202, \"用户名或密码错误\");\r\n    }\r\n\r\n    @GetMapping(\"/info\")\r\n    @ApiOperation(\"用户获取信息接口\")\r\n    public Result<Map<String, Object>> getInfo(@RequestParam String token) {\r\n        Map<String, Object> data = teacherService.getInfo(token);\r\n        if (!Objects.isNull(data)) {\r\n            return Result.success(data);\r\n        }\r\n        return Result.fail(203, \"用户不存在\");\r\n    }\r\n\r\n    @PostMapping(\"/addTeacher\")\r\n    public Result<?> addStudent(@RequestBody Teacher teacher) {\r\n        try {\r\n            // 先查询是否有这个学生\r\n            Teacher teacher1 = teacherService.getTeacher(teacher.getMobilephone());\r\n            if (teacher1 == null) {\r\n                teacherService.addTeacher(teacher);\r\n                return Result.success(\"添加学生成功\");\r\n            }\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n        return Result.fail(202);\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/meeting-server/src/main/java/com/fan/server/controller/TeacherController.java b/meeting-server/src/main/java/com/fan/server/controller/TeacherController.java
+--- a/meeting-server/src/main/java/com/fan/server/controller/TeacherController.java	(revision e2e057ae4ef53d0e71d4e32afb1d3e1c693fa079)
++++ b/meeting-server/src/main/java/com/fan/server/controller/TeacherController.java	(date 1688710059964)
+@@ -30,6 +30,7 @@
+     private ITeacherService teacherService;
+ 
+     @PostMapping("/register")
++    @ApiOperation("教师注册接口")
+     public Result<?> register(@RequestBody User user) {
+         try {
+             teacherService.register(user);
+@@ -41,7 +42,7 @@
+     }
+ 
+     @PostMapping("/login")
+-    @ApiOperation("用户登录接口")
++    @ApiOperation("教师登录接口")
+     public Result<Map<String, Object>> login(@RequestBody User user) {
+         Map<String, Object> data = teacherService.login(user);
+         if (!Objects.isNull(data)) {
+@@ -51,7 +52,7 @@
+     }
+ 
+     @GetMapping("/info")
+-    @ApiOperation("用户获取信息接口")
++    @ApiOperation("教师获取信息接口")
+     public Result<Map<String, Object>> getInfo(@RequestParam String token) {
+         Map<String, Object> data = teacherService.getInfo(token);
+         if (!Objects.isNull(data)) {
+@@ -61,6 +62,7 @@
+     }
+ 
+     @PostMapping("/addTeacher")
++    @ApiOperation("添加教师")
+     public Result<?> addStudent(@RequestBody Teacher teacher) {
+         try {
+             // 先查询是否有这个学生
+Index: meeting-server/target/classes/application.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>server:\r\n  port: 9090\r\n\r\nspring:\r\n  datasource:\r\n    driver-class-name: com.mysql.cj.jdbc.Driver\r\n    username: root\r\n    password: 666666\r\n    url: jdbc:mysql:///internship_platform\r\n  redis:\r\n    port: 6379\r\n    host: localhost\r\n  mvc:\r\n    pathmatch:\r\n      matching-strategy: ant_path_matcher\r\n\r\nlogging:\r\n  level:\r\n    com.fan: debug\r\n\r\nmybatis-plus:\r\n  type-aliases-package: com.fan.*.pojo\r\n  mapper-locations: classpath:/mapper/*Mapper.xml
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/meeting-server/target/classes/application.yml b/meeting-server/target/classes/application.yml
+--- a/meeting-server/target/classes/application.yml	(revision e2e057ae4ef53d0e71d4e32afb1d3e1c693fa079)
++++ b/meeting-server/target/classes/application.yml	(date 1688645484861)
+@@ -5,7 +5,7 @@
+   datasource:
+     driver-class-name: com.mysql.cj.jdbc.Driver
+     username: root
+-    password: 666666
++    password: 1234
+     url: jdbc:mysql:///internship_platform
+   redis:
+     port: 6379
+Index: meeting-server/src/main/resources/application.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>server:\r\n  port: 9090\r\n\r\nspring:\r\n  datasource:\r\n    driver-class-name: com.mysql.cj.jdbc.Driver\r\n    username: root\r\n    password: 666666\r\n    url: jdbc:mysql:///internship_platform\r\n  redis:\r\n    port: 6379\r\n    host: localhost\r\n  mvc:\r\n    pathmatch:\r\n      matching-strategy: ant_path_matcher\r\n\r\nlogging:\r\n  level:\r\n    com.fan: debug\r\n\r\nmybatis-plus:\r\n  type-aliases-package: com.fan.*.pojo\r\n  mapper-locations: classpath:/mapper/*Mapper.xml
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/meeting-server/src/main/resources/application.yml b/meeting-server/src/main/resources/application.yml
+--- a/meeting-server/src/main/resources/application.yml	(revision e2e057ae4ef53d0e71d4e32afb1d3e1c693fa079)
++++ b/meeting-server/src/main/resources/application.yml	(date 1688645484698)
+@@ -5,7 +5,7 @@
+   datasource:
+     driver-class-name: com.mysql.cj.jdbc.Driver
+     username: root
+-    password: 666666
++    password: 1234
+     url: jdbc:mysql:///internship_platform
+   redis:
+     port: 6379

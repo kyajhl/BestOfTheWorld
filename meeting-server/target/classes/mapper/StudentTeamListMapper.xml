@@ -7,10 +7,11 @@
         <result column="project_name" property="projectName" />
         <result column="team_name" property="teamName" />
         <result column="team_number" property="teamNumber" />
+        <result column="team_id" property="teamId" />
     </resultMap>
 
     <select id="getTeamListByMobilephone" resultType="com.fan.server.pojo.StudentTeamList">
-        SELECT project_name, team_name, team_number
+        SELECT project_name, team_name, team_number, st.team_id
         FROM student_team st LEFT JOIN team t ON st.team_id = t.team_id LEFT JOIN project p ON t.project_id = p.project_id
         <where>
             <if test="id != null and id != ''">

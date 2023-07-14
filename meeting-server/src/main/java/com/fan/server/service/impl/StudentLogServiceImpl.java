@@ -1,6 +1,9 @@
 package com.fan.server.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fan.server.pojo.Project;
 import com.fan.server.pojo.Student;
 import com.fan.server.pojo.StudentLog;
 import com.fan.server.mapper.StudentLogMapper;
@@ -11,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -42,7 +47,6 @@ public class StudentLogServiceImpl extends ServiceImpl<StudentLogMapper, Student
         studentLog.setLogDate(LocalDateTime.now());
         this.save(studentLog);
     }
-
     @Override
     public void updateStudentLog(StudentLog studentLog) throws Exception {
         LambdaQueryWrapper<StudentLog> wrapper = new LambdaQueryWrapper<>();
@@ -60,6 +64,20 @@ public class StudentLogServiceImpl extends ServiceImpl<StudentLogMapper, Student
         this.removeById(studentLog);
     }
 
+    @Override
+    public Map<String, Object> getStudentLogList(Long pageNo, Long pageSize, Integer id){
+        LambdaQueryWrapper<StudentLog> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(id != null, StudentLog::getStudentId, id);
+        wrapper.orderByAsc(StudentLog::getLogDate);
+        IPage<StudentLog> page = new Page<>(pageNo, pageSize);
+        this.page(page, wrapper);
 
+        //封装 map
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("total", page.getTotal());
+        data.put("studentLogList", page.getRecords());
+
+        return data;
+    }
 
 }

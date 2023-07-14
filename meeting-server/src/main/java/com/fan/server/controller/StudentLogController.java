@@ -8,6 +8,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * <p>
  *  前端控制器
@@ -55,6 +57,22 @@ public class StudentLogController {
         }catch (Exception e) {
             return Result.fail("删除失败");
         }
+    }
+
+    @GetMapping("/getStudentLogList")
+    @ApiOperation("查询学生日志列表接口")
+    public Result<Map<String, Object>> getStudentLogList(
+            @RequestParam("pageNo") Long pageNo,
+            @RequestParam("pageSize") Long pageSize,
+            @RequestParam(required = false, value = "studentId") Integer studentId
+            ){
+        try {
+            Map<String, Object> data = studentLogService.getStudentLogList(pageNo, pageSize, studentId);
+            return Result.success(data, "获取学生日日志列表成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Result.fail(202);
     }
 
 }

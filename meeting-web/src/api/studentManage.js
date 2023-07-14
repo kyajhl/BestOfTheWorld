@@ -7,46 +7,31 @@
 import request from '@/utils/request'
 
 export default {
-  getAllCourseList(searcherForm) {
+  getTeamList(searchForm) {
     return request({
-      url: '/course/getAllCourseList',
+      url: '/student-team/getTeamListByMobilephone',
       method: 'get',
-      params: searcherForm
+      params: searchForm
     })
   },
-  addSelectedCourse(data) {
+  addLogs(logsForm) {
     return request({
-      url: '/studentCourse/addSelectedCourse',
+      url: `/student-log/addStudentLog?mobilephone=${logsForm.mobilephone}&content=${logsForm.logsContent}`,
       method: 'post',
-      data
     })
   },
-  deleteSelectedCourse(data) {
+  addSummary(summaryForm) {
     return request({
-      url: '/studentCourse/deleteSelectedCourse',
-      method: 'delete',
-      data
+      url: '/summarize/addSummarize',
+      method: 'post',
+      data: summaryForm
     })
   },
-  getSelectedCourseList(searchForm) {
+  getTeamInformation(teamId) {
     return request({
-      url: '/studentCourse/getSelectedCourseList',
+      url: '/student-team/getTeamInformation',
       method: 'get',
-      params: searchForm
-    })
-  },
-  getSelectedCourseAndGradeList(searchForm) {
-    return request({
-      url: '/studentCourse/getSelectedCourseAndGradeList',
-      method: 'get',
-      params: searchForm
-    })
-  },
-  modifyStudentGrade(data) {
-    return request({
-      url: '/studentCourse/modifyStudentGrade',
-      method: 'put',
-      data
+      params: teamId
     })
   }
 }

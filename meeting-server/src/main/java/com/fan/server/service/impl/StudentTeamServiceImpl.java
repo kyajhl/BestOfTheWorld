@@ -205,6 +205,7 @@ public class StudentTeamServiceImpl extends ServiceImpl<StudentTeamMapper, Stude
 
         Map<String, Object> data = new HashMap<>();
         data.put("teamList", list1);
+        data.put("total", list1.size());
 
         return data;
     }

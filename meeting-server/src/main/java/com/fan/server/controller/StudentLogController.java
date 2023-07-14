@@ -30,6 +30,9 @@ public class StudentLogController {
     public Result<?> addStudentLog(@RequestParam String content,
                                    @RequestParam String mobilephone){
         try{
+
+            System.out.println(content + '-' + mobilephone);
+
             studentLogService.addStudentLog(content, mobilephone);
             return Result.success("添加学生日志成功");
         }catch (Exception e) {

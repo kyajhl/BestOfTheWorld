@@ -18,10 +18,6 @@
                 {{ teamInformation.projectName }}
               </el-descriptions-item>
 
-              <el-descriptions-item label="团队号">
-                {{ teamInformation.teamId }}
-              </el-descriptions-item>
-
               <el-descriptions-item label="团队名">
                 {{ teamInformation.teamName }}
               </el-descriptions-item>

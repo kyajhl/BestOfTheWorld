@@ -5,9 +5,9 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: 1234
+    password: 666666
     url: jdbc:mysql:///internship_platform
-  #    password: Kf20011201
+#    password: Kf20011201
 #    url: jdbc:mysql://101.200.123.125:3306/internship_platform
   redis:
     port: 6379
@@ -15,6 +15,8 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+    # 映射 resource.static 下文件，使之可以通过 url 地址直接访问
+    static-path-pattern: /**
 
 logging:
   level:

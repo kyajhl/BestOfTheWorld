@@ -1,6 +1,7 @@
 package com.fan.server.controller;
 
 
+import com.baomidou.mybatisplus.extension.api.R;
 import com.fan.server.common.Result;
 import com.fan.server.pojo.StudentTeam;
 import com.fan.server.service.IStudentTeamService;
@@ -125,6 +126,27 @@ public class StudentTeamController {
         }catch (Exception e) {
             return Result.fail(e.getMessage());
         }
+    }
+
+    @GetMapping("/getTeamListByMobilephone")
+    @ApiOperation("获取该学生选择的团队列表")
+    public Result<Map<String, Object>> getTeamListByMobilephone(
+            @RequestParam("pageNo") Long pageNo,
+            @RequestParam("pageSize") Long pageSize,
+            @RequestParam(required = false, value = "mobilephone") String mobilephone,
+            @RequestParam(required = false, value = "teamName") String teamName) {
+        try{
+            /*
+            项目名
+            团队名
+            团队人数
+             */
+            Map<String, Object> data = studentTeamService.getTeamListByMobilephone(pageNo, pageSize, mobilephone, teamName);
+            return Result.success(data, "获取学生选择的团队列表成功");
+        }catch (Exception e) {
+            return Result.fail(e.getMessage());
+        }
+
     }
 
 }

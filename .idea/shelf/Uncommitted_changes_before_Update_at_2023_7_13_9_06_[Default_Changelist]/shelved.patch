@@ -1,0 +1,240 @@
+Index: meeting-server/src/main/java/com/fan/server/service/impl/TeamServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.fan.server.service.impl;\r\n\r\nimport com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;\r\nimport com.baomidou.mybatisplus.core.metadata.IPage;\r\nimport com.baomidou.mybatisplus.extension.plugins.pagination.Page;\r\nimport com.fan.server.pojo.Project;\r\nimport com.fan.server.pojo.Team;\r\nimport com.fan.server.mapper.TeamMapper;\r\nimport com.fan.server.service.IProjectService;\r\nimport com.fan.server.service.ITeamService;\r\nimport com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.time.LocalDate;\r\nimport java.util.HashMap;\r\nimport java.util.Map;\r\nimport java.util.Objects;\r\nimport java.util.UUID;\r\n\r\n/**\r\n * <p>\r\n * 服务实现类\r\n * </p>\r\n *\r\n * @author BestOfTheWorld\r\n * @since 2023-07-05\r\n */\r\n@Service\r\npublic class TeamServiceImpl extends ServiceImpl<TeamMapper, Team> implements ITeamService {\r\n\r\n    @Autowired\r\n    private IProjectService projectService;\r\n\r\n    @Override\r\n    public void addTeam(String teamName, Integer projectId) throws Exception {\r\n        try {\r\n            Project project = projectService.getProjectById(projectId);\r\n            if (Objects.isNull(project))\r\n                throw new Exception(\"团队不存在\");\r\n            Team team = new Team();\r\n            team.setTeamId(UUID.randomUUID().toString());\r\n            team.setTeamName(teamName);\r\n            team.setProjectId(projectId);\r\n            team.setTeamNumber(0);\r\n            this.save(team);\r\n        } catch (Exception e) {\r\n            throw new Exception(e.getMessage());\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void deleteTeam(String teamId) throws Exception {\r\n        LambdaQueryWrapper<Team> wrapper = new LambdaQueryWrapper<>();\r\n        wrapper.eq(Team::getTeamId, teamId);\r\n        Team team1 = this.getOne(wrapper);\r\n        if (Objects.isNull(team1)) {\r\n            //未找到项目\r\n            throw new Exception((\"团队不存在\"));\r\n        }\r\n        this.remove(wrapper);\r\n    }\r\n\r\n    @Override\r\n    public void updateTeam(Team team) throws Exception {\r\n        LambdaQueryWrapper<Team> wrapper = new LambdaQueryWrapper<>();\r\n        wrapper.eq(Team::getTeamId, team.getTeamId());\r\n        Team team1 = this.getOne(wrapper);\r\n        if (Objects.isNull(team1)) {\r\n            //未找到团队\r\n            throw new Exception((\"团队不存在\"));\r\n        }\r\n        this.update(team, wrapper);\r\n    }\r\n\r\n    @Override\r\n    public Map<String, Object> getTeamList(Long pageNo, Long pageSize, String teamName) {\r\n        LambdaQueryWrapper<Team> wrapper = new LambdaQueryWrapper<>();\r\n        wrapper.like(Team::getTeamName, teamName);\r\n\r\n        IPage<Team> page = new Page<>(pageNo, pageSize);\r\n        this.page(page, wrapper);\r\n\r\n        //封装map\r\n        HashMap<String, Object> data = new HashMap<>();\r\n        data.put(\"total\", page.getTotal());\r\n        data.put(\"teamList\", page.getRecords());\r\n\r\n        return data;\r\n    }\r\n\r\n    @Override\r\n    public void TeamNumberPlusOne(String teamId) throws Exception{\r\n        LambdaQueryWrapper<Team> wrapper = new LambdaQueryWrapper<>();\r\n        wrapper.eq(Team::getTeamId, teamId);\r\n        Team team = this.getOne(wrapper);\r\n        if(Objects.isNull(team))\r\n            throw new Exception(\"团队不存在\");\r\n        team.setTeamNumber(team.getTeamNumber() + 1);\r\n        this.updateById(team);\r\n    }\r\n\r\n    @Override\r\n    public void TeamNumberSubOne(String teamId) throws Exception{\r\n        LambdaQueryWrapper<Team> wrapper = new LambdaQueryWrapper<>();\r\n        wrapper.eq(Team::getTeamId, teamId);\r\n        Team team = this.getOne(wrapper);\r\n        if(Objects.isNull(team))\r\n            throw new Exception(\"团队不存在\");\r\n        team.setTeamNumber(team.getTeamNumber() - 1);\r\n        this.updateById(team);\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/meeting-server/src/main/java/com/fan/server/service/impl/TeamServiceImpl.java b/meeting-server/src/main/java/com/fan/server/service/impl/TeamServiceImpl.java
+--- a/meeting-server/src/main/java/com/fan/server/service/impl/TeamServiceImpl.java	(revision be9befa020acf52522464ff02f4e326672f76e58)
++++ b/meeting-server/src/main/java/com/fan/server/service/impl/TeamServiceImpl.java	(date 1689153951966)
+@@ -111,4 +111,11 @@
+         this.updateById(team);
+     }
+ 
++    @Override
++    public Team getTeamByTeamId(String teamId) {
++        LambdaQueryWrapper<Team> wrapper = new LambdaQueryWrapper<>();
++        wrapper.eq(Team::getTeamId, teamId);
++        return this.getOne(wrapper);
++    }
++
+ }
+Index: meeting-server/src/main/java/com/fan/server/service/impl/StudentTeamServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.fan.server.service.impl;\r\n\r\nimport com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;\r\nimport com.baomidou.mybatisplus.core.metadata.IPage;\r\nimport com.baomidou.mybatisplus.extension.plugins.pagination.Page;\r\nimport com.fan.server.pojo.Project;\r\nimport com.fan.server.pojo.StudentTeam;\r\nimport com.fan.server.mapper.StudentTeamMapper;\r\nimport com.fan.server.pojo.Team;\r\nimport com.fan.server.service.IStudentService;\r\nimport com.fan.server.service.IStudentTeamService;\r\nimport com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;\r\nimport com.fan.server.service.ITeamService;\r\nimport io.swagger.annotations.ApiOperation;\r\nimport io.swagger.models.auth.In;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.HashMap;\r\nimport java.util.List;\r\nimport java.util.Map;\r\nimport java.util.Objects;\r\n\r\n/**\r\n * <p>\r\n *  服务实现类\r\n * </p>\r\n *\r\n * @author BestOfTheWorld\r\n * @since 2023-07-05\r\n */\r\n@Service\r\npublic class StudentTeamServiceImpl extends ServiceImpl<StudentTeamMapper, StudentTeam> implements IStudentTeamService {\r\n\r\n    @Autowired\r\n    IStudentService studentService;\r\n\r\n    @Autowired\r\n    ITeamService teamService;\r\n\r\n    @Override\r\n    public void addStudentTeam(String mobilephone, String teamId, String position) throws Exception {\r\n        StudentTeam studentTeam = new StudentTeam();\r\n        Integer studentId;\r\n        try {\r\n            studentId = studentService.getStudentIdByMobilephone(mobilephone);\r\n        }catch (Exception e){\r\n            throw new Exception(\"学生不存在\");\r\n        }\r\n        LambdaQueryWrapper<StudentTeam> wrapper = new LambdaQueryWrapper<>();\r\n        wrapper.eq(StudentTeam::getStudentId, studentId);\r\n        wrapper.eq(StudentTeam::getTeamId, teamId);\r\n        if(!Objects.isNull(this.getOne(wrapper))){\r\n            //非空，查询到了\r\n            throw new Exception(\"该学生已经在该团队了\");\r\n        }\r\n        try{\r\n            teamService.TeamNumberPlusOne(teamId);\r\n        }catch (Exception e){\r\n            throw new Exception(\"团队不存在\");\r\n        }\r\n        studentTeam.setStudentId(studentId);\r\n        studentTeam.setPosition(position);\r\n        studentTeam.setTeamId(teamId);\r\n        studentTeam.setGrade(\"0\");\r\n        this.save(studentTeam);\r\n    }\r\n\r\n    @Override\r\n    public void deleteStudentTeam(String mobilephone, String teamId) throws Exception{\r\n        Integer studentId;\r\n        try {\r\n            studentId = studentService.getStudentIdByMobilephone(mobilephone);\r\n        }catch (Exception e){\r\n            throw new Exception(\"学生不存在\");\r\n        }\r\n        LambdaQueryWrapper<StudentTeam> wrapper = new LambdaQueryWrapper<>();\r\n        wrapper.eq(StudentTeam::getStudentId, studentId);\r\n        wrapper.eq(StudentTeam::getTeamId, teamId);\r\n        if(Objects.isNull(this.getOne(wrapper))){\r\n            //为空，代表该学生不在该团队\r\n            throw new Exception(\"学生不在该团队，无法删除\");\r\n        }\r\n        try{\r\n            teamService.TeamNumberSubOne(teamId);\r\n        }catch (Exception e){\r\n            throw new Exception(\"团队不存在\");\r\n        }\r\n        this.remove(wrapper);\r\n    }\r\n\r\n    @Override\r\n    public void deleteStudentTeam(StudentTeam studentTeam) {\r\n        removeById(studentTeam.getId());\r\n    }\r\n\r\n    @Override\r\n    public void updateStudentTeam(String teamName, Integer projectId, String teamId, List<String> selectedStudentList) throws Exception {\r\n        LambdaQueryWrapper<StudentTeam> studentTeamWrapper = new LambdaQueryWrapper<>();\r\n        studentTeamWrapper.eq(StudentTeam::getTeamId, teamId);\r\n        List<StudentTeam> preList = this.list(studentTeamWrapper);\r\n        preList.forEach(this::deleteStudentTeam);\r\n        Team team = new Team();\r\n        team.setTeamId(teamId);\r\n        team.setTeamNumber(0);\r\n        team.setTeamName(teamName);\r\n        team.setProjectId(projectId);\r\n        teamService.updateTeam(team);\r\n        selectedStudentList.forEach((value) -> {\r\n            String[] nowString = value.split(\"-\");\r\n            try {\r\n                addStudentTeam(nowString[0], teamId, nowString[1]);\r\n            } catch (Exception e) {\r\n                e.printStackTrace();\r\n            }\r\n        });\r\n    }\r\n\r\n    @Override\r\n    public Map<String, Object> getStudentListByTeamId(Long pageNo, Long pageSize, String teamId) {\r\n        LambdaQueryWrapper<StudentTeam> wrapper = new LambdaQueryWrapper<>();\r\n        wrapper.eq(StudentTeam::getTeamId, teamId);\r\n        wrapper.orderByAsc(StudentTeam::getStudentId);\r\n\r\n        IPage<StudentTeam> page = new Page<>(pageNo, pageSize);\r\n        this.page(page, wrapper);\r\n\r\n        //封装 map\r\n        HashMap<String, Object> data = new HashMap<>();\r\n        data.put(\"total\", page.getTotal());\r\n        data.put(\"projectList\", page.getRecords());\r\n\r\n        return data;\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/meeting-server/src/main/java/com/fan/server/service/impl/StudentTeamServiceImpl.java b/meeting-server/src/main/java/com/fan/server/service/impl/StudentTeamServiceImpl.java
+--- a/meeting-server/src/main/java/com/fan/server/service/impl/StudentTeamServiceImpl.java	(revision be9befa020acf52522464ff02f4e326672f76e58)
++++ b/meeting-server/src/main/java/com/fan/server/service/impl/StudentTeamServiceImpl.java	(date 1689210277804)
+@@ -3,10 +3,8 @@
+ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+ import com.baomidou.mybatisplus.core.metadata.IPage;
+ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+-import com.fan.server.pojo.Project;
+-import com.fan.server.pojo.StudentTeam;
++import com.fan.server.pojo.*;
+ import com.fan.server.mapper.StudentTeamMapper;
+-import com.fan.server.pojo.Team;
+ import com.fan.server.service.IStudentService;
+ import com.fan.server.service.IStudentTeamService;
+ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+@@ -16,10 +14,7 @@
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.stereotype.Service;
+ 
+-import java.util.HashMap;
+-import java.util.List;
+-import java.util.Map;
+-import java.util.Objects;
++import java.util.*;
+ 
+ /**
+  * <p>
+@@ -89,6 +84,14 @@
+         this.remove(wrapper);
+     }
+ 
++    @Override
++    public void deleteTeam(String teamId) throws Exception{
++        LambdaQueryWrapper<StudentTeam> wrapper = new LambdaQueryWrapper<>();
++        wrapper.eq(StudentTeam::getTeamId, teamId);
++        this.remove(wrapper);
++        teamService.deleteTeam(teamId);
++    }
++
+     @Override
+     public void deleteStudentTeam(StudentTeam studentTeam) {
+         removeById(studentTeam.getId());
+@@ -128,8 +131,32 @@
+         //封装 map
+         HashMap<String, Object> data = new HashMap<>();
+         data.put("total", page.getTotal());
+-        data.put("projectList", page.getRecords());
++        data.put("StudentList", page.getRecords());
+ 
++        return data;
++    }
++
++    @Override
++    public Map<String, Object> getTeamInfById(String teamId) {
++        Team team = teamService.getTeamByTeamId(teamId);
++        Map<String, Object> data = new HashMap<>();
++        data.put("teamName", team.getTeamName());
++        data.put("projectId", team.getProjectId());
++        LambdaQueryWrapper<StudentTeam> wrapper = new LambdaQueryWrapper<>();
++        wrapper.eq(StudentTeam::getTeamId, teamId);
++        List<StudentTeam> list = this.list(wrapper);
++        List<StudentTeamInf> list1 = new ArrayList<>();
++        list.forEach((value) -> {
++            StudentTeamInf now = new StudentTeamInf();
++            now.setStudentTeamInf(value);
++            try {
++                now.setMobilephone(studentService.getStudentMobilephoneById(value.getStudentId()));
++            } catch (Exception e) {
++                e.printStackTrace();
++            }
++            list1.add(now);
++        });
++        data.put("selectedStudentList", list1);
+         return data;
+     }
+ 
+Index: meeting-server/src/main/java/com/fan/server/controller/StudentTeamController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.fan.server.controller;\r\n\r\n\r\nimport com.fan.server.common.Result;\r\nimport com.fan.server.pojo.StudentTeam;\r\nimport com.fan.server.service.IStudentTeamService;\r\nimport io.swagger.annotations.Api;\r\nimport io.swagger.annotations.ApiOperation;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.web.bind.annotation.*;\r\n\r\nimport java.util.List;\r\nimport java.util.Map;\r\n\r\n/**\r\n * <p>\r\n *  前端控制器\r\n * </p>\r\n *\r\n * @author BestOfTheWorld\r\n * @since 2023-07-05\r\n */\r\n@RestController\r\n@RequestMapping(\"/student-team\")\r\npublic class StudentTeamController {\r\n\r\n    @Autowired\r\n    IStudentTeamService studentTeamService;\r\n\r\n    @PostMapping(\"/addStudentTeam\")\r\n    @ApiOperation(\"为团队添加成员接口\")\r\n    public Result<?> addStudentTeam(@RequestParam String mobilephone,\r\n                                    @RequestParam String teamId,\r\n                                    @RequestParam String position) {\r\n        try{\r\n            studentTeamService.addStudentTeam(mobilephone, teamId, position);\r\n            return Result.success(\"添加成员成功\");\r\n        }catch (Exception e) {\r\n            return Result.fail(e.getMessage());\r\n        }\r\n    }\r\n\r\n    @DeleteMapping(\"/deleteStudentTeam\")\r\n    @ApiOperation(\"从团队删除学生接口\")\r\n    public Result<?> deleteStudentTeam(@RequestParam String mobilephone,\r\n                                       @RequestParam String teamId) {\r\n        try{\r\n            studentTeamService.deleteStudentTeam(mobilephone, teamId);\r\n            return Result.success(\"删除成员成功\");\r\n        }catch (Exception e){\r\n            return Result.fail(e.getMessage());\r\n        }\r\n    }\r\n\r\n    @PutMapping(\"/updateStudentTeam\")\r\n    @ApiOperation(\"更新学生在团队中的信息接口\")\r\n    public Result<?> updateStudentTeam(\r\n            @RequestParam String teamName,\r\n            @RequestParam Integer projectId,\r\n            @RequestParam String teamId,\r\n            @RequestParam List<String> selectedStudentList\r\n    ) {\r\n        try {\r\n            studentTeamService.updateStudentTeam(teamName, projectId, teamId, selectedStudentList);\r\n            return Result.success(\"修改成功\");\r\n        }catch (Exception e){\r\n            return Result.fail(e.getMessage());\r\n        }\r\n    }\r\n\r\n    @GetMapping(\"/getStudentListByTeamId\")\r\n    @ApiOperation(\"通过团队id查询成员接口\")\r\n    public Result<Map<String, Object>> getStudentListByTeamId(\r\n            @RequestParam(\"pageNo\") Long pageNo,\r\n            @RequestParam(\"pageSize\") Long pageSize,\r\n            @RequestParam(required = false, value = \"teamId\") String teamId){\r\n        try{\r\n            Map<String, Object> data = studentTeamService.getStudentListByTeamId(pageNo, pageSize, teamId);\r\n            return Result.success(data, \"获取成员成功\");\r\n        }catch (Exception e) {\r\n            return Result.fail(e.getMessage());\r\n        }\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/meeting-server/src/main/java/com/fan/server/controller/StudentTeamController.java b/meeting-server/src/main/java/com/fan/server/controller/StudentTeamController.java
+--- a/meeting-server/src/main/java/com/fan/server/controller/StudentTeamController.java	(revision be9befa020acf52522464ff02f4e326672f76e58)
++++ b/meeting-server/src/main/java/com/fan/server/controller/StudentTeamController.java	(date 1689210277815)
+@@ -82,4 +82,32 @@
+         }
+     }
+ 
++    @GetMapping("/getTeamInfById")
++    @ApiOperation("获取团队所有信息接口")
++    public Result<Map<String, Object>> getTeamInfById(@RequestParam String teamId) {
++        try{
++            Map<String, Object> data = studentTeamService.getTeamInfById(teamId);
++            /*
++            * teamName
++            * projectId
++            * studentList
++            * */
++            return Result.success(data);
++        }catch (Exception e) {
++            return Result.fail(e.getMessage());
++        }
++    }
++
++    @GetMapping("/deleteTeam")
++    @ApiOperation("删除整个团队")
++    public Result<?> deleteTeam(@RequestParam String teamId) {
++        try {
++            studentTeamService.deleteTeam(teamId);
++            return Result.success("删除成功");
++        }catch (Exception e){
++            return Result.fail(e.getMessage());
++        }
++
++    }
++
+ }
+Index: meeting-server/src/main/java/com/fan/server/service/ITeamService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.fan.server.service;\r\n\r\nimport com.fan.server.pojo.Project;\r\nimport com.fan.server.pojo.Team;\r\nimport com.baomidou.mybatisplus.extension.service.IService;\r\n\r\nimport java.util.Map;\r\n\r\n/**\r\n * <p>\r\n *  服务类\r\n * </p>\r\n *\r\n * @author BestOfTheWorld\r\n * @since 2023-07-05\r\n */\r\npublic interface ITeamService extends IService<Team> {\r\n\r\n    void addTeam(String teamName, Integer projectId) throws Exception;\r\n\r\n    void deleteTeam(String teamId) throws Exception;\r\n\r\n    void updateTeam(Team team) throws Exception;\r\n\r\n    Map<String, Object> getTeamList(Long pageNo, Long pageSize, String teamName);\r\n\r\n    void TeamNumberPlusOne(String teamId) throws Exception;\r\n\r\n    void TeamNumberSubOne(String teamId) throws Exception;\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/meeting-server/src/main/java/com/fan/server/service/ITeamService.java b/meeting-server/src/main/java/com/fan/server/service/ITeamService.java
+--- a/meeting-server/src/main/java/com/fan/server/service/ITeamService.java	(revision be9befa020acf52522464ff02f4e326672f76e58)
++++ b/meeting-server/src/main/java/com/fan/server/service/ITeamService.java	(date 1689153690879)
+@@ -28,4 +28,6 @@
+ 
+     void TeamNumberSubOne(String teamId) throws Exception;
+ 
++    Team getTeamByTeamId(String teamId);
++
+ }
+Index: meeting-server/src/main/java/com/fan/server/pojo/StudentTeamInf.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/meeting-server/src/main/java/com/fan/server/pojo/StudentTeamInf.java b/meeting-server/src/main/java/com/fan/server/pojo/StudentTeamInf.java
+new file mode 100644
+--- /dev/null	(date 1689209718835)
++++ b/meeting-server/src/main/java/com/fan/server/pojo/StudentTeamInf.java	(date 1689209718835)
+@@ -0,0 +1,46 @@
++package com.fan.server.pojo;
++
++import com.baomidou.mybatisplus.annotation.TableField;
++import io.swagger.annotations.ApiModelProperty;
++import lombok.Data;
++import lombok.EqualsAndHashCode;
++import lombok.experimental.Accessors;
++
++import java.io.Serializable;
++
++/**
++ * <p>
++ *
++ * </p>
++ *
++ * @author BestOfTheWorld
++ * @since 2023-07-05
++ */
++@Data
++@EqualsAndHashCode(callSuper = false)
++@Accessors(chain = true)
++public class StudentTeamInf implements Serializable {
++
++    @ApiModelProperty(value = "学生id")
++    private Integer studentId;
++
++    @ApiModelProperty(value = "团队id")
++    private String teamId;
++
++    @ApiModelProperty(value = "职位")
++    private String position;
++
++    @ApiModelProperty(value = "成绩")
++    private String grade;
++
++    @ApiModelProperty(value = "手机号")
++    private String mobilephone;
++
++    public void setStudentTeamInf(StudentTeam studentTeam) {
++        this.setStudentId(studentTeam.getStudentId());
++        this.setTeamId(studentTeam.getTeamId());
++        this.setGrade(studentTeam.getGrade());
++        this.setPosition(studentTeam.getPosition());
++    }
++
++}
+Index: meeting-server/src/main/java/com/fan/server/service/IStudentTeamService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.fan.server.service;\r\n\r\nimport com.fan.server.pojo.StudentTeam;\r\nimport com.baomidou.mybatisplus.extension.service.IService;\r\n\r\nimport java.util.List;\r\nimport java.util.Map;\r\n\r\n/**\r\n * <p>\r\n *  服务类\r\n * </p>\r\n *\r\n * @author BestOfTheWorld\r\n * @since 2023-07-05\r\n */\r\npublic interface IStudentTeamService extends IService<StudentTeam> {\r\n\r\n    void addStudentTeam(String mobilephone, String teamId, String position) throws Exception;\r\n\r\n    void deleteStudentTeam(String mobilephone, String teamId) throws Exception;\r\n\r\n    void updateStudentTeam(String teamName, Integer projectId, String teamId, List<String> selectedStudentList) throws Exception;\r\n\r\n    Map<String, Object> getStudentListByTeamId(Long pageNo, Long pageSize, String teamId);\r\n\r\n    void deleteStudentTeam(StudentTeam studentTeam);\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/meeting-server/src/main/java/com/fan/server/service/IStudentTeamService.java b/meeting-server/src/main/java/com/fan/server/service/IStudentTeamService.java
+--- a/meeting-server/src/main/java/com/fan/server/service/IStudentTeamService.java	(revision be9befa020acf52522464ff02f4e326672f76e58)
++++ b/meeting-server/src/main/java/com/fan/server/service/IStudentTeamService.java	(date 1689210277809)
+@@ -26,4 +26,8 @@
+ 
+     void deleteStudentTeam(StudentTeam studentTeam);
+ 
++    Map<String ,Object> getTeamInfById(String teamId);
++
++    void deleteTeam(String teamId) throws Exception;
++
+ }

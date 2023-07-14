@@ -22,4 +22,6 @@ public interface IStudentLogService extends IService<StudentLog> {
 
     void deleteStudentLog(StudentLog studentLog);
 
+    Map<String, Object> getStudentLogList(Long pageNo, Long pageSize, Integer id);
+
 }

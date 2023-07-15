@@ -19,4 +19,6 @@ public interface ISummarizeService extends IService<Summarize> {
 
     void updateSummarize(Summarize summarize) throws Exception;
 
+    Summarize getSummarizeByMobilephone(String mobilephone) throws Exception;
+
 }

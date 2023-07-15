@@ -54,13 +54,13 @@ public class TeamLogServiceImpl extends ServiceImpl<TeamLogMapper, TeamLog> impl
     @Override
     public void updateTeamLog(TeamLog teamLog) throws Exception {
         LambdaQueryWrapper<TeamLog> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(TeamLog::getId, teamLog.getId());
+        wrapper.eq(TeamLog::getTeamId, teamLog.getTeamId());
         if(Objects.isNull(this.getOne(wrapper)))
         {
             //为空，未找到该日志
             throw new Exception("该团队日志不存在");
         }
-        teamLog.setLogDate(teamLog.getLogDate().plusDays(1));
+        teamLog.setLogDate(LocalDateTime.now());
         this.updateById(teamLog);
     }
 

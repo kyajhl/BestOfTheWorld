@@ -87,5 +87,34 @@ export default {
       method: 'get',
       params: {studentId}
     })
+  },
+  getPositionByTeamId(teamId, studentId) {
+    return request({
+      url: '/student-team/getPositionByTeamId',
+      method: 'get',
+      params: {
+        teamId,
+        studentId
+      }
+    })
+  },
+  updateTeamLog(data) {
+    return request({
+      url: '/team-log/updateTeamLog',
+      method: 'put',
+      data
+    })
+  },
+  deleteTeamLog(data) {
+    return request({
+      url: '/team-log/deleteTeamLog',
+      method: 'delete',
+      data
+    })
+  },
+  getSummaryList() {
+    return request({
+      url: '/summarize/'
+    })
   }
 }

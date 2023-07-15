@@ -150,4 +150,15 @@ public class StudentTeamController {
 
     }
 
+    @GetMapping("/getPositionByTeamId")
+    @ApiOperation("根据 teamId 获取对应的职位")
+    public Result<Map<String, String>> getPositionByTeamId(@RequestParam String teamId, @RequestParam Integer studentId) {
+        try {
+            Map<String, String> data = studentTeamService.getPositionByTeamId(teamId, studentId);
+            return Result.success(data, "获取对应的职位成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Result.fail(202);
+    }
 }

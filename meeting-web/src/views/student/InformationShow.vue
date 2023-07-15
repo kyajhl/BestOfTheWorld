@@ -133,7 +133,7 @@
                           type="primary"
                           circle icon="el-icon-edit"
                           size="mini"
-                          :disabled="teamLogs.comment !== null"
+                          :disabled="teamLogs.comment !== null || teamLogs.position !== '项目经理'"
                         ></el-button>
                         <el-button
                           @click="deleteTeamLog(teamLogs)"
@@ -141,7 +141,7 @@
                           circle
                           icon="el-icon-delete"
                           size="mini"
-                          :disabled="teamLogs.comment !== null"
+                          :disabled="teamLogs.comment !== null || teamLogs.position !== '项目经理'"
                         ></el-button>
                       </div>
                       <el-collapse v-model="activeName" accordion>
@@ -187,8 +187,24 @@
             <div slot="header" class="clearfix">
               <span>实训总结列表</span>
             </div>
-            <div v-for="o in 4" :key="o" class="text item">
-              {{'列表内容 ' + o }}
+            <div v-for="summary in summaryList" :key="summary.id" class="text item">
+              <div>
+                <div style="float: right;margin-top: 10px">
+                  <el-button
+                    @click="openDialog('999', summary.id)"
+                    type="primary"
+                    circle icon="el-icon-edit"
+                    size="mini"
+                  ></el-button>
+                </div>
+              </div>
+              <el-collapse v-model="activeName2" accordion>
+                <el-collapse-item :title="summary.content.substring(0, 6) + '.........'" :name="summary.id">
+                  <div>
+                    {{ summary.content }}
+                  </div>
+                </el-collapse-item>
+              </el-collapse>
             </div>
           </el-card>
         </div>
@@ -242,9 +258,9 @@
       </el-form>
 
       <el-form
-        :model="teamForm"
+        :model="teamLogForm"
         :rules="rules"
-        ref="teamFormRef"
+        ref="teamLogFormRef"
         v-if="this.id === '888'"
       >
         <el-form-item
@@ -256,7 +272,7 @@
             type="textarea"
             :rows="5"
             placeholder="请输入团队日志"
-            v-model="teamForm.teamLogContent">
+            v-model="teamLogForm.teamLogContent">
           </el-input>
         </el-form-item>
       </el-form>
@@ -302,6 +318,7 @@
         teamId: '',
         activeName: '0',
         activeName1: '0',
+        activeName2: '0',
         reverse: false,
         reverse1: false,
         dialogFormVisible: false,
@@ -319,11 +336,24 @@
           studentId: ''
         },
         teamLogsList: [],
-        teamForm: {
+        teamLogForm: {
           teamLogContent: '',
           teamId: ''
         },
-        summaryList: [],
+        summaryList: [
+          {
+            id: 1,
+            content: '666666666666',
+          },
+          {
+            id: 2,
+            content: '666666666666',
+          },
+          {
+            id: 3,
+            content: '666666666666',
+          }
+        ],
         summaryForm: {},
         rules: {
           content: [{required: true, message: '请填写留言', trigger: 'blur'}],
@@ -410,6 +440,21 @@
               response => {
                 this.teamLogsList = response.data.teamLogsList;
                 this.teamLogsList = this.teamLogsList.map(teamLog => {
+                  // 根据 teamId 查询对应的职位，并存到 teamLogsList 里面的 position
+                  studentManage.getPositionByTeamId(teamLog.teamId, this.studentId).then(
+                    response => {
+                      let position = response.data.position;
+                      // 如果没有 position 这个属性，就添加一个
+                      if (!teamLog.hasOwnProperty('position')) {
+                        this.$set(teamLog, 'position', '');
+                      }
+                      teamLog['position'] = position;
+                    },
+                    error => {
+                      this.$message.error("获取对应职位失败");
+                    }
+                  );
+                  // 赋值别的属性
                   let dateInfo = teamLog.logDate;
                   teamLog.logDate = dateInfo[0] + '-' + dateInfo[1] +
                     '-' + dateInfo[2] + ' ' +
@@ -431,10 +476,54 @@
       },
       // 更新团队日志
       updateTeamLog() {
-
+        let content = this.teamLogForm.teamLogContent;
+        let teamId = this.teamLogForm.teamId;
+        let id = this.teamLogForm.id;
+        this.teamLogForm = {
+          content,
+          teamId,
+          id
+        };
+        console.log(this.teamLogForm);
+        studentManage.updateTeamLog(this.teamLogForm).then(
+          response => {
+            this.$message.success(response.msg);
+            this.getTeamLogsList();
+          },
+          error => {
+            this.$message.error("更新团队日志失败");
+          }
+        )
       },
       // 删除团队日志
-      deleteTeamLog() {
+      deleteTeamLog(teamLog) {
+        let name = teamLog.content.substring(0, 6) + '.........';
+        this.$confirm(`确认删除 ${name} ?`, "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }).then(() => {
+          let id = teamLog.id;
+          teamLog = {
+            id
+          };
+          studentManage.deleteTeamLog(teamLog).then(
+            response => {
+              this.$message.success(response.msg);
+              this.getTeamLogsList();
+            },
+            error => {
+              this.$message.error("删除团队日志失败");
+            }
+          )
+        });
+      },
+      // 获取实训总结
+      getSummaryList() {
+
+      },
+      // 更新实训总结
+      updateSummary() {
 
       },
       // 打开表单
@@ -459,7 +548,10 @@
           console.log(888);
           this.id = '888';
           this.title = '修改团队日志';
-
+          this.teamLogForm = {
+            teamId: this.teamLogsList[0].teamId,
+            id: searchId
+          }
         } else {
           console.log(999);
           this.id = '999';
@@ -517,9 +609,25 @@
             }
           });
         } else if (this.id === '888') {
-
+          this.$refs['teamLogFormRef'].validate((valid) => {
+            if (valid) {
+              this.updateTeamLog();
+              this.dialogFormVisible = false;
+            } else {
+              console.log('error submit!!');
+              return false;
+            }
+          });
         } else {
-
+          this.$refs['summaryFormRef'].validate((valid) => {
+            if (valid) {
+              this.updateSummary();
+              this.dialogFormVisible = false;
+            } else {
+              console.log('error submit!!');
+              return false;
+            }
+          });
         }
       },
       // 清除表单的信息
@@ -530,7 +638,7 @@
         } else if (this.id === '777') {
           this.$refs.personLogFormRef.clearValidate();
         } else if (this.id === '888') {
-          this.$refs.teamFormRef.clearValidate();
+          this.$refs.teamLogFormRef.clearValidate();
         } else {
           this.$refs.summaryFormRef.clearValidate();
         }

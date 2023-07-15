@@ -210,4 +210,15 @@ public class StudentTeamServiceImpl extends ServiceImpl<StudentTeamMapper, Stude
         return data;
     }
 
+    @Override
+    public Map<String, String> getPositionByTeamId(String teamId, Integer studentId) {
+        LambdaQueryWrapper<StudentTeam> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(StudentTeam::getTeamId, teamId);
+        wrapper.eq(StudentTeam::getStudentId, studentId);
+        StudentTeam studentTeam = this.getOne(wrapper);
+
+        HashMap<String, String> data = new HashMap<>();
+        data.put("position", studentTeam.getPosition());
+        return data;
+    }
 }

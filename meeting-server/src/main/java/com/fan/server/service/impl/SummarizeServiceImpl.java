@@ -44,9 +44,9 @@ public class SummarizeServiceImpl extends ServiceImpl<SummarizeMapper, Summarize
     }
 
     @Override
-    public Summarize getSummarizeByMobilephone(String mobilephone) throws Exception {
+    public Summarize getSummarizeByMobilephone(String studentId) throws Exception {
         LambdaQueryWrapper<Summarize> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Summarize::getStudentId, mobilephone);
+        wrapper.eq(Summarize::getStudentId, studentId);
         if(Objects.isNull(this.getOne(wrapper))) {
             //为空，未找到总结
             throw new Exception("未发布总结");

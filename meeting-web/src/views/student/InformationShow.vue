@@ -185,9 +185,9 @@
         <div :class="{cardClass: true}">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
-              <span>实训总结列表</span>
+              <span>实训总结</span>
             </div>
-            <div v-for="summary in summaryList" :key="summary.id" class="text item">
+            <div>
               <div>
                 <div style="float: right;margin-top: 10px">
                   <el-button
@@ -195,14 +195,25 @@
                     type="primary"
                     circle icon="el-icon-edit"
                     size="mini"
+                    v-if="summary.content"
                   ></el-button>
                 </div>
               </div>
               <el-collapse v-model="activeName2" accordion>
-                <el-collapse-item :title="summary.content.substring(0, 6) + '.........'" :name="summary.id">
-                  <div>
-                    {{ summary.content }}
+                <el-collapse-item
+                  :title="summary.content.substring(0, 6) + '.........'"
+                  :name="summary.id"
+                  v-if="summary.content.length"
+                >
+                  <div style="margin-bottom: 15px">
+                    <span style="font-weight: bold">总结内容：</span>
+                    <div>
+                      {{ summary.content }}
+                    </div>
                   </div>
+                </el-collapse-item>
+                <el-collapse-item v-else>
+                  <el-empty description="无数据" :image-size="50" style="height: 50px"></el-empty>
                 </el-collapse-item>
               </el-collapse>
             </div>
@@ -284,7 +295,7 @@
         v-if="this.id === '999'"
       >
         <el-form-item
-          prop="summary"
+          prop="summaryContent"
           label="实训总结"
           :label-width="formLabelWidth"
         >
@@ -292,7 +303,7 @@
             type="textarea"
             :rows="5"
             placeholder="请输入实训总结"
-            v-model="summaryForm.content">
+            v-model="summaryForm.summaryContent">
           </el-input>
         </el-form-item>
       </el-form>
@@ -340,26 +351,18 @@
           teamLogContent: '',
           teamId: ''
         },
-        summaryList: [
-          {
-            id: 1,
-            content: '666666666666',
-          },
-          {
-            id: 2,
-            content: '666666666666',
-          },
-          {
-            id: 3,
-            content: '666666666666',
-          }
-        ],
-        summaryForm: {},
+        summary: {
+          content: ''
+        },
+        summaryForm: {
+          summaryContent: '',
+
+        },
         rules: {
           content: [{required: true, message: '请填写留言', trigger: 'blur'}],
           personLogContent: [{required: true, message: '请填写个人日志', trigger: 'blur'}],
           teamLogContent: [{required: true, message: '请填写团队日志', trigger: 'blur'}],
-          summary: [{required: true, message: '请填写实训总结', trigger: 'blur'}],
+          summaryContent: [{required: true, message: '请填写实训总结', trigger: 'blur'}],
         },
       }
     },
@@ -520,11 +523,33 @@
       },
       // 获取实训总结
       getSummaryList() {
-
+        studentManage.getSummaryList(this.mobilephone).then(
+          response => {
+            this.summary = response.data;
+            this.$message.success(response.msg);
+          },
+          error => {
+            this.$message.error("获取实训总结失败");
+          }
+        )
       },
       // 更新实训总结
       updateSummary() {
-
+        let content = this.summaryForm.summaryContent;
+        let id = this.summaryForm.id;
+        this.summaryForm = {
+          content,
+          id
+        };
+        studentManage.updateSummary(this.summaryForm).then(
+          response => {
+            this.$message.success(response.msg);
+            this.getSummaryList();
+          },
+          error => {
+            this.$message.error("更新实训总结失败");
+          }
+        )
       },
       // 打开表单
       openDialog(id, searchId) {
@@ -556,7 +581,9 @@
           console.log(999);
           this.id = '999';
           this.title = '修改实训总结';
-
+          this.summaryForm = {
+            id: searchId
+          }
         }
       },
       // 获取留言列表
@@ -651,6 +678,8 @@
       this.getPersonLogsList();
       // 获取团队日志
       this.getTeamLogsList();
+      // 获取实训总结
+      this.getSummaryList();
     }
   }
 </script>

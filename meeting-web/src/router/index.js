@@ -86,32 +86,26 @@ export const constantRoutes = [
   {
     path: '/teacher',
     component: Layout,
-    redirect: '/teacher/teaching_course',
+    redirect: '/teacher/guide_student',
     name: 'teacher',
     meta: {title: '教师管理', icon: 'teacher_management'},
-    // 查询教授课程，记录学生成绩
+    // 指导学生
     children: [
       {
-        path: 'teaching_course',
-        name: 'teaching_course',
-        component: () => import('@/views/teacher/TeachingCourse'),
-        meta: {title: '教授课程', icon: 'teaching_course'}
-      },
-      {
-        path: 'record_grade',
-        name: 'record_grade',
-        component: () => import('@/views/teacher/RecordGrade'),
-        meta: {title: '记录成绩', icon: 'record_grade'},
+        path: 'guide_student',
+        name: 'guide_student',
+        component: () => import('@/views/teacher/GuideStudent'),
+        meta: {title: '指导学生', icon: 'student_information'},
         children: [
           {
-            path: 'all_student',
-            name: 'all_student',
-            component: () => import('@/views/teacher/student/AllStudent'),
-            meta: {title: '学生列表'},
+            path: 'student_information',
+            name: 'student_information',
+            component: () => import('@/views/teacher/student/StudentInformation'),
+            meta: {title: '学生信息'},
             hidden: true,
             // 获取路由参数
-            props({query: {teacherId, cno}}) {
-              return {teacherId, cno};
+            props({query: {mobilephone}}) {
+              return {mobilephone};
             }
           }
         ]

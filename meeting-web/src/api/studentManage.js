@@ -112,9 +112,17 @@ export default {
       data
     })
   },
-  getSummaryList() {
+  getSummaryList(mobilephone) {
     return request({
-      url: '/summarize/'
+      url: `/summarize/getSummarizeByMobilephone?studentId=${mobilephone}`,
+      method: 'get'
+    })
+  },
+  updateSummary(data) {
+    return request({
+      url: '/summarize/updateSummarize',
+      method: 'put',
+      data
     })
   }
 }

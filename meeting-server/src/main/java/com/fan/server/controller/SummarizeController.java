@@ -48,12 +48,13 @@ public class SummarizeController {
         }
     }
 
-    @GetMapping("getSummarizeByMobilephone")
+    @GetMapping("/getSummarizeByMobilephone")
     @ApiOperation("查询总结列表接口")
-    public Result<Summarize> getSummarizeByMobilephone(@RequestParam String mobilephone) {
+    public Result<Summarize> getSummarizeByMobilephone(@RequestParam String studentId) {
+        System.out.println(studentId);
         try{
-            Summarize summarize = summarizeService.getSummarizeByMobilephone(mobilephone);
-            return Result.success(summarize);
+            Summarize summarize = summarizeService.getSummarizeByMobilephone(studentId);
+            return Result.success(summarize, "获取实训总结成功");
         }catch (Exception e) {
             return Result.fail(e.getMessage());
         }

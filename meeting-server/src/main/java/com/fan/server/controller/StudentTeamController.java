@@ -168,7 +168,7 @@ public class StudentTeamController {
     public Result<Map<String, Object>> getStudentAllInf(
             @RequestParam("pageNo") Integer pageNo,
             @RequestParam("pageSize") Integer pageSize,
-            @RequestParam("studentName") String  studentName
+            @RequestParam("studentName") String studentName
     ) {
         try{
             Map<String, Object> data = studentTeamService.getStudentAllInf(pageNo, pageSize, studentName);

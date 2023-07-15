@@ -7,26 +7,39 @@
 import request from '@/utils/request'
 
 export default {
-  getTeachingCourseList(searchForm) {
-    return request({
-      url: '/teacherCourse/getTeachingCourseList',
-      method: 'get',
-      params: searchForm
-    })
-  },
-  getTeachingCourseListModifyStudent(searchForm) {
-    return request({
-      url: '/teacherCourse/getTeachingCourseListModifyStudent',
-      method: 'get',
-      params: searchForm
-    })
-  },
   getStudentList(searchForm) {
     return request({
-      url: '/teacherCourse/getStudentList',
+      url: '/student-team/getStudentAllInf',
       method: 'get',
       params: searchForm
     })
   },
-
+  getStudentLogs(mobilephone) {
+    return request({
+      url: '/student-log/getStudentLogList',
+      method: 'get',
+      params: {mobilephone}
+    })
+  },
+  updateStudentLog(data) {
+    return request({
+      url: '/student-log/updateStudentLog',
+      method: 'put',
+      data
+    });
+  },
+  getTeamLogs(studentId) {
+    return request({
+      url: '/team-log/getTeamLogList',
+      method: 'get',
+      params: {studentId}
+    })
+  },
+  updateTeamLog(data) {
+    return request({
+      url: '/team-log/updateTeamLog',
+      method: 'put',
+      data
+    })
+  },
 }

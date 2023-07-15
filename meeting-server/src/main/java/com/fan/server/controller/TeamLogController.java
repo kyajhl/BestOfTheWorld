@@ -44,7 +44,6 @@ public class TeamLogController {
     @ApiOperation("更新团队日志接口")
     public Result<?> updateTeamLog(@RequestBody TeamLog teamLog) {
         try{
-            System.out.println(teamLog);
             teamLogService.updateTeamLog(teamLog);
             return Result.success("更新团队日志成功");
         }catch (Exception e) {

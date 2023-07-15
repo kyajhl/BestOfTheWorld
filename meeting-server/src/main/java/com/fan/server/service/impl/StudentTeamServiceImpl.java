@@ -3,6 +3,7 @@ package com.fan.server.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fan.server.mapper.StudentAllInfMapper;
 import com.fan.server.mapper.StudentTeamListMapper;
 import com.fan.server.pojo.*;
 import com.fan.server.mapper.StudentTeamMapper;
@@ -38,6 +39,9 @@ public class StudentTeamServiceImpl extends ServiceImpl<StudentTeamMapper, Stude
 
     @Autowired
     StudentTeamListMapper studentTeamListMapper;
+
+    @Autowired
+    StudentAllInfMapper studentAllInfMapper;
 
     @Override
     public void addStudentTeam(String mobilephone, String teamId, String position) throws Exception {
@@ -221,4 +225,17 @@ public class StudentTeamServiceImpl extends ServiceImpl<StudentTeamMapper, Stude
         data.put("position", studentTeam.getPosition());
         return data;
     }
+
+    @Override
+    public Map<String, Object> getStudentAllInf(Integer pageNo, Integer pageSize, String studentName) {
+        List<StudentAllInf> list1 = studentAllInfMapper.getStudentAllInf((pageNo - 1) * pageSize, pageSize, studentName);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("studentList", list1);
+        data.put("total", list1.size());
+
+        return data;
+    }
+
+
 }

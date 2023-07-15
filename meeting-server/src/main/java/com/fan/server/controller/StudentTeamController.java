@@ -7,6 +7,7 @@ import com.fan.server.pojo.StudentTeam;
 import com.fan.server.service.IStudentTeamService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import net.bytebuddy.description.field.FieldDescription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -161,4 +162,21 @@ public class StudentTeamController {
         }
         return Result.fail(202);
     }
+
+    @GetMapping("/getStudentAllInf")
+    @ApiOperation("获得学生团队所有信息接口")
+    public Result<Map<String, Object>> getStudentAllInf(
+            @RequestParam("pageNo") Integer pageNo,
+            @RequestParam("pageSize") Integer pageSize,
+            @RequestParam("studentName") String  studentName
+    ) {
+        try{
+            Map<String, Object> data = studentTeamService.getStudentAllInf(pageNo, pageSize, studentName);
+            return Result.success(data, "获取学生所有信息列表成功");
+        }catch (Exception e) {
+            return Result.fail(e.getMessage());
+        }
+    }
+
+
 }

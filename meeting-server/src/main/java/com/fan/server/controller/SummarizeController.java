@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * <p>
  *  前端控制器
@@ -44,6 +46,18 @@ public class SummarizeController {
         }catch (Exception e) {
             return Result.fail(e.getMessage());
         }
+    }
+
+    @GetMapping("getSummarizeByMobilephone")
+    @ApiOperation("查询总结列表接口")
+    public Result<Summarize> getSummarizeByMobilephone(@RequestParam String mobilephone) {
+        try{
+            Summarize summarize = summarizeService.getSummarizeByMobilephone(mobilephone);
+            return Result.success(summarize);
+        }catch (Exception e) {
+            return Result.fail(e.getMessage());
+        }
+
     }
 
 

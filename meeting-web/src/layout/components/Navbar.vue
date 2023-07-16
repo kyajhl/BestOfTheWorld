@@ -48,6 +48,10 @@
         this.$store.dispatch("app/toggleSideBar");
       },
       async logout() {
+        // 退出时都要清空
+        localStorage.removeItem("roleId");
+
+
         await this.$store.dispatch("user/logout");
         // 注销时删除所有tagview
         await this.$store.dispatch("tagsView/delAllViews");

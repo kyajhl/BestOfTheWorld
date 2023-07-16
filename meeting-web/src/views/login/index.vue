@@ -92,9 +92,6 @@
           this.redirect = route.query && route.query.redirect
         },
         immediate: true
-      },
-      'loginForm.radioCheck'() {
-        console.log(this.loginForm);
       }
     },
     methods: {
@@ -123,6 +120,8 @@
               // 登录成功跳转首页
               this.$message.success("登陆成功");
               this.$router.push({path: this.redirect || '/'});
+              // 保存用户角色 id 用来动态获取路由
+              localStorage.setItem("roleId", this.loginForm.radioCheck);
               this.loading = false
             }).catch(() => {
               this.loading = false

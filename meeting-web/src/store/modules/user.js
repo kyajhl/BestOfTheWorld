@@ -3,7 +3,6 @@ import {getToken, setToken, removeToken} from '@/utils/auth'
 import {resetRouter} from '@/router'
 import router from '@/router'
 import {Message} from 'element-ui'
-import da from "element-ui/src/locale/lang/da";
 
 const getDefaultState = () => {
   return {
@@ -122,8 +121,6 @@ const actions = {
         if (!data) {
           reject('响应数据为空，请重新登录');
         }
-
-        console.log(data);
 
 
         const {

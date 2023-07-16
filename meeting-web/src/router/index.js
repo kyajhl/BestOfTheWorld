@@ -45,124 +45,6 @@ export const constantRoutes = [
     }]
   },
 
-  // 学生管理路由
-  {
-    path: '/student',
-    component: Layout,
-    redirect: '/student/student_operation',
-    name: 'student',
-    meta: {title: '学生管理', icon: 'student_management'},
-    // 学生操作
-    children: [
-      {
-        path: 'student_operation',
-        name: 'student_operation',
-        component: () => import('@/views/student/StudentOperation'),
-        meta: {title: '学生操作', icon: 'student_operation'},
-        children: [
-          {
-            path: 'student_team_information',
-            name: 'student_team_information',
-            component: () => import('@/views/student/team_information/TeamInformation'),
-            meta: {title: '已选团队信息'},
-            hidden: true,
-            // 获取路由参数
-            props({query: {teamId}}) {
-              return {teamId};
-            }
-          }
-        ]
-      },
-      {
-        path: 'information_show',
-        name: 'information_show',
-        component: () => import('@/views/student/InformationShow'),
-        meta: {title: '信息交流', icon: 'information_show'},
-      }
-    ]
-  },
-
-  // 教师管理路由
-  {
-    path: '/teacher',
-    component: Layout,
-    redirect: '/teacher/guide_student',
-    name: 'teacher',
-    meta: {title: '教师管理', icon: 'teacher_management'},
-    // 指导学生
-    children: [
-      {
-        path: 'guide_student',
-        name: 'guide_student',
-        component: () => import('@/views/teacher/GuideStudent'),
-        meta: {title: '指导学生', icon: 'student_information'},
-        children: [
-          {
-            path: 'student_information',
-            name: 'student_information',
-            component: () => import('@/views/teacher/student/StudentInformation'),
-            meta: {title: '学生信息'},
-            hidden: true,
-            // 获取路由参数
-            props({query: {mobilephone}}) {
-              return {mobilephone};
-            }
-          }
-        ]
-      }
-    ]
-  },
-
-  // 企业管理路由
-  {
-    path: '/enterprise',
-    name: 'enterprise',
-    component: Layout,
-    redirect: '/enterprise/project_operation',
-    meta: {title: '企业管理', icon: 'enterprise_management'},
-    // 管理项目创建，团队创建
-    children: [
-      {
-        path: 'project_operation',
-        name: 'project_operation',
-        component: () => import('@/views/enterprise/ProjectOperation'),
-        meta: {title: '项目操作', icon: 'project_operation'},
-        children: [
-          {
-            path: 'project_information',
-            name: 'project_information',
-            component: () => import('@/views/enterprise/project_information/ProjectInformation'),
-            meta: {title: '项目信息'},
-            hidden: true,
-            // 获取路由参数
-            props({query: {projectId}}) {
-              return {projectId};
-            }
-          }
-        ]
-      },
-      {
-        path: 'team_operation',
-        name: 'team_operation',
-        component: () => import('@/views/enterprise/TeamOperation'),
-        meta: {title: '团队操作', icon: 'team_operation'},
-        children: [
-          {
-            path: 'team_information',
-            name: 'team_information',
-            component: () => import('@/views/enterprise/team_information/TeamInformation'),
-            meta: {title: '团队信息'},
-            hidden: true,
-            // 获取路由参数
-            props({query: {teamId}}) {
-              return {teamId};
-            }
-          }
-        ]
-      }
-    ]
-  },
-
   // 个人信息路由
   {
     path: '/user',
@@ -178,13 +60,6 @@ export const constantRoutes = [
         meta: {title: '个人信息'}
       },
     ]
-  },
-
-  // 404 page must be placed at the end !!!
-  {
-    path: '*',
-    redirect: '/404',
-    hidden: true
   }
 ];
 

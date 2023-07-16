@@ -8,6 +8,11 @@ import getPageTitle from '@/utils/get-page-title'
 
 import Layout from '@/layout/index'
 
+import studentRoutes from "@/router/studentRoutes";
+import teacherRoutes from "@/router/teacherRoutes";
+import enterpriseRoutes from "@/router/enterpriseRoutes";
+import errorRoutes from "@/router/errorRoutes";
+
 nProgress.configure({showSpinner: false}); // nProgress Configuration
 
 const whiteList = ['/login']; // no redirect whitelist
@@ -32,9 +37,10 @@ router.beforeEach(async (to, from, next) => {
 
       next({path: '/'});
       nProgress.done()
-    } else {
+    }
+    else {
       // 如果能够获取用户名(代表没刷新)，要判断是否跳转首页
-      const hasGetUserInfo = store.getters.name;
+      const hasGetUserInfo = store.getters.mobilephone;
       if (hasGetUserInfo) {
         // 如果要跳转到首页，那么要获取用户信息
         if (to.path === '/dashboard') {
@@ -42,6 +48,7 @@ router.beforeEach(async (to, from, next) => {
           try {
             await store.dispatch('user/getRoleId');
             await store.dispatch('user/getInfo');
+
             next();
           } catch (error) {
             // 获取用户信息失败，就删除 token ，并且重新跳转到 login 页面，重新登录
@@ -55,14 +62,33 @@ router.beforeEach(async (to, from, next) => {
           console.log('没刷新，没跳转首页，直接放行');
           next()
         }
-      } else {
+      }
+      else {
         // 这里获取的用户名为 空，代表 store 里面已经重置了，即刷新了页面，那么就要重新获取用户信息
         // 也就是说每次只要刷新页面，就会重新获取用户信息，可以测试 token 是否有效
-        // 第一次登陆进去，由于用户名为空，所以也要获取用户信息
+        // 第一次登陆进去，由于用户名为空，所以也要获取用户信息(!!!!!!)
         try {
           // 调用 store 里面 user 模块里的 getInfo方法
           await store.dispatch('user/getRoleId');
           await store.dispatch('user/getInfo');
+
+          let route = [];
+          if (localStorage.getItem("roleId") === '1') {
+            route = route.concat(studentRoutes);
+          } else if (localStorage.getItem("roleId") === '2') {
+            route = route.concat(teacherRoutes);
+          } else if (localStorage.getItem("roleId") === '3'){
+            route = route.concat(enterpriseRoutes);
+          }
+          route = route.concat(errorRoutes);
+
+          global.myRoutes = route;
+          router.addRoutes(route);
+
+          next({...to, replace: true});  // 防止刷新后页面空白
+
+          // next()
+
 
           // 路由转换
           // let myRoutes = myFilterAsyncRoutes(store.getters.menuList);
@@ -78,8 +104,6 @@ router.beforeEach(async (to, from, next) => {
           // global.myRoutes = myRoutes;
           // next({...to, replace: true});  // 防止刷新后页面空白
 
-
-          next()
         } catch (error) {
           // 获取用户信息失败，就删除 token ，并且重新跳转到 login 页面，重新登录
           await store.dispatch('user/resetToken');

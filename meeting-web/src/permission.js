@@ -39,7 +39,7 @@ router.beforeEach(async (to, from, next) => {
       nProgress.done()
     }
     else {
-      // 如果能够获取用户名(代表没刷新)，要判断是否跳转首页
+      // 如果能够获取手机号(代表没刷新)，要判断是否跳转首页
       const hasGetUserInfo = store.getters.mobilephone;
       if (hasGetUserInfo) {
         // 如果要跳转到首页，那么要获取用户信息

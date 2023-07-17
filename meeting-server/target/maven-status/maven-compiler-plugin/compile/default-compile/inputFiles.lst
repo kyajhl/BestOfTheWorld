@@ -5,6 +5,7 @@ D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\co
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\mapper\SummarizeMapper.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\mapper\TeacherMapper.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\mapper\StudentMapper.java
+D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\pojo\MessageAndName.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\service\impl\ProjectServiceImpl.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\config\MyInterceptorConfig.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\pojo\User.java
@@ -24,6 +25,7 @@ D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\co
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\config\MyRedisConfig.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\controller\MessageController.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\controller\StudentController.java
+D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\pojo\StudentAllInf.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\service\IProjectService.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\controller\ProjectController.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\config\MySwaggerConfig.java
@@ -34,12 +36,15 @@ D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\co
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\mapper\TeamMapper.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\pojo\Student.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\pojo\StudentLog.java
+D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\pojo\StudentTeamInf.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\service\impl\TeamLogServiceImpl.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\mapper\MessageMapper.java
+D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\pojo\StudentTeamList.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\service\impl\SummarizeServiceImpl.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\utils\JwtUtil.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\common\Result.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\controller\SummarizeController.java
+D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\mapper\StudentTeamListMapper.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\service\ITeacherService.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\pojo\Message.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\interceptor\JwtValidateInterceptor.java
@@ -57,6 +62,7 @@ D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\co
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\service\impl\StudentTeamServiceImpl.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\config\MPConfig.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\config\MyCORSConfig.java
+D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\mapper\StudentAllInfMapper.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\MeetingSystemApplication.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\pojo\TeamLog.java
 D:\IDEA_Projects\2023_VueProject\VacationProject\meeting-server\src\main\java\com\fan\server\service\IStudentLogService.java

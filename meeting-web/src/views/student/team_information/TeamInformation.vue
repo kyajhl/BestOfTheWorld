@@ -200,27 +200,42 @@
       // 保存信息
       saveInformation() {
         if (this.id === '666') {
-          // 保存总结
-          studentManage.addSummary(this.summaryForm).then(
-            response => {
-              this.$message.success(response.msg);
-            },
-            error => {
-              this.$message.error("添加实训总结失败");
+          this.$refs['summaryFormRef'].validate((valid) => {
+            if (valid) {
+              // 保存总结
+              studentManage.addSummary(this.summaryForm).then(
+                response => {
+                  this.$message.success(response.msg);
+                  this.dialogFormVisible = false;
+                },
+                error => {
+                  this.$message.error("添加实训总结失败");
+                }
+              )
+            } else {
+              console.log('error submit!!');
+              return false;
             }
-          )
+          });
         } else {
-          // 保存日志
-          studentManage.addTeamLogs(this.logsForm).then(
-            response => {
-              this.$message.success(response.msg);
-            },
-            error => {
-              this.$message.error("添加日志失败");
+          this.$refs['logsFormRef'].validate((valid) => {
+            if (valid) {
+              // 保存日志
+              studentManage.addTeamLogs(this.logsForm).then(
+                response => {
+                  this.$message.success(response.msg);
+                  this.dialogFormVisible = false;
+                },
+                error => {
+                  this.$message.error("添加日志失败");
+                }
+              )
+            } else {
+              console.log('error submit!!');
+              return false;
             }
-          )
+          });
         }
-        this.dialogFormVisible = false;
       },
       // 获取团队信息
       getTeamInformation() {

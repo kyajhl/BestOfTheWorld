@@ -8,7 +8,7 @@ function resolve(dir) {
 
 const name = defaultSettings.title;// page title
 
-const port = 8080; // dev port
+const port = 80; // dev port
 
 module.exports = {
   publicPath: '/',

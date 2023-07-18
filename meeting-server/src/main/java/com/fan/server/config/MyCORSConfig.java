@@ -19,7 +19,7 @@ public class MyCORSConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         // 允许哪些域名访问服务器，不要写 * ，否则cookie无法使用
-        corsConfiguration.addAllowedOrigin("http://101.200.123.125:80");
+        corsConfiguration.addAllowedOrigin("http://localhost");
         // 是否发送cookie信息
         corsConfiguration.setAllowCredentials(true);
         // 允许哪些请求方式

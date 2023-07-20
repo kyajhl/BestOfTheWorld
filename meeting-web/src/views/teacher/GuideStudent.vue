@@ -104,7 +104,8 @@
         :page-size="searchForm.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
-      ></el-pagination>
+      >
+      </el-pagination>
 
     </div>
     <!--  显示三级路由  -->
@@ -136,6 +137,8 @@
             this.studentList = response.data.studentList;
             this.total = response.data.total;
             this.$message.success(response.msg);
+
+            console.log(this.total);
           },
           error => {
             this.$message.error("获取学生列表失败")

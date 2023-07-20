@@ -10,4 +10,5 @@ public interface StudentAllInfMapper {
 
     List<StudentAllInf> getStudentAllInf(Integer pageNo, Integer pageSize, String studentName);
 
+    List<StudentAllInf> getStudentAllInfNoPage(String studentName);
 }

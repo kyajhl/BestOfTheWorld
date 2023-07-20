@@ -110,7 +110,7 @@
         v-if="this.id === '666'"
       >
         <el-form-item
-          prop="summaryContent"
+          prop="content"
           label="实训总结"
           :label-width="formLabelWidth"
         >
@@ -164,7 +164,7 @@
           logsContent: [
             {required: true, message: '请填写日志', trigger: 'blur'}
           ],
-          summaryContent: [
+          content: [
             {required: true, message: '请填写实训总结', trigger: 'blur'}
           ]
         },

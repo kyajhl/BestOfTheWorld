@@ -230,9 +230,11 @@ public class StudentTeamServiceImpl extends ServiceImpl<StudentTeamMapper, Stude
     public Map<String, Object> getStudentAllInf(Integer pageNo, Integer pageSize, String studentName) {
         List<StudentAllInf> list1 = studentAllInfMapper.getStudentAllInf((pageNo - 1) * pageSize, pageSize, studentName);
 
+        List<StudentAllInf> list2 = studentAllInfMapper.getStudentAllInfNoPage(studentName);
+
         Map<String, Object> data = new HashMap<>();
         data.put("studentList", list1);
-        data.put("total", list1.size());
+        data.put("total", list2.size());
 
         return data;
     }

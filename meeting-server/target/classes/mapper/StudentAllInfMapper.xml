@@ -31,5 +31,15 @@
         order by s.id
         LIMIT #{pageNo}, #{pageSize}
     </select>
+    <select id="getStudentAllInfNoPage" resultType="com.fan.server.pojo.StudentAllInf">
+        SELECT *
+        FROM student_team st LEFT JOIN team t ON st.team_id = t.team_id LEFT JOIN student s ON s.id = st.student_id
+        <where>
+            <if test="studentName != null and studentName != ''">
+                and s.student_name like '%${studentName}%'
+            </if>
+        </where>
+        order by s.id
+    </select>
 
 </mapper>
